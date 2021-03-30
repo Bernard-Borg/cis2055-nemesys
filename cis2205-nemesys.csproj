@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>cis2205_nemesys</RootNamespace>
+    <RootNamespace>Nemesys</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Interfaces\" />
     <Folder Include="Models\Repositories\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\js\" />
