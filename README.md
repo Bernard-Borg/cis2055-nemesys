@@ -57,6 +57,7 @@ Optional additional features;
 * Email notifications when a new report has been submitted (received by investigators - observer pattern?)
 * Watching of reports by other reporters (publisher-subscriber pattern?)
 * Contact reporter (for investigations)
+* Google SSO
 
 ---
 

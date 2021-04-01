@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nemesys.Models.Interfaces;
+using Nemesys.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace cis2205_nemesys
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews(); //Adds MVC capabilities
+            services.AddSingleton<IStarsRepository, MockStarsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
