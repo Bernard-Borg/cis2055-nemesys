@@ -1,0 +1,10 @@
+body, html, .container-fluid
+{
+    background-color: #000000;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.text-left
+{
+    text-align: left !important;
+}
