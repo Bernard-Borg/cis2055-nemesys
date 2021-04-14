@@ -1,0 +1,12 @@
+@model List<Nemesys.Models.User>
+
+<body>
+    <div>
+        @foreach (Nemesys.Models.User user in Model)
+        {
+            <h1>@user.Name</h1>
+            <p>@user.Email</p>
+            <img src="@user.Photo" />
+        }
+    </div>
+</body>
