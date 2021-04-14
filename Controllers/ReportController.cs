@@ -8,5 +8,13 @@ namespace Nemesys.Controllers
 {
     public class ReportController : Controller
     {
+        public IActionResult Report()
+        {
+            return View();
+        }
+        public IActionResult Submit()
+        {
+            return View();
+        }
     }
 }
