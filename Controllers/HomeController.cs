@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,16 @@ namespace Nemesys.Controllers
             starsRepository = starRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() {
+            return View();
+        }
+
+        public IActionResult Hall()
+        {
+            return View();
+        }
+
+        public IActionResult Main()
         {
             var model = starsRepository.GetTopUsers(10);
             return View(model);
