@@ -8,3 +8,34 @@ body, html, .container-fluid
 {
     text-align: left !important;
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.profileupload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+#parentimage
+{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+#profileimage
+{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+#changeimage
+{
+    position: absolute;
+    top: 80%;
+    left: 65%;
+}
