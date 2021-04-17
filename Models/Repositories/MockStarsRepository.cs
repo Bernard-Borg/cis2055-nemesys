@@ -35,6 +35,7 @@ namespace Nemesys.Models.Repositories
                     Name = "Bernard Borg",
                     Email = "bernard.borg36@gmail.com",
                     NumberOfReports = 0,
+                    NumberOfUpvotes = 0,
                     Photo = "/images/default-image.png",
                     Phone = "+35679297880",
                     TypeOfUser = UserType.Admin
@@ -51,15 +52,7 @@ namespace Nemesys.Models.Repositories
                     HazardType = "Rogue Nathan",
                     Description = "A Nathan is terrorising the Faculty of ICT",
                     Status = ReportStatus.Open,
-                    Account = new User()
-                    {
-                        UserId = 1,
-                        Name = "Bernard Borg",
-                        Email = "bernard.borg36@gmail.com",
-                        NumberOfReports = 2,
-                        Photo = "/images/default-profile.png",
-                        Phone = "+35679297880"
-                    },
+                    Account = GetUserById(1),
                     NumberOfStars = 0
                 },
                 new Report()
@@ -70,15 +63,7 @@ namespace Nemesys.Models.Repositories
                     HazardType = "Rogue Kyle",
                     Description = "A Kyle is terrorising the Faculty of Education",
                     Status = ReportStatus.Open,
-                    Account = new User()
-                    {
-                        UserId = 1,
-                        Name = "Bernard Borg",
-                        Email = "bernard.borg36@gmail.com",
-                        NumberOfReports = 2,
-                        Photo = "/images/default-profile.png",
-                        Phone = "+35679297880"
-                    },
+                    Account = GetUserById(1),
                     NumberOfStars = 0
                 }
             };
@@ -116,14 +101,22 @@ namespace Nemesys.Models.Repositories
             StarRecord temp = starRecords.FirstOrDefault(item => item.UserId == userId && item.ReportId == reportId);
 
             if (temp != null)
+            {
                 starRecords.Remove(temp);
-            else 
+
+                GetUserById(userId).NumberOfUpvotes--;
+            }
+            else
+            {
                 starRecords.Add(new StarRecord()
                 {
                     UserId = userId,
                     ReportId = reportId,
                     Starred = true
                 });
+
+                GetUserById(userId).NumberOfUpvotes++;
+            }
 
             return temp;
         }

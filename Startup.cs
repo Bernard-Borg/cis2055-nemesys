@@ -18,7 +18,7 @@ namespace cis2205_nemesys
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(); //Adds MVC capabilities
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
             services.AddSingleton<IStarsRepository, MockStarsRepository>();
         }
 
@@ -40,7 +40,7 @@ namespace cis2205_nemesys
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}"
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
                 );
             });
         }

@@ -8,10 +8,11 @@ namespace Nemesys.Controllers
 {
     public class ReportController : Controller
     {
-        public IActionResult Report()
+        public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult Submit()
         {
             return View();

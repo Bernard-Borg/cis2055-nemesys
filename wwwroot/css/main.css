@@ -8,3 +8,16 @@ body, html, .container-fluid
 {
     text-align: left !important;
 }
+
+.nav-tabs {
+    display: flex;
+}
+
+.nav-tabs li {
+    display: flex;
+    flex: 1;
+}
+
+.nav-tabs li a {
+    flex: 1;
+}

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,19 +17,26 @@ namespace Nemesys.Controllers
             starsRepository = starRepository;
         }
 
-        public IActionResult Index() {
+        //Change userId to user's user ID from session
+        public IActionResult Index()
+        {
+            ViewBag.HallOfFameUsers = starsRepository.GetTopUsers(10);
+            ViewBag.Reports = starsRepository.GetAllReports()
+                .Select(report => new ReportWithUpvote(report, starsRepository.IsStarred(report.ReportId, 1)));
+            
             return View();
         }
+
+        /*public IActionResult Index(ReportStatus status)
+        {
+            ViewBag.HallOfFameUsers = starsRepository.GetTopUsers(10);
+            ViewBag.Reports = starsRepository.GetAllReportsWithStatus(status);
+            return View();
+        }*/
 
         public IActionResult Hall()
         {
             return View();
-        }
-
-        public IActionResult Main()
-        {
-            var model = starsRepository.GetTopUsers(10);
-            return View(model);
-        }
+        }        
     }
 }
