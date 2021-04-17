@@ -20,6 +20,11 @@ namespace Nemesys.Controllers
         {
             return View();
         }
+
+        public IActionResult Signin()
+        {
+            return View();
+        }
         public IActionResult Signup()
         {
             return View();

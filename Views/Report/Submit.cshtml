@@ -1,12 +1,12 @@
 @{
-    ViewData["Title"] = "Submit New Report";
+    ViewData["Title"] = "Submit Report";
 }
 
 <head>
-    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
-<main class="form-report">
+<div class="form-report text-center" style="max-width: 700px">
     <h1 class="h1 mb-5 fw-bold text-light">Submit a New Report</h1>
 
     <form class="text-dark">
@@ -38,7 +38,7 @@
                 <p class="text-light">Image of Hazard<i> (Optional)</i>:</p>
             </div>
             <div class="col form-floating text-light">
-                <input type="file" class="form-control-file" id="inputFile">
+                <input type="file" style="display:block !important;" />
             </div>
         </div>
 
@@ -47,6 +47,6 @@
             <label for="floatingTextarea">Description and Additional Information</label>
         </div>
 
-        <button type="submit" class="btn btn-outline-light btn-block mb-4">Submit Report</button>
+        <a type="submit" class="btn btn-outline-light btn-block mb-4" asp-area="" asp-controller="Home" asp-action="Index">Submit Report</a>
     </form>
-</main>
+</div>

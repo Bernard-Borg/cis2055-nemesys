@@ -1,7 +1,30 @@
-body, html, .container-fluid
-{
+body, html, .container-fluid {
     background-color: #000000;
     font-family: 'Work Sans', sans-serif;
+    height: 100%;
+}
+
+.bodycolour 
+{
+    background-color: #000000;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+.form-report {
+    width: 100%;
+    padding: 15px;
+    margin: auto;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+.form-signin input[type="email"] {
+    margin-top: 15px;
 }
 
 .text-left

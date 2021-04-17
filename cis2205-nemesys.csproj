@@ -6,10 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Profile\signin.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Profile\Signin.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,14 +3,14 @@
 }
 
 <head>
-    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
-<main class="form-report">
+<div class="form-report text-center" style="max-width: 400px">
     <h1 class="h1 mb-5 fw-bold text-light">NEMESYS</h1>
     <h1 class="h3 mb-3 fw-normal text-light">Sign Up</h1>
 
-    <form>
+    <div>
         <div class="form-floating">
             <input type="email" class="form-control" id="emailSignUp" placeholder="Email Address">
             <label for="emailSignUp">Email Address <i>(must be UM Email Address)</i></label>
@@ -31,7 +31,7 @@
         <div class="checkbox mb-5 text-light">
             <input type="checkbox" value="remember-me">  Remember me
         </div>
-        <button class="w-100 btn btn-lg btn-outline-light" type="submit">Sign Up</button>
-        <p class="mb-1 fw-normal text-light">Already have an account? Sign in <a href="index.html" class="link-primary">here</a>.</p>
-    </form>
-</main>
+        <a class="w-100 btn btn-lg btn-outline-light" type="submit" asp-area="" asp-controller="Home" asp-action="Index">Sign Up</a>
+        <p class="mb-1 fw-normal text-light">Already have an account? Sign in <a class="link-primary" asp-area="" asp-controller="Profile" asp-action="Signin">here</a>.</p>
+    </div>
+</div>

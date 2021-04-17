@@ -17,7 +17,7 @@
                 <span class="text-light">Nathan Alfred</span>
             </div>
             <div class="d-grid">
-                <button type="button" class="btn btn-outline-light btn-lg mb-2">Profile</button>
+                <a type="button" class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
             </div>
         </div>
         <div class="col-md-10 text-light ps-5 pe-4">
@@ -54,7 +54,7 @@
                             <option value="3" class="text-secondary">No Action Required</option>
                             <option value="4" class="text-danger">Closed</option>
                         </select>
-                        <button type="button" class="btn btn-outline-light mt-3">Change Status</button>
+                        <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Index">Change Status</a>
                     </div>
 
                     <!--FOR ALL OTHERS-->
@@ -64,12 +64,12 @@
                     </div>
 
                     <!--FOR OG REPORTER-->
-                    <div class="row ">
+                    <div class="row">
                         <div class="col-6 d-grid">
-                            <button type="button" class="btn btn-outline-light mt-3">Edit Report</button>
+                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Home" asp-action="Index">Edit Report</a>
                         </div>
                         <div class="col-6 d-grid">
-                            <button type="button" class="btn btn-outline-light mt-3">Delete Report</button>
+                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Home" asp-action="Index">Delete Report</a>
                         </div>
                     </div>
                 </div>

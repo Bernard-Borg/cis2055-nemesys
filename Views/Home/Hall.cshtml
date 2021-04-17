@@ -7,15 +7,15 @@
         <div id="sideNav" class="col-md-2">
             <p class="h4 fw-normal text-light">Sort by</p>
             <ul class="nav nav-pills flex-column">
-                <li><a href="#" class="nav-link link-light">Highest Awarded</a></li>
-                <li><a href="#" class="nav-link link-light">Highest Number of Reports</a></li>
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall">Highest Awarded</a></li>
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall">Highest Number of Reports</a></li>
             </ul>
             <hr>
         </div>
 
         <div id="maincontent" class="col-md-10">
-            <div class="row pt-4">
-                <div class="col-1 d-flex justify-content-center align-items-center">
+            <a class="row pt-4" asp-area="" asp-controller="Profile" asp-action="Index">
+                <div class="col-1 d-flex justify-content-center align-items-center" >
                     <span class="badge rounded-pill bg-warning text-dark">
                         <span class="h4">150</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-star" viewBox="0 0 20 24">
@@ -30,7 +30,7 @@
                 <div class="col-2">
                     <img src="/images/defaultprofile.png" width="96" height="96" alt="Image">
                 </div>
-            </div>
+            </a>
 
         </div>
     </div>
