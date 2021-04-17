@@ -36,7 +36,7 @@ namespace Nemesys.Models.Repositories
                     Email = "bernard.borg36@gmail.com",
                     NumberOfReports = 0,
                     NumberOfUpvotes = 0,
-                    Photo = "/images/default-image.png",
+                    Photo = "/images/defaultimage.png",
                     Phone = "+35679297880",
                     TypeOfUser = UserType.Admin
                 }

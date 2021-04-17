@@ -23,7 +23,7 @@ namespace Nemesys.Controllers
             ViewBag.HallOfFameUsers = starsRepository.GetTopUsers(10);
             ViewBag.Reports = starsRepository.GetAllReports()
                 .Select(report => new ReportWithUpvote(report, starsRepository.IsStarred(report.ReportId, 1)));
-            
+
             return View();
         }
 
