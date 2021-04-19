@@ -1,11 +1,6 @@
 @{
     ViewData["Title"] = "Submit Report";
 }
-
-<head>
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-
 <div class="form-report text-center" style="max-width: 700px">
     <h1 class="h1 mb-5 fw-bold text-light">Submit a New Report</h1>
 
@@ -29,24 +24,25 @@
         </div>
 
         <div class="form-floating mb-4">
-            <input type="text" placeholder="location" id="form6Example3" class="form-control" />
-            <label for="form6Example3">Location</label>
-        </div>
+            
 
-        <div class="row mb-4">
-            <div class="col">
-                <p class="text-light">Image of Hazard<i> (Optional)</i>:</p>
+
+
+            <div class="row mb-4">
+                <div class="col">
+                    <p class="text-light">Image of Hazard<i> (Optional)</i>:</p>
+                </div>
+                <div class="col form-floating text-light">
+                    <input type="file" style="display:block !important;" />
+                </div>
             </div>
-            <div class="col form-floating text-light">
-                <input type="file" style="display:block !important;" />
+
+            <div class="form-floating mb-4">
+                <textarea class="form-control" placeholder="Description and Additional Information" id="floatingTextarea"></textarea>
+                <label for="floatingTextarea">Description and Additional Information</label>
             </div>
-        </div>
 
-        <div class="form-floating mb-4">
-            <textarea class="form-control" placeholder="Description and Additional Information" id="floatingTextarea"></textarea>
-            <label for="floatingTextarea">Description and Additional Information</label>
+            <a type="submit" class="btn btn-outline-light btn-block mb-4" asp-area="" asp-controller="Home" asp-action="Index">Submit Report</a>
         </div>
-
-        <a type="submit" class="btn btn-outline-light btn-block mb-4" asp-area="" asp-controller="Home" asp-action="Index">Submit Report</a>
     </form>
 </div>
