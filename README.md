@@ -17,7 +17,7 @@ User information (_italic_ = optional);
 
 * Name (string)
 * Email (string)
-* Password (hashed value/secrets?)
+* Password (hashed value)
 * Number of personal reports (int)
 * _Photo (default image)_
 * _Phone_
