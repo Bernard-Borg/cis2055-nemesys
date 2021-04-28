@@ -4,17 +4,40 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nemesys.Models.Interfaces;
 using Nemesys.Models.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Nemesys.Data;
+using Microsoft.Extensions.Configuration;
 
-namespace cis2205_nemesys
+namespace Nemesys
 {
     public class Startup
     {
+        private readonly IWebHostEnvironment _env;
+        public IConfiguration _configuration { get; }
+
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
+        {
+            _env = env;
+            _configuration = configuration;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection")));
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
-            services.AddSingleton<IStarsRepository, MockStarsRepository>();
+            
+            if (_env.IsDevelopment())
+            {
+                services.AddTransient<INemesysRepository, MockNemesysRepository>();
+            } 
+            else
+            {
+                services.AddTransient<INemesysRepository, SqlNemesysRepository>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -23,13 +46,19 @@ namespace cis2205_nemesys
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+            } else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            } 
 
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones
             app.UseStatusCodePages(); //Returns simple messages for errors (can customise later)
             app.UseStaticFiles(); //Allows access to static resources in the wwwroot folder
 
             app.UseRouting(); //Allows routing URLs to specific endpoints (such as a controller)
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             //Specifies which urls map to which endpoints
             app.UseEndpoints(endpoints => {

@@ -1,11 +1,19 @@
-body, html, .container-fluid {
-    background-color: #000000;
+* {
     font-family: 'Work Sans', sans-serif;
-    height: 100%;
 }
 
-.bodycolour 
-{
+@media (max-width: 768px) {
+    #wayoverhere {
+        margin-top: 100px;
+    }
+}
+
+.errorpage-paragraph {
+    line-height: 30px; 
+    text-align: justify;
+}
+
+.bodycolour {
     background-color: #000000;
 }
 

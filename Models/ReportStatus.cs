@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Nemesys.Models
+﻿namespace Nemesys.Models
 {
     public enum ReportStatus
     {
-        Open = 0, 
-        ActionRequired = 1, 
-        UnderInvestigation = 2, 
+        Open = 0,
+        UnderInvestigation = 1,
+        NoActionRequired = 2,
         Closed = 3
     }
 }

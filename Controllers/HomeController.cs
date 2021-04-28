@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
+using Nemesys.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +11,44 @@ namespace Nemesys.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IStarsRepository starsRepository;
+        private readonly INemesysRepository mainRepository;
 
-        public HomeController(IStarsRepository starRepository)
+        public HomeController(INemesysRepository starRepository)
         {
-            starsRepository = starRepository;
+            mainRepository = starRepository;
         }
 
         //Change userId to user's user ID from session
+        [ResponseCache(Duration = 2)]
         public IActionResult Index()
         {
-            ViewBag.HallOfFameUsers = starsRepository.GetTopUsers(10);
-            ViewBag.Reports = starsRepository.GetAllReports()
-                .Select(report => new ReportWithUpvote(report, starsRepository.IsStarred(report.ReportId, 1)));
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(mainRepository.GetTopUsers(10));
+            ReportListViewModel reportsViewModel = new ReportListViewModel(mainRepository.GetAllReports());
 
-            return View();
+            var model = new HomePageViewModel(hofViewModel, reportsViewModel);
+            return View(model);
         }
 
-        /*public IActionResult Index(ReportStatus status)
+        [ResponseCache(Duration = 2)]
+        [Route("Home/Index/{status}")]
+        public IActionResult Index(ReportStatus status)
         {
-            ViewBag.HallOfFameUsers = starsRepository.GetTopUsers(10);
-            ViewBag.Reports = starsRepository.GetAllReportsWithStatus(status);
-            return View();
-        }*/
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(mainRepository.GetTopUsers(10));
+            ReportListViewModel reportsViewModel = new ReportListViewModel(mainRepository.GetAllReportsWithStatus(status));
+
+            var model = new HomePageViewModel(hofViewModel, reportsViewModel);
+            return View(model);
+        }
 
         public IActionResult Hall()
         {
+            var model = new HallOfFameViewModel(mainRepository.GetTopUsers(10));
+            return View(model);
+        }
+
+        public IActionResult Error()
+        {
             return View();
-        }        
+        }
     }
 }

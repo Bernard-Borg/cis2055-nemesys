@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Nemesys.Models
 {
@@ -10,7 +7,11 @@ namespace Nemesys.Models
         public int InvestigationId { get; set; }
         public string Description { get; set; }
         public DateTime DateOfAction { get; set; }
+
+        public int UserId { get; set; }
         public User Investigator { get; set; }
+
+        public int ReportId { get; set; }
         public Report Report { get; set; }
     }
 }

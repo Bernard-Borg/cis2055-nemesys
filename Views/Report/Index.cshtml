@@ -1,23 +1,26 @@
+@using Nemesys.ViewModels;
+@model ReportViewModel
+
 @{ 
-    ViewData["Title"] = "Unsafe Conditions";
+    ViewData["Title"] = Model.Report.Description;
 }
 
 <div class="container-fluid">
     <div class="row mt-5">
         <div class="col-md-2">
             <div class="h1 text-light text-center">Reporter</div>
-            <img src="/images/defaultprofile.png" width="128" height="128" class="rounded-circle mx-auto d-block mt-5">
+            <img src="@Model.Report.User.Photo" width="128" height="128" class="mx-auto d-block mt-5">
             <div class="h4 pb-4 mb-0 lh-sm">
-                <span class="badge rounded-pill bg-warning text-dark">
-                    150
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-star" viewBox="0 0 14 20">
-                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"></path>
+                <span class="badge badge-pill bg-warning text-dark">
+                    @Model.Report.User.NumberOfStars
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
                     </svg>
                 </span>
-                <span class="text-light">Nathan Alfred</span>
+                <span class="text-light">@Model.Report.User.UserName</span>
             </div>
             <div class="d-grid">
-                <a type="button" class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+                <a type="button" class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.Report.User.Id">Profile</a>
             </div>
         </div>
         <div class="col-md-10 text-light ps-5 pe-4">
@@ -28,7 +31,7 @@
                     </svg>
                 </div>
                 <div class="col-11 ps-5">
-                    <h1>Unsafe Conditions</h1>
+                    <h1>@Model.Report.HazardType</h1>
                     <h4>Faculty of ICT</h4>
                 </div>
             </div>
@@ -36,13 +39,13 @@
             <div class="row pt-5">
                 <div class="col-8 p">
                     <div class="h5">
-                        Reported: 6th April 2021 - 04:23AM
+                        Reported: @Model.Report.DateOfReport
                     </div>
                     <div class="p pb-4">
                         <i>Last Update: 6th April 2021 - 12:06PM</i>
                     </div>
                     <div>
-                        A ton of broken glass near bridge, very unsafe and needs to be taken care of immediately. A ton of broken glass near bridge, very unsafe and needs to be taken care of immediately. A ton of broken glass near bridge, very unsafe and needs to be taken care of immediately.
+                        @Model.Report.Description
                     </div>
 
                     <!--FOR INVESTIGATORS-->
@@ -60,7 +63,7 @@
                     <!--FOR ALL OTHERS-->
                     <div class="pt-5">
                         <span class="h5 pt-5">Current Status:</span>
-                        <span class="h5 text-warning">Under Investigation</span>
+                            <span class="h5 @Model.BootstrapStatus">@Model.StatusString</span>
                     </div>
 
                     <!--FOR OG REPORTER-->
@@ -74,7 +77,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <img src="/images/123.png" width="256" alt="Image">
+                    <img src="@Model.Report.Photo" width="256" alt="Image of danger">
                 </div>
             </div>
         </div>

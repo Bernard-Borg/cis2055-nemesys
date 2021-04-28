@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Nemesys.Models.Interfaces;
+using Nemesys.ViewModels;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Nemesys.Controllers
 {
     public class ProfileController : Controller
     {
-        public IActionResult Index()
+        private readonly INemesysRepository starsRepository;
+
+        public ProfileController(INemesysRepository starRepository)
         {
-            return View();
+            starsRepository = starRepository;
         }
-        public IActionResult Profile()
+
+        public IActionResult Index(int id)
         {
-            return View();
+            UserViewModel model = new UserViewModel(starsRepository.GetUserById(id));
+            return View(model);
         }
+
         public IActionResult Profiledetails()
         {
             return View();
@@ -25,6 +29,7 @@ namespace Nemesys.Controllers
         {
             return View();
         }
+
         public IActionResult Signup()
         {
             return View();

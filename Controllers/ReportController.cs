@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nemesys.Models.Interfaces;
+using Nemesys.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,17 @@ namespace Nemesys.Controllers
 {
     public class ReportController : Controller
     {
-        public IActionResult Index()
+        private readonly INemesysRepository starsRepository;
+
+        public ReportController(INemesysRepository starRepository)
         {
-            return View();
+            starsRepository = starRepository;
+        }
+
+        public IActionResult Index(int id)
+        {
+            var report = new ReportViewModel(starsRepository.GetReportById(id));
+            return View(report);
         }
 
         public IActionResult Submit()

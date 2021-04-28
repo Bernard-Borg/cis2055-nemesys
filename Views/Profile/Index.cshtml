@@ -1,61 +1,75 @@
+@using Nemesys.Models;
+@using Nemesys.ViewModels;
+@model UserViewModel
+
 @{ 
     ViewData["Title"] = "Your Profile";
 }
 
 <div class="container-fluid">
-    <div class="row mt-5"> 
-        <div id="sideNav" class="col-md-2">
-            <div class="ml-3">
-                <div id="parentimage">
-                    <img id="profileimage" src="/images/defaultprofile.png" width="150" height="150" class="rounded-circle mx-auto d-block mt-5">
-                    <div id="changeimage">
-                        <label class="profileupload">
-                            <input type="file" alt="Edit Photo">
-                            <i class="bi bi-pencil-square text-light fs-3 mb-3"></i>
-                        </label>     
-                    </div>
+    <div class="row mt-5">
+        <div id="sideNav" class="col-md-3 p-5 text-center">
+            <div id="parentimage">
+                <img id="profileimage" src="@Model.User.Photo" width="150" height="150" class="mx-auto d-block">
+                <div id="changeimage">
+                    <label class="profileupload">
+                        <input type="file" alt="Edit Photo">
+                        <i class="bi bi-pencil-square text-light fs-3 mb-3"></i>
+                    </label>
                 </div>
-                <span class="mt-5 mb-3 w-100 badge rounded-pill bg-warning text-dark">
-                    <span class="h4">150</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-star" viewBox="0 0 14 20">
-                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"></path>
-                    </svg>
-                </span>
             </div>
+            <span class="mt-5 mb-3 w-50 badge badge-pill bg-warning text-dark">
+                <span class="fs-3">@Model.User.NumberOfStars</span>
+                <i class="bi bi-star-fill fs-3"></i>
+            </span>
         </div>
-                
-        <div class="col-md-1"></div>
-        <div class="col-md-6 text-light">
-            <h1>Nathan Alfred</h1>
-            <h4>nathan.portelli.19@um.edu.mt</h4>
 
-            <h4 class="mt-5">Bio:</h4>
-            <p style="text-align: justify;">
+        <div class="col-md-6 text-light">
+            <h1>@Model.User.UserName</h1>
+            <h4>@Model.User.Email</h4>
+
+            <h3 class="text-center my-5">Bio</h3>
+            <p class="fs-5" style="text-align: justify;">
                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </p>
         </div>
-        <div id="sideNav" class="col-md-3 mt-2 text-light">
-            <p>This user is a REPORTER</p>
+        <div id="sideNav" class="col-md-3 mt-2 text-light fs-4">
+            <p>This user is a @Model.User.TypeOfUser</p>
             <p>Member since 16TH JANUARY 2021</p>
             <p>Last Active on 18TH JANUARY 2021</p>
-                    
+
+            @*if @Model.UserId == Session.UserId*@
             <div class="d-flex justify-content-center">
                 <a type="button" class="w-100 btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Profiledetails">Edit Details</a>
             </div>
         </div>
     </div>
-    <h2 class="mt-4 ml-1 text-light">Reports Submitted:</h2>
-    <a class="row pt-4 d-flex justify-content-center text-light" asp-area="" asp-controller="Report" asp-action="Index">
-        <div class="col-2 ml-2">
-            <span class="w-100 h-100 badge rounded-pill bg-warning text-dark">
-                <span class="h4">150</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-star" viewBox="0 0 14 20">
-                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"></path>
-                </svg>
-            </span>
+
+    <div style="width: 85vw;" class="mx-auto">
+            <h2 class="my-5 ml-3 text-light">Reports Submitted:</h2>
+            @{
+                if (Model.User.Reports != null && Model.User.Reports.Count() > 0)
+                {
+                    foreach (Report report in Model.User.Reports)
+                    {
+                    <div class="row my-3">
+                        <span class="col-1"></span>
+                        <span class="col-1 badge badge-pill bg-warning text-dark d-flex justify-content-center align-items-center">
+                            <span class="fs-3">@report.NumberOfStars</span>
+                            <i style="font-size: 24px;" class="bi bi-star-fill"></i>
+                        </span>
+                        <a class="col-6 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                            <div class="rounded-3 border border-light p-2">
+                                <p class="fs-3 m-0">@report.HazardType</p>
+                            </div>
+                        </a>
+                    </div>
+                        }
+                    }
+                } else {
+                    <div class="col-12 text-light">
+                        User has not submitted any reports
+                    </div>
+                }
         </div>
-        <div class="col-7 text-center rounded-3 border border-light pl-4">
-            <h2>Unsafe Walkway at Faculty of ICT</h2>
-        </div>
-    </a>
 </div>

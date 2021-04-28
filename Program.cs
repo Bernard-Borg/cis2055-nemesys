@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cis2205_nemesys
+namespace Nemesys
 {
     public class Program
     {
