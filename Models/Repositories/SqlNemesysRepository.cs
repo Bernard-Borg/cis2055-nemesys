@@ -14,36 +14,6 @@ namespace Nemesys.Models.Repositories
             _appDbContext = appDbContext;
         }
 
-        public bool ChangeDescription(int reportId, string description)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ChangeInvestigationDateOfAction(int investigationId, DateTime dateOfAction)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ChangeInvestigationDescription(int investigationId, string description)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ChangeReportHazardDateTime(int reportId, DateTime dateTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ChangeReportHazardType(int reportId, HazardType hazardType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ChangeReportStatus(int reportId, ReportStatus status)
-        {
-            throw new NotImplementedException();
-        }
-
         public Investigation CreateInvestigation(int reportId)
         {
             throw new NotImplementedException();
@@ -60,16 +30,6 @@ namespace Nemesys.Models.Repositories
         }
 
         public bool DeleteUser(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool EditEmail(int userId, string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool EditName(int userId, string name)
         {
             throw new NotImplementedException();
         }
@@ -135,6 +95,21 @@ namespace Nemesys.Models.Repositories
         }
 
         public bool StarReport(int userId, int reportId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateInvestigation(Investigation updatedInvestigation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateReport(Report updatedReport)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateUser(User updatedUser)
         {
             throw new NotImplementedException();
         }

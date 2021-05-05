@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,25 +14,19 @@ namespace Nemesys.Models.Interfaces
         List<Report> GetAllReportsWithStatus(ReportStatus status);
         Report GetReportById(int reportId);
         Report CreateReport(Report report);
-        bool ChangeReportStatus(int reportId, ReportStatus status);
-        bool ChangeReportHazardDateTime(int reportId, DateTime dateTime);
-        bool ChangeReportHazardType(int reportId, HazardType hazardType);
-        bool ChangeDescription(int reportId, string description);
+        bool UpdateReport(Report updatedReport);
         bool DeleteReport(int reportId);
 
         List<User> GetUsers();
         List<User> GetTopUsers(int amount);
         bool DeleteUser(int userId);
         User GetUserById(int userId);
-        bool PromoteUser(int userId);
-        bool EditName(int userId, string name);
-        bool EditEmail(int userId, string email);
+        bool UpdateUser(User updatedUser);
 
         Investigation CreateInvestigation(int reportId);
         List<Investigation> GetAllInvestigations();
         Investigation GetInvestigationById(int investigationId);
-        bool ChangeInvestigationDescription(int investigationId, string description);
-        bool ChangeInvestigationDateOfAction(int investigationId, DateTime dateOfAction);
+        bool UpdateInvestigation(Investigation updatedInvestigation);
         bool RemoveInvestigation(int investigationId);
     }
 }

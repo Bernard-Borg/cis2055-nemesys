@@ -82,7 +82,9 @@ namespace Nemesys.Models.Repositories
                     PhoneNumber = "+35679297880",
                     TypeOfUser = UserType.Admin,
                     NumberOfReports = 0,
-                    NumberOfStars = 0
+                    NumberOfStars = 0,
+                    DateJoined = DateTime.UtcNow,
+                    LastActiveDate = DateTime.UtcNow
                 }
             };
         }
@@ -95,7 +97,8 @@ namespace Nemesys.Models.Repositories
                 {
                     InvestigationId = 1,
                     Description = "Hello",
-                    Investigator = GetUserById(1)
+                    Investigator = GetUserById(1),
+                    DateOfAction = DateTime.UtcNow
                 }
             };
         }
@@ -108,58 +111,6 @@ namespace Nemesys.Models.Repositories
         public List<User> GetUsersWhoStarredReport(int reportId)
         {
             return GetReportById(reportId).UsersWhichHaveStarred;
-        }
-
-        public bool ChangeDescription(int reportId, string description)
-        {
-            Report report = GetReportById(reportId);
-
-            if (report != null)
-            {
-                report.Description = description;
-                return true;
-            }
-            else
-                return false;
-        }
-
-        public bool ChangeReportHazardDateTime(int reportId, DateTime dateTime)
-        {
-            Report report = GetReportById(reportId);
-
-            if (report != null)
-            {
-                report.DateTimeOfHazard = dateTime;
-                return true;
-            }
-            else
-                return false;
-        }
-
-        public bool ChangeReportHazardType(int reportId, HazardType hazardType)
-        {
-            Report report = GetReportById(reportId);
-
-            if (report != null)
-            {
-                report.HazardType = hazardType;
-                return true;
-            }
-            else
-                return false;
-        }
-
-        public bool ChangeReportStatus(int reportId, ReportStatus status)
-        {
-            Report report = GetReportById(reportId);
-
-            if (report != null)
-            {
-                report.Status = status;
-                return true;
-            }
-            else
-                return false;
         }
 
         public bool DeleteReport(int reportId)
@@ -228,26 +179,6 @@ namespace Nemesys.Models.Repositories
             return users.FirstOrDefault(item => item.Id == userId);
         }
 
-        public bool PromoteUser(int userId)
-        {
-            GetUserById(userId).TypeOfUser = UserType.Investigator;
-            return true;
-        }
-
-        public bool EditName(int userId, string name)
-        {
-            //Validate name here
-            GetUserById(userId).UserName = name;
-            return true;
-        }
-
-        public bool EditEmail(int userId, string email)
-        {
-            //Validate email here
-            GetUserById(userId).Email = email;
-            return true;
-        }
-
         public List<Report> GetAllReportsWithStatus(ReportStatus status)
         {
             return reports.Where(report => report.Status == status).ToList();
@@ -271,32 +202,6 @@ namespace Nemesys.Models.Repositories
             return investigations;
         }
 
-        public bool ChangeInvestigationDescription(int investigationId, string description)
-        {
-            Investigation temp = GetInvestigationById(investigationId);
-
-            if (temp == null)
-            {
-                temp.Description = description;
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool ChangeInvestigationDateOfAction(int investigationId, DateTime dateOfAction)
-        {
-            Investigation temp = GetInvestigationById(investigationId);
-
-            if (temp == null)
-            {
-                temp.DateOfAction = dateOfAction;
-                return true;
-            }
-
-            return false;
-        }
-
         public bool RemoveInvestigation(int investigationId)
         {
             Investigation temp = GetInvestigationById(investigationId);
@@ -318,6 +223,50 @@ namespace Nemesys.Models.Repositories
         public bool StarReport(int userId, int reportId)
         {
             throw new NotImplementedException();
+        }
+
+        public bool UpdateReport(Report updatedReport)
+        {
+            var existingReport = reports.FirstOrDefault(p => p.ReportId == updatedReport.ReportId);
+
+            if (existingReport != null)
+            {
+                existingReport.HazardType = updatedReport.HazardType;
+                existingReport.Description = updatedReport.Description;
+                existingReport.Status = updatedReport.Status;
+                existingReport.Photo = updatedReport.Photo;
+            }
+
+            return true;
+        }
+
+        public bool UpdateUser(User updatedUser)
+        {
+            var existingUser = users.FirstOrDefault(p => p.Id == updatedUser.Id);
+
+            if (existingUser != null)
+            {
+                existingUser.UserName = updatedUser.UserName;
+                existingUser.Email = updatedUser.Email;
+                existingUser.PasswordHash = updatedUser.PasswordHash;
+                existingUser.Photo = updatedUser.Photo;
+                existingUser.PhoneNumber = updatedUser.PhoneNumber;
+            }
+
+            return true;
+        }
+
+        public bool UpdateInvestigation(Investigation updatedInvestigation)
+        {
+            var existingInvestigation = investigations.FirstOrDefault(p => p.InvestigationId == updatedInvestigation.InvestigationId);
+
+            if (existingInvestigation != null)
+            {
+                existingInvestigation.Description = updatedInvestigation.Description;
+                existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction;
+            }
+
+            return true;
         }
     }
 }
