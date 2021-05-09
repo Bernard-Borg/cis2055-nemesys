@@ -10,6 +10,7 @@ namespace Nemesys.Models.Repositories
         private List<Report> reports;
         private List<User> users;
         private List<Investigation> investigations;
+        private List<StarRecord> starRecords;
 
         public MockNemesysRepository()
         {
@@ -26,6 +27,11 @@ namespace Nemesys.Models.Repositories
             {
                 InitializeInvestigations();
             }
+
+            if (starRecords == null)
+            {
+                InitializeStarRecords();
+            }
         }
 
         private void InitializeReports()
@@ -34,35 +40,35 @@ namespace Nemesys.Models.Repositories
             {
                 new Report()
                 {
-                    ReportId = 1,
+                    Id = 1,
                     DateOfReport = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardType = HazardType.Condition,
                     Description = "A Nathan is terrorising the Faculty of ICT",
                     Status = ReportStatus.Open,
-                    User = GetUserById(1),
+                    Author = GetUserById("1"),
                     NumberOfStars = 0
                 },
                 new Report()
                 {
-                    ReportId = 2,
+                    Id = 2,
                     DateOfReport = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardType = HazardType.Equipment,
                     Description = "A Kyle is terrorising the Faculty of Education",
                     Status = ReportStatus.Open,
-                    User = GetUserById(1),
+                    Author = GetUserById("1"),
                     NumberOfStars = 0
                 },
                 new Report()
                 {
-                    ReportId = 3,
+                    Id = 3,
                     DateOfReport = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardType = HazardType.Structure,
                     Description = "A massive sinkhole has appeared around the Faculty of Law",
                     Status = ReportStatus.UnderInvestigation,
-                    User = GetUserById(1),
+                    Author = GetUserById("1"),
                     Photo = "/images/123.png",
                     NumberOfStars = 0
                 }
@@ -75,12 +81,11 @@ namespace Nemesys.Models.Repositories
             {
                 new User()
                 {
-                    Id = 1,
+                    Id = "1",
                     UserName = "Bernard Borg",
                     Email = "bernard.borg36@gmail.com",
                     Photo = "/images/defaultprofile.png",
                     PhoneNumber = "+35679297880",
-                    TypeOfUser = UserType.Admin,
                     NumberOfReports = 0,
                     NumberOfStars = 0,
                     DateJoined = DateTime.UtcNow,
@@ -97,20 +102,38 @@ namespace Nemesys.Models.Repositories
                 {
                     InvestigationId = 1,
                     Description = "Hello",
-                    Investigator = GetUserById(1),
+                    Investigator = GetUserById("1"),
                     DateOfAction = DateTime.UtcNow
                 }
             };
         }
 
-        public List<Report> GetStarredUserReports(int userId)
+        private void InitializeStarRecords()
         {
-            return GetUserById(userId).StarredReports;
+            starRecords = new List<StarRecord>()
+            {
+                new StarRecord()
+                {
+                    UserId = "1",
+                    User = GetUserById("1"),
+                    ReportId = 1,
+                    Report = GetReportById(1)
+                }
+            };
+        }
+
+        public List<Report> GetStarredUserReports(string userId)
+        {
+            return GetUserById(userId).StarredReports
+                .Select(record => record.Report)
+                .ToList();
         }
 
         public List<User> GetUsersWhoStarredReport(int reportId)
         {
-            return GetReportById(reportId).UsersWhichHaveStarred;
+            return GetReportById(reportId).UsersWhichHaveStarred
+                .Select(record => record.User)
+                .ToList();
         }
 
         public bool DeleteReport(int reportId)
@@ -129,14 +152,14 @@ namespace Nemesys.Models.Repositories
                 .RemoveAll(report => report.ReportId == reportId);
 
             //Removing the report from the author's list of reports
-            GetReportById(reportId).User.Reports
-                .RemoveAll(report => report.ReportId == reportId);
+            GetReportById(reportId).Author.Reports
+                .RemoveAll(report => report.Id == reportId);
 
             //Decrementing the report author's number of reports
-            GetReportById(reportId).User.NumberOfReports--;
+            GetReportById(reportId).Author.NumberOfReports--;
 
             //Investigations are WIP
-            investigations.RemoveAll(item => item.Report.ReportId == reportId);
+            investigations.RemoveAll(item => item.Report.Id == reportId);
             return true;
         }
 
@@ -147,7 +170,7 @@ namespace Nemesys.Models.Repositories
 
         public Report GetReportById(int reportId)
         {
-            return reports.FirstOrDefault(item => item.ReportId == reportId);
+            return reports.FirstOrDefault(item => item.Id == reportId);
         }
 
         public Report CreateReport(Report report)
@@ -168,13 +191,13 @@ namespace Nemesys.Models.Repositories
                 .ToList();
         }
 
-        public bool DeleteUser(int userId)
+        public bool DeleteUser(string userId)
         {
             users.Remove(GetUserById(userId));
             return true;
         }
 
-        public User GetUserById(int userId)
+        public User GetUserById(string userId)
         {
             return users.FirstOrDefault(item => item.Id == userId);
         }
@@ -184,17 +207,10 @@ namespace Nemesys.Models.Repositories
             return reports.Where(report => report.Status == status).ToList();
         }
 
-        public Investigation CreateInvestigation(int reportId)
+        public Investigation CreateInvestigation(Investigation investigation)
         {
-            Investigation toAdd = new Investigation()
-            {
-                InvestigationId = 1,
-                Description = "What?",
-                Report = GetReportById(reportId)
-            };
-
-            investigations.Add(toAdd);
-            return toAdd;
+            investigations.Add(investigation);
+            return investigation;
         }
 
         public List<Investigation> GetAllInvestigations()
@@ -220,14 +236,14 @@ namespace Nemesys.Models.Repositories
             return investigations.FirstOrDefault(investigation => investigation.InvestigationId == investigationId);
         }
 
-        public bool StarReport(int userId, int reportId)
+        public bool StarReport(string userId, int reportId)
         {
             throw new NotImplementedException();
         }
 
         public bool UpdateReport(Report updatedReport)
         {
-            var existingReport = reports.FirstOrDefault(p => p.ReportId == updatedReport.ReportId);
+            var existingReport = reports.FirstOrDefault(p => p.Id == updatedReport.Id);
 
             if (existingReport != null)
             {

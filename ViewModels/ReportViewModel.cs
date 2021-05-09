@@ -14,7 +14,7 @@ namespace Nemesys.ViewModels
         public ReportViewModel(Report report)
         {
             Report = report;
-            Author = report.User;
+            Author = report.Author;
             //Get current user and check if user has starred report 
             //if(temp.Where(x => x.UserId == ))
             Starred = true;

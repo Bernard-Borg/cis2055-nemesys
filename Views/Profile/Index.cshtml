@@ -34,9 +34,9 @@
             </p>
         </div>
         <div id="sideNav" class="col-md-3 mt-2 text-light fs-4">
-            <p>This user is a @Model.User.TypeOfUser</p>
-            <p>Member since 16TH JANUARY 2021</p>
-            <p>Last Active on 18TH JANUARY 2021</p>
+            <p>This user is a @*@Model.User.TypeOfUser*@</p>
+            <p>Member since @Model.User.DateJoined</p>
+            <p>Last Active on @Model.User.LastActiveDate</p>
 
             @*if @Model.UserId == Session.UserId*@
             <div class="d-flex justify-content-center">
@@ -58,7 +58,7 @@
                             <span class="fs-3">@report.NumberOfStars</span>
                             <i style="font-size: 24px;" class="bi bi-star-fill"></i>
                         </span>
-                        <a class="col-6 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                        <a class="col-6 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.Id">
                             <div class="rounded-3 border border-light p-2">
                                 <p class="fs-3 m-0">@report.HazardType</p>
                             </div>

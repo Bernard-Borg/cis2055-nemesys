@@ -6,9 +6,9 @@ namespace Nemesys.Models.Interfaces
 {
     public interface INemesysRepository
     {
-        List<Report> GetStarredUserReports(int userId);
+        List<Report> GetStarredUserReports(string userId);
         List<User> GetUsersWhoStarredReport(int reportId);
-        bool StarReport(int userId, int reportId);
+        bool StarReport(string userId, int reportId);
 
         List<Report> GetAllReports();
         List<Report> GetAllReportsWithStatus(ReportStatus status);
@@ -19,11 +19,11 @@ namespace Nemesys.Models.Interfaces
 
         List<User> GetUsers();
         List<User> GetTopUsers(int amount);
-        bool DeleteUser(int userId);
-        User GetUserById(int userId);
+        bool DeleteUser(string userId);
+        User GetUserById(string userId);
         bool UpdateUser(User updatedUser);
 
-        Investigation CreateInvestigation(int reportId);
+        Investigation CreateInvestigation(Investigation investigation);
         List<Investigation> GetAllInvestigations();
         Investigation GetInvestigationById(int investigationId);
         bool UpdateInvestigation(Investigation updatedInvestigation);

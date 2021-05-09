@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nemesys.Models;
 
 namespace Nemesys.Data
 {
-    public class AppDbContext : IdentityDbContext<User, Reporter, int>
+    public class AppDbContext : IdentityDbContext
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -12,14 +13,23 @@ namespace Nemesys.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<StarRecord>()
+                .HasKey(bc => new { bc.ReportId, bc.UserId });
+            modelBuilder.Entity<StarRecord>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.StarredReports)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<StarRecord>()
+                .HasOne(bc => bc.Report)
+                .WithMany(c => c.UsersWhichHaveStarred)
+                .HasForeignKey(bc => bc.ReportId);
         }
 
+        public DbSet<StarRecord> StarRecords { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Investigation> Investigations { get; set; }
     }

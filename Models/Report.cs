@@ -5,7 +5,7 @@ namespace Nemesys.Models
 {
     public class Report
     {
-        public int ReportId { get; set; }
+        public int Id { get; set; }
         public DateTime DateOfReport { get; set; }
         public DateTime DateTimeOfHazard { get; set; }
         public double Latitude { get; set; }
@@ -18,9 +18,9 @@ namespace Nemesys.Models
 
         public int NumberOfStars { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
+        public User Author { get; set; }
 
-        public List<User> UsersWhichHaveStarred;
+        public List<StarRecord> UsersWhichHaveStarred { get; set; }
     }
 }

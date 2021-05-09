@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Nemesys.Models
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser
     {
         //IdentityUser.Id
         //IdentityUser.UserName
@@ -12,7 +12,6 @@ namespace Nemesys.Models
         //IdentityUser.PasswordHash
         //IdentityUser.PhoneNumber
         public string Photo { get; set; }
-        public UserType TypeOfUser { get; set; }
 
         public DateTime DateJoined { get; set; }
         public DateTime LastActiveDate { get; set; }
@@ -20,7 +19,8 @@ namespace Nemesys.Models
         public int NumberOfReports { get; set; }
         public int NumberOfStars { get; set; }
 
+        //Navigation properties
         public List<Report> Reports { get; set; }
-        public List<Report> StarredReports { get; set; }
+        public List<StarRecord> StarredReports { get; set; }
     }
 }

@@ -7,6 +7,8 @@ using Nemesys.Models.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Nemesys.Data;
 using Microsoft.Extensions.Configuration;
+using Nemesys.Models;
+using System;
 
 namespace Nemesys
 {
@@ -28,7 +30,19 @@ namespace Nemesys
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection")));
 
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<AppDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.SlidingExpiration = true;
+            });
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
+            services.AddRazorPages();
             
             if (_env.IsDevelopment())
             {
@@ -66,6 +80,8 @@ namespace Nemesys
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"
                 );
+
+                endpoints.MapRazorPages();
             });
         }
     }

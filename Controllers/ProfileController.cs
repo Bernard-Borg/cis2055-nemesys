@@ -14,7 +14,7 @@ namespace Nemesys.Controllers
             starsRepository = starRepository;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(string id)
         {
             UserViewModel model = new UserViewModel(starsRepository.GetUserById(id));
             return View(model);
