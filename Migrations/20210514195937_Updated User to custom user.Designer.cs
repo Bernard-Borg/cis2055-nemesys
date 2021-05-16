@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Data;
 
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210514195937_Updated User to custom user")]
+    partial class UpdatedUsertocustomuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,21 +156,6 @@ namespace Nemesys.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Nemesys.Models.HazardType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("HazardName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HazardTypes");
-                });
-
             modelBuilder.Entity("Nemesys.Models.Investigation", b =>
                 {
                     b.Property<int>("InvestigationId")
@@ -216,7 +203,7 @@ namespace Nemesys.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HazardTypeId")
+                    b.Property<int>("HazardType")
                         .HasColumnType("int");
 
                     b.Property<double>("Latitude")
@@ -231,7 +218,7 @@ namespace Nemesys.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -239,31 +226,9 @@ namespace Nemesys.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HazardTypeId");
-
-                    b.HasIndex("StatusId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Reports");
-                });
-
-            modelBuilder.Entity("Nemesys.Models.ReportStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("HexColour")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StatusName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ReportStatuses");
                 });
 
             modelBuilder.Entity("Nemesys.Models.StarRecord", b =>
@@ -288,12 +253,6 @@ namespace Nemesys.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Alias")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -437,27 +396,11 @@ namespace Nemesys.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Report", b =>
                 {
-                    b.HasOne("Nemesys.Models.HazardType", "HazardType")
-                        .WithMany("Reports")
-                        .HasForeignKey("HazardTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nemesys.Models.ReportStatus", "Status")
-                        .WithMany("Reports")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Nemesys.Models.User", "Author")
                         .WithMany("Reports")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Author");
-
-                    b.Navigation("HazardType");
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("Nemesys.Models.StarRecord", b =>
@@ -479,19 +422,9 @@ namespace Nemesys.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Nemesys.Models.HazardType", b =>
-                {
-                    b.Navigation("Reports");
-                });
-
             modelBuilder.Entity("Nemesys.Models.Report", b =>
                 {
                     b.Navigation("UsersWhichHaveStarred");
-                });
-
-            modelBuilder.Entity("Nemesys.Models.ReportStatus", b =>
-                {
-                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("Nemesys.Models.User", b =>

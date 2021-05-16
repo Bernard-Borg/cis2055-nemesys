@@ -9,13 +9,14 @@ using Nemesys.Data;
 using Microsoft.Extensions.Configuration;
 using Nemesys.Models;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Nemesys
 {
     public class Startup
     {
         private readonly IWebHostEnvironment _env;
-        public IConfiguration _configuration { get; }
+        public IConfiguration _configuration;
 
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
@@ -30,7 +31,7 @@ namespace Nemesys
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection")));
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<User>(/*options => options.User.RequireUniqueEmail = true*/)
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.ConfigureApplicationCookie(options =>
@@ -42,11 +43,10 @@ namespace Nemesys
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
-            services.AddRazorPages();
             
             if (_env.IsDevelopment())
             {
-                services.AddTransient<INemesysRepository, MockNemesysRepository>();
+                services.AddSingleton<INemesysRepository, MockNemesysRepository>();
             } 
             else
             {

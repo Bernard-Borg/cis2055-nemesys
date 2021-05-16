@@ -1,43 +1,59 @@
 ﻿using Nemesys.Models;
+using System;
 using System.Linq;
 
 namespace Nemesys.ViewModels
 {
     public class ReportViewModel
     {
-        public User Author;
-        public Report Report;
+        public int ReportId;
+        public string DateOfReport;
+        public string DateOfHazard;
+        public double Latitude;
+        public double Longitude;
+        public string HazardName;
+        public string Description;
+        public string Photo;
+        public int NumberOfStars;
+
         public bool Starred;
-        public string BootstrapStatus;
+        public string StatusColour;
         public string StatusString;
 
-        public ReportViewModel(Report report)
-        {
-            Report = report;
-            Author = report.Author;
-            //Get current user and check if user has starred report 
-            //if(temp.Where(x => x.UserId == ))
-            Starred = true;
+        public string AuthorUserName;
+        public string AuthorId;
+        public string AuthorPhoto;
+        public int AuthorStarsNumber;
 
-            switch (Report.Status)
+        public ReportViewModel(Report report, User currentUser)
+        {
+            ReportId = report.Id;
+            DateOfReport = report.DateOfReport.ToShortDateString();
+            DateOfHazard = report.DateTimeOfHazard.ToString();
+            Latitude = report.Latitude;
+            Longitude = report.Longitude;
+            HazardName = report.HazardType.HazardName;
+            Description = report.Description;
+            Photo = report.Photo;
+            NumberOfStars = report.NumberOfStars;
+
+            AuthorUserName = report.Author.UserName;
+            AuthorId = report.Author.Id;
+            AuthorStarsNumber = report.Author.NumberOfStars;
+            AuthorPhoto = report.Author.Photo;
+
+            Starred = false;
+
+            if (currentUser != null)
             {
-                case ReportStatus.Open:
-                    BootstrapStatus = "text-success";
-                    StatusString = "Open";
-                    break;
-                case ReportStatus.UnderInvestigation:
-                    BootstrapStatus = "text-warning";
-                    StatusString = "Under Investigation";
-                    break;
-                case ReportStatus.NoActionRequired:
-                    BootstrapStatus = "text-info";
-                    StatusString = "No Action Required";
-                    break;
-                case ReportStatus.Closed:
-                    BootstrapStatus = "text-danger";
-                    StatusString = "Closed";
-                    break;
+                var starRecord = currentUser.StarredReports
+                    .FirstOrDefault(record => record.ReportId == report.Id);
+
+                Starred = starRecord != null;
             }
+
+            StatusColour = report.Status.HexColour;
+            StatusString = report.Status.StatusName;
         }
     }
 }

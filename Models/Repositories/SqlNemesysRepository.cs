@@ -63,19 +63,30 @@ namespace Nemesys.Models.Repositories
             return true;
         }
 
-        public List<Investigation> GetAllInvestigations()
+        public IEnumerable<Investigation> GetAllInvestigations()
         {
-            return _appDbContext.Investigations.ToList();
+            return _appDbContext.Investigations;
         }
 
-        public List<Report> GetAllReports()
+        public IEnumerable<Report> GetAllReports()
         {
-            return _appDbContext.Reports.ToList();
+            return _appDbContext.Reports;
         }
 
-        public List<Report> GetAllReportsWithStatus(ReportStatus status)
+        public IEnumerable<Report> GetAllReportsWithStatus(int statusId)
         {
-            throw new NotImplementedException();
+            return GetReportStatusById(statusId).Reports;
+        }
+
+        public HazardType GetHazardTypeById(int hazardId)
+        {
+            return _appDbContext.HazardTypes
+                .SingleOrDefault(hazardType => hazardType.Id == hazardId);
+        }
+
+        public IEnumerable<HazardType> GetHazardTypes()
+        {
+            return _appDbContext.HazardTypes;
         }
 
         public Investigation GetInvestigationById(int investigationId)
@@ -88,38 +99,44 @@ namespace Nemesys.Models.Repositories
             return _appDbContext.Reports.Find(reportId);
         }
 
-        public List<Report> GetStarredUserReports(string userId)
+        public ReportStatus GetReportStatusById(int statusId)
+        {
+            return _appDbContext.ReportStatuses
+                .SingleOrDefault(status => status.Id == statusId);
+        }
+
+        public IEnumerable<ReportStatus> GetReportStatuses()
+        {
+            return _appDbContext.ReportStatuses;
+        }
+
+        public IEnumerable<Report> GetStarredUserReports(string userId)
         {
             return _appDbContext.StarRecords
                 .Where(record => record.UserId == userId)
-                .Select(record => record.Report)
-                .ToList();
+                .Select(record => record.Report);
         }
 
-        public List<User> GetTopUsers(int amount)
+        public IEnumerable<User> GetTopUsers(int amount)
         {
-            throw new NotImplementedException();
-            //return _appDbContext.Users.OrderBy(user => user.NumberOfReports).Take(amount).ToList();
+            return _appDbContext.Users.OrderBy(user => user.NumberOfReports).Take(amount);
         }
 
         public User GetUserById(string userId)
         {
-            throw new NotImplementedException();
-            //return _appDbContext.Users.Find(userId);
+            return _appDbContext.Users.Find(userId);
         }
 
-        public List<User> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            throw new NotImplementedException();
-            //return _appDbContext.Users;
+            return _appDbContext.Users;
         }
 
-        public List<User> GetUsersWhoStarredReport(int reportId)
+        public IEnumerable<User> GetUsersWhoStarredReport(int reportId)
         {
             return _appDbContext.StarRecords
                 .Where(record => record.ReportId == reportId)
-                .Select(record => record.User)
-                .ToList();
+                .Select(record => record.User);
         }
 
         public bool RemoveInvestigation(int investigationId)
@@ -206,7 +223,7 @@ namespace Nemesys.Models.Repositories
                 existingUser.UserName = updatedUser.UserName;
                 existingUser.Email = updatedUser.Email;
                 existingUser.PasswordHash = updatedUser.PasswordHash;
-                //existingUser.Photo = updatedUser.Photo;
+                existingUser.Photo = updatedUser.Photo;
                 existingUser.PhoneNumber = updatedUser.PhoneNumber;
             }
 

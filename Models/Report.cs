@@ -11,9 +11,14 @@ namespace Nemesys.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         
+        public int HazardTypeId { get; set; }
         public HazardType HazardType { get; set; }
-        public string Description { get; set; }
+
+        public int StatusId { get; set; }
         public ReportStatus Status { get; set; }
+
+        public string Description { get; set; }
+
         public string Photo { get; set; }
 
         public int NumberOfStars { get; set; }

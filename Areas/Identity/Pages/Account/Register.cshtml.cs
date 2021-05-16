@@ -1,32 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Nemesys.Models;
 
 namespace Nemesys.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -60,6 +63,15 @@ namespace Nemesys.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [MaxLength(45, ErrorMessage = "Cannot have a username with more than 45 characters")]
+            [MinLength(3, ErrorMessage = "Cannot have a username with less than 3 characters")]
+            [Display(Name = "Username")]
+            public string Alias { get; set; }
+
+            [Display(Name = "Profile picture")]
+            public IFormFile Photo { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -74,7 +86,26 @@ namespace Nemesys.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                //Stores the uploaded image in wwwroot/images
+                string ImageUrl = "images/defaultprofileblack.png";
+
+                if (Input.Photo != null)
+                {
+                    ImageUrl = "images/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
+                    Input.Photo.CopyTo(new FileStream(ImageUrl, FileMode.Create));
+                }
+
+                var user = new User {
+                    Alias = Input.Alias,
+                    UserName = Input.Email, 
+                    Email = Input.Email,
+                    Photo = ImageUrl,
+                    DateJoined = DateTime.UtcNow,
+                    LastActiveDate = DateTime.UtcNow,
+                    NumberOfReports = 0,
+                    NumberOfStars = 0
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

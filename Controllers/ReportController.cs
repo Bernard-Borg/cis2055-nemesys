@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using System;
@@ -10,16 +12,22 @@ namespace Nemesys.Controllers
 {
     public class ReportController : Controller
     {
-        private readonly INemesysRepository starsRepository;
+        private readonly INemesysRepository _nemesysRepository;
+        private readonly UserManager<User> _userManager;
 
-        public ReportController(INemesysRepository starRepository)
+        public ReportController(INemesysRepository nemesysRepository, UserManager<User> userManager)
         {
-            starsRepository = starRepository;
+            _nemesysRepository = nemesysRepository;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int id)
         {
-            var report = new ReportViewModel(starsRepository.GetReportById(id));
+            var report = new ReportViewModel(
+                _nemesysRepository.GetReportById(id), 
+                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
+            );
+
             return View(report);
         }
 

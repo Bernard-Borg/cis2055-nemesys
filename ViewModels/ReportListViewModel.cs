@@ -8,9 +8,16 @@ namespace Nemesys.ViewModels
     {
         public List<ReportViewModel> ReportViewModels;
 
-        public ReportListViewModel(List<Report> reports)
+        public ReportListViewModel(List<Report> reports, User currentUser)
         {
-            ReportViewModels = reports.Select(report => new ReportViewModel(report)).ToList();
+            if (reports != null) {
+                ReportViewModels = reports
+                    .Select(report => new ReportViewModel(report, currentUser))
+                    .ToList();
+            } else
+            {
+                ReportViewModels = new List<ReportViewModel>();
+            }
         }
     }
 }

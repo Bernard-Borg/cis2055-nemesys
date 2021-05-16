@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using System.Linq;
@@ -7,32 +9,30 @@ namespace Nemesys.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly INemesysRepository starsRepository;
+        private readonly INemesysRepository _nemesysRepository;
+        private readonly UserManager<User> _userManager;
 
-        public ProfileController(INemesysRepository starRepository)
+        public ProfileController(INemesysRepository nemesysRepository, UserManager<User> userManager)
         {
-            starsRepository = starRepository;
+            _nemesysRepository = nemesysRepository;
+            _userManager = userManager;
         }
 
         public IActionResult Index(string id)
         {
-            UserViewModel model = new UserViewModel(starsRepository.GetUserById(id));
+            UserViewModel model = new UserViewModel(
+                _nemesysRepository.GetUserById(id),
+                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
+            );
+
             return View(model);
         }
 
-        public IActionResult Profiledetails()
+        /* This is dealt with by identity
+         * 
+         * public IActionResult Profiledetails()
         {
             return View();
-        }
-
-        public IActionResult Signin()
-        {
-            return View();
-        }
-
-        public IActionResult Signup()
-        {
-            return View();
-        }
+        }*/
     }
 }

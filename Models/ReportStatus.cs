@@ -1,10 +1,13 @@
-﻿namespace Nemesys.Models
+﻿using System.Collections.Generic;
+
+namespace Nemesys.Models
 {
-    public enum ReportStatus
+    public class ReportStatus
     {
-        Open = 0,
-        UnderInvestigation = 1,
-        NoActionRequired = 2,
-        Closed = 3
+        public int Id { get; set; }
+        public string StatusName { get; set; }
+        public string HexColour { get; set; }
+
+        public IEnumerable<Report> Reports { get; set; }
     }
 }

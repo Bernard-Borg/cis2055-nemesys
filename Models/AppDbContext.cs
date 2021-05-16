@@ -5,7 +5,7 @@ using Nemesys.Models;
 
 namespace Nemesys.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -32,5 +32,7 @@ namespace Nemesys.Data
         public DbSet<StarRecord> StarRecords { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Investigation> Investigations { get; set; }
+        public DbSet<HazardType> HazardTypes { get; set; }
+        public DbSet<ReportStatus> ReportStatuses { get; set; }
     }
 }

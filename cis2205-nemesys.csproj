@@ -6,15 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Profile\signin.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Profile\Signin.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

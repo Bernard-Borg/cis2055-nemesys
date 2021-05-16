@@ -1,10 +1,12 @@
-﻿namespace Nemesys.Models
+﻿using System.Collections.Generic;
+
+namespace Nemesys.Models
 {
-    public enum HazardType
+    public class HazardType
     {
-        UnsafeAct,
-        Condition,
-        Equipment,
-        Structure
+        public int Id { get; set; }
+        public string HazardName { get; set; }
+
+        public IEnumerable<Report> Reports { get; set; }
     }
 }

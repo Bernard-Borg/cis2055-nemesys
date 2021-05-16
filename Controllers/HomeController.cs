@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
@@ -12,38 +13,46 @@ namespace Nemesys.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly INemesysRepository mainRepository;
+        private readonly INemesysRepository _nemesysRepository;
+        private readonly UserManager<User> _userManager;
 
-        public HomeController(INemesysRepository starRepository)
+        public HomeController(INemesysRepository nemesysRepository, UserManager<User> userManager)
         {
-            mainRepository = starRepository;
+            _nemesysRepository = nemesysRepository;
+            _userManager = userManager;
         }
 
         //Change userId to user's user ID from session
         [ResponseCache(Duration = 2)]
         public IActionResult Index()
         {
-            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(mainRepository.GetTopUsers(10));
-            ReportListViewModel reportsViewModel = new ReportListViewModel(mainRepository.GetAllReports());
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
+            ReportListViewModel reportsViewModel = new ReportListViewModel(
+                _nemesysRepository.GetAllReports().ToList(),
+                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
+            );
 
-            var model = new HomePageViewModel(hofViewModel, reportsViewModel);
+            var model = new HomePageViewModel(hofViewModel, reportsViewModel, _nemesysRepository.GetReportStatuses());
             return View(model);
         }
 
         [ResponseCache(Duration = 2)]
-        [Route("Home/Index/{status}")]
-        public IActionResult Index(ReportStatus status)
-        {
-            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(mainRepository.GetTopUsers(10));
-            ReportListViewModel reportsViewModel = new ReportListViewModel(mainRepository.GetAllReportsWithStatus(status));
+        [Route("Home/Index/{id}")]
+        public IActionResult Index(int id)
+        { 
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
+            ReportListViewModel reportsViewModel = new ReportListViewModel(
+                _nemesysRepository.GetAllReportsWithStatus(id).ToList(),
+                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
+            );
 
-            var model = new HomePageViewModel(hofViewModel, reportsViewModel);
+            var model = new HomePageViewModel(hofViewModel, reportsViewModel, _nemesysRepository.GetReportStatuses());
             return View(model);
         }
 
         public IActionResult Hall()
         {
-            var model = new HallOfFameViewModel(mainRepository.GetTopUsers(10));
+            var model = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
             return View(model);
         }
 

@@ -11,6 +11,8 @@ namespace Nemesys.Models
         //IdentityUser.Email
         //IdentityUser.PasswordHash
         //IdentityUser.PhoneNumber
+        public string Alias { get; set; }
+        public string Bio { get; set; }
         public string Photo { get; set; }
 
         public DateTime DateJoined { get; set; }
