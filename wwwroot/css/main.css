@@ -2,6 +2,26 @@
     font-family: 'Work Sans', sans-serif;
 }
 
+.bi-star-fill {
+    vertical-align: top;
+}
+
+.bi-star-fill.clickable {
+    text-shadow: 0 0 3px #000;
+    -webkit-text-stroke-color: white;
+    -webkit-text-stroke-width: 2px;
+    font-size: 40px;
+}
+
+.bi-star-fill.clickable.starred, .bi-star-fill.clickable.unstarred:hover {
+    color: gold;
+    -webkit-text-stroke-color: black;
+}
+
+.bi-star-fill.clickable.unstarred {
+    color: transparent;
+}
+
 @media (max-width: 768px) {
     #wayoverhere {
         margin-top: 100px;
@@ -53,9 +73,9 @@ a{
     flex: 1;
 }
 
-input[type="file"] {
+/*input[type="file"] {
     display: none;
-}
+}*/
 
 .profileupload {
     display: inline-block;

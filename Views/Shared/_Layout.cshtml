@@ -40,7 +40,7 @@
 
             <!--Add Report button-->
             <div class="d-flex justify-content-md-around justify-content-lg-end">
-                <a class="btn btn-outline-light" style="width: 125px;" asp-area="" asp-controller="Report" asp-action="Submit">Add Report</a>
+                <a class="btn btn-outline-light" style="width: 125px;" asp-area="" asp-controller="Report" asp-action="Create">Add Report</a>
             </div>
 
             <!--Drop down profile menu-->
@@ -48,13 +48,14 @@
             {
                 <div class="dropdown d-flex justify-content-center">
                     <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/images/defaultprofile.png" width="32" height="32" class="rounded-circle">
+                        <img src="@UserManager.GetUserAsync(User).Result.Photo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-route-id="1@*Add session.UserId here*@">My Profile</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
                         <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">Sign out</a></li>
+
                     </ul>
                 </div>
             }
@@ -73,11 +74,12 @@
             </form>
         </div>
     </header>
-    @RenderBody()
+    <main role="main">
+        @RenderBody()
+    </main>
     @RenderSection("scripts", required: false)
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validate-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 </body>
 </html>
