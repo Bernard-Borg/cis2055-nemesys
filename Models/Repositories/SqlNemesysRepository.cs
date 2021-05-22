@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nemesys.Data;
 using Nemesys.Models.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,12 +63,15 @@ namespace Nemesys.Models.Repositories
 
         public IEnumerable<Investigation> GetAllInvestigations()
         {
-            return _appDbContext.Investigations;
+            return _appDbContext.Investigations.Include(i => i.Report);
         }
 
         public IEnumerable<Report> GetAllReports()
         {
-            return _appDbContext.Reports;
+            return _appDbContext.Reports
+                .Include(r => r.Author)
+                .Include(r => r.HazardType)
+                .Include(r => r.Status);
         }
 
         public IEnumerable<Report> GetAllReportsWithStatus(int statusId)
@@ -81,60 +82,80 @@ namespace Nemesys.Models.Repositories
         public HazardType GetHazardTypeById(int hazardId)
         {
             return _appDbContext.HazardTypes
+                .Include(h => h.Reports)
                 .SingleOrDefault(hazardType => hazardType.Id == hazardId);
         }
 
         public IEnumerable<HazardType> GetHazardTypes()
         {
-            return _appDbContext.HazardTypes;
+            return _appDbContext.HazardTypes.Include(h => h.Reports);
         }
 
         public Investigation GetInvestigationById(int investigationId)
         {
-            return _appDbContext.Investigations.Find(investigationId);
+            return _appDbContext.Investigations
+                .Include(i => i.Investigator)
+                .Include(i => i.Report)
+                .SingleOrDefault(i => i.InvestigationId == investigationId);
         }
 
         public Report GetReportById(int reportId)
         {
-            return _appDbContext.Reports.Find(reportId);
+            return _appDbContext.Reports
+                .Include(r => r.Author)
+                .Include(r => r.HazardType)
+                .Include(r => r.Status)
+                .SingleOrDefault(r => r.Id == reportId);
         }
 
         public ReportStatus GetReportStatusById(int statusId)
         {
             return _appDbContext.ReportStatuses
+                .Include(s => s.Reports)
                 .SingleOrDefault(status => status.Id == statusId);
         }
 
         public IEnumerable<ReportStatus> GetReportStatuses()
         {
-            return _appDbContext.ReportStatuses;
+            return _appDbContext.ReportStatuses
+                .Include(s => s.Reports);
         }
 
         public IEnumerable<Report> GetStarredUserReports(string userId)
         {
             return _appDbContext.StarRecords
+                .Include(r => r.User)
+                .Include(r => r.Report)
                 .Where(record => record.UserId == userId)
                 .Select(record => record.Report);
         }
 
         public IEnumerable<User> GetTopUsers(int amount)
         {
-            return _appDbContext.Users.OrderBy(user => user.NumberOfReports).Take(amount);
+            return GetUsers().OrderBy(user => user.NumberOfReports).Take(amount);
         }
 
         public User GetUserById(string userId)
         {
-            return _appDbContext.Users.Find(userId);
+            return GetUsers()
+                .SingleOrDefault(u => u.Id == userId);
         }
 
         public IEnumerable<User> GetUsers()
         {
-            return _appDbContext.Users;
+            return _appDbContext.Users
+                .Include(u => u.Reports)
+                    .ThenInclude(r => r.HazardType)
+                .Include(u => u.Reports)
+                    .ThenInclude(r => r.Status)
+                .Include(u => u.StarredReports);
         }
 
         public IEnumerable<User> GetUsersWhoStarredReport(int reportId)
         {
             return _appDbContext.StarRecords
+                .Include(r => r.Report)
+                .Include(r => r.User)
                 .Where(record => record.ReportId == reportId)
                 .Select(record => record.User);
         }

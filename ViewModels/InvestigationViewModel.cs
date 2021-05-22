@@ -10,7 +10,7 @@ namespace Nemesys.ViewModels
         public string Description;
         public string DateOfAction;
         public string ReportName;
-        public int InvestigatorId;
+        public string InvestigatorId;
         public int ReportId;
         public string ReportDescription;
         public string StatusName;

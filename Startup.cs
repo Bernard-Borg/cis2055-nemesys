@@ -5,9 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Nemesys.Models.Interfaces;
 using Nemesys.Models.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Nemesys.Data;
-using Microsoft.Extensions.Configuration;
 using Nemesys.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using Microsoft.AspNetCore.Identity;
 
@@ -32,11 +31,11 @@ namespace Nemesys
                 options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection")));
 
             services.AddDefaultIdentity<User>(/*options => options.User.RequireUniqueEmail = true*/)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
-                // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.SlidingExpiration = true;

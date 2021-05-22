@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nemesys.Models;
 
-namespace Nemesys.Data
+namespace Nemesys.Models
 {
     public class AppDbContext : IdentityDbContext<User>
     {

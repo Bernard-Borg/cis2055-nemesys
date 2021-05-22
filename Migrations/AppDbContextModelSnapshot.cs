@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nemesys.Data;
+using Nemesys.Models;
 
 namespace Nemesys.Migrations
 {
@@ -182,20 +182,17 @@ namespace Nemesys.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InvestigatorId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("ReportId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("InvestigationId");
 
-                    b.HasIndex("InvestigatorId");
-
                     b.HasIndex("ReportId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Investigations");
                 });
@@ -420,15 +417,15 @@ namespace Nemesys.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Investigation", b =>
                 {
-                    b.HasOne("Nemesys.Models.User", "Investigator")
-                        .WithMany()
-                        .HasForeignKey("InvestigatorId");
-
                     b.HasOne("Nemesys.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Nemesys.Models.User", "Investigator")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Investigator");
 

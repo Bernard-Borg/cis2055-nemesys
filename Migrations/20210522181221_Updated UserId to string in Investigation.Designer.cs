@@ -10,8 +10,8 @@ using Nemesys.Models;
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210516005528_Added Bio to users")]
-    partial class AddedBiotousers
+    [Migration("20210522181221_Updated UserId to string in Investigation")]
+    partial class UpdatedUserIdtostringinInvestigation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -184,20 +184,17 @@ namespace Nemesys.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InvestigatorId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("ReportId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("InvestigationId");
 
-                    b.HasIndex("InvestigatorId");
-
                     b.HasIndex("ReportId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Investigations");
                 });
@@ -422,15 +419,15 @@ namespace Nemesys.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Investigation", b =>
                 {
-                    b.HasOne("Nemesys.Models.User", "Investigator")
-                        .WithMany()
-                        .HasForeignKey("InvestigatorId");
-
                     b.HasOne("Nemesys.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Nemesys.Models.User", "Investigator")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Investigator");
 

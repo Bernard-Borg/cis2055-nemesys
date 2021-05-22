@@ -18,35 +18,35 @@ namespace Nemesys.Models.Repositories
         {
             if (hazards == null)
             {
-                InitializeHazardTypes();
+                InitialiseHazardTypes();
             }
 
             if (statuses == null)
             {
-                InitializeReportStatuses();
+                InitialiseReportStatuses();
             }
 
             if (users == null) {
-                InitializeUsers();
+                InitialiseUsers();
             }
 
             if (reports == null)
             {
-                InitializeReports();
+                InitialiseReports();
             }
 
             if (investigations == null)
             {
-                InitializeInvestigations();
+                InitialiseInvestigations();
             }
 
             if (starRecords == null)
             {
-                InitializeStarRecords();
+                InitialiseStarRecords();
             }
         }
 
-        private void InitializeHazardTypes()
+        private void InitialiseHazardTypes()
         {
             hazards = new List<HazardType>()
             {
@@ -65,7 +65,7 @@ namespace Nemesys.Models.Repositories
             };
         }
 
-        private void InitializeReportStatuses()
+        private void InitialiseReportStatuses()
         {
             statuses = new List<ReportStatus>()
             {
@@ -84,7 +84,7 @@ namespace Nemesys.Models.Repositories
             };
         }
 
-        private void InitializeReports()
+        private void InitialiseReports()
         {
             reports = new List<Report>()
             {
@@ -98,6 +98,7 @@ namespace Nemesys.Models.Repositories
                     Description = "A Nathan is terrorising the Faculty of ICT",
                     StatusId = 1,
                     Status = GetReportStatusById(1),
+                    UserId = "1",
                     Author = GetUserById("1"),
                     NumberOfStars = 0
                 },
@@ -111,6 +112,7 @@ namespace Nemesys.Models.Repositories
                     Description = "A Kyle is terrorising the Faculty of Education",
                     StatusId = 1,
                     Status = GetReportStatusById(1),
+                    UserId = "1",
                     Author = GetUserById("1"),
                     NumberOfStars = 0
                 },
@@ -124,6 +126,7 @@ namespace Nemesys.Models.Repositories
                     Description = "A massive sinkhole has appeared around the Faculty of Law",
                     StatusId = 2,
                     Status = GetReportStatusById(2),
+                    UserId = "1",
                     Author = GetUserById("1"),
                     Photo = "/images/123.png",
                     NumberOfStars = 0
@@ -131,7 +134,7 @@ namespace Nemesys.Models.Repositories
             };
         }
 
-        private void InitializeUsers()
+        private void InitialiseUsers()
         {
             users = new List<User>()
             {
@@ -151,7 +154,7 @@ namespace Nemesys.Models.Repositories
             };
         }
 
-        private void InitializeInvestigations()
+        private void InitialiseInvestigations()
         {
             investigations = new List<Investigation>()
             {
@@ -165,7 +168,7 @@ namespace Nemesys.Models.Repositories
             };
         }
 
-        private void InitializeStarRecords()
+        private void InitialiseStarRecords()
         {
             starRecords = new List<StarRecord>()
             {
