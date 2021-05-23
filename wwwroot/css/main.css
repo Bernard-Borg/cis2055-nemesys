@@ -15,7 +15,7 @@
 
 .bi-star-fill.clickable.starred, .bi-star-fill.clickable.unstarred:hover {
     color: gold;
-    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-color: gold;
 }
 
 .bi-star-fill.clickable.unstarred {

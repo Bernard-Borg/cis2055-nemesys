@@ -22,7 +22,8 @@ namespace Nemesys.Controllers
         {
             UserViewModel model = new UserViewModel(
                 _nemesysRepository.GetUserById(id),
-                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
+                _userManager.GetUserAsync(User).Result,
+                _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result
             );
 
             return View(model);

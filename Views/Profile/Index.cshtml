@@ -32,7 +32,12 @@
 
         <div class="col-md-8 text-light">
             <span class="h2 me-3">@Model.Username</span>
-            <span class="badge bg-danger fs-4">Admin@*@Model.User.TypeOfUser*@</span>
+
+            @foreach (RoleViewModel role in Model.Roles)
+            {
+                <span class="badge fs-4" style="background-color: @role.BackgroundColour; color: @role.TextColour;">@role.RoleName</span>
+            }
+
             <!--<h4>@*Model.Email*@</h4>-->
             <h3 class="my-5">Bio</h3>
 

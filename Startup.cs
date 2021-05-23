@@ -9,6 +9,7 @@ using Nemesys.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Nemesys
 {
@@ -28,7 +29,8 @@ namespace Nemesys
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection")));
+                options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection"))
+            );
 
             services.AddDefaultIdentity<User>(/*options => options.User.RequireUniqueEmail = true*/)
                 .AddRoles<IdentityRole>()

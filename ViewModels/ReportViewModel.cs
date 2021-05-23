@@ -37,7 +37,7 @@ namespace Nemesys.ViewModels
             Photo = report.Photo;
             NumberOfStars = report.NumberOfStars;
 
-            AuthorUserName = report.Author.UserName;
+            AuthorUserName = report.Author.Alias;
             AuthorId = report.Author.Id;
             AuthorStarsNumber = report.Author.NumberOfStars;
             AuthorPhoto = report.Author.Photo;

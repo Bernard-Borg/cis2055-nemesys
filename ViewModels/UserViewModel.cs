@@ -1,4 +1,5 @@
 ﻿using Nemesys.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Nemesys.ViewModels
@@ -15,8 +16,9 @@ namespace Nemesys.ViewModels
         public string UserId;
         public string UserBio;
         public bool IsCurrentUser;
+        public List<RoleViewModel> Roles;
 
-        public UserViewModel(User user, User currentUser)
+        public UserViewModel(User user, User currentUser, IList<string> roles)
         {
             if (currentUser != null)
             {
@@ -35,6 +37,13 @@ namespace Nemesys.ViewModels
             Username = user.Alias;
             UserId = user.Id;
             UserBio = user.Bio;
+
+            Roles = new List<RoleViewModel>();
+
+            foreach(string role in roles)
+            {
+                Roles.Add(new RoleViewModel(role));
+            }
         }
     }
 }
