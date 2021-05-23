@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Nemesys.CustomAttributes;
 using Nemesys.Models;
 
 namespace Nemesys.Areas.Identity.Pages.Account
@@ -26,17 +28,20 @@ namespace Nemesys.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _environment;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _environment = environment;
         }
 
         [BindProperty]
@@ -70,6 +75,8 @@ namespace Nemesys.Areas.Identity.Pages.Account
             [Display(Name = "Username")]
             public string Alias { get; set; }
 
+            [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".webp" })]
+            [MaxFileSize(10 * 1024 * 1024)]
             [Display(Name = "Profile picture")]
             public IFormFile Photo { get; set; }
         }
@@ -87,19 +94,18 @@ namespace Nemesys.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 //Stores the uploaded image in wwwroot/images
-                string ImageUrl = "images/defaultprofileblack.png";
+                string ImagePath = "/images/defaultprofileblack.png";
 
                 if (Input.Photo != null)
                 {
-                    ImageUrl = "images/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
-                    Input.Photo.CopyTo(new FileStream(ImageUrl, FileMode.Create));
+                    ImagePath = "/images/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
                 }
 
                 var user = new User {
                     Alias = Input.Alias,
                     UserName = Input.Email, 
                     Email = Input.Email,
-                    Photo = ImageUrl,
+                    Photo = ImagePath,
                     DateJoined = DateTime.UtcNow,
                     LastActiveDate = DateTime.UtcNow,
                     NumberOfReports = 0,
@@ -109,6 +115,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, ImagePath), FileMode.Create));
                     await _userManager.AddToRoleAsync(user, "Reporter");
 
                     _logger.LogInformation("User created a new account with password.");
