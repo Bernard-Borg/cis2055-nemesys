@@ -55,6 +55,21 @@ namespace Nemesys.Controllers
             var model = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
             return View(model);
         }
+        
+        [HttpGet]
+        public IActionResult Search(string search)
+        {
+            var reportListViewModel = new ReportListViewModel(
+                _nemesysRepository.GetAllReports()
+                    .Where(report => report.Description.Contains(search))
+                    .ToList(),
+                _userManager.GetUserAsync(User).Result
+            );
+
+            var model = new SearchResultViewModel(reportListViewModel, search);
+
+            return View("SearchResult", model);
+        }
 
         public IActionResult Error()
         {

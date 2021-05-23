@@ -22,7 +22,7 @@
                     foreach (User user in Model.HallOfFame.HallOfFameUsers)
                     {
                         <a class="btn btn-outline-light text-left mb-3 p-3 d-flex" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                            <img style="margin-right: 10px;" src="@user.Photo" width="48" height="48">
+                            <img style="margin-right: 10px;" src="@user.Photo" width="48" height="48" alt="Profile picture">
                             <div class="pl-3 lh-sm">
                                 <p class="mb-1">@user.Alias</p>
                                 <span class="badge badge-pill bg-warning text-dark">
@@ -67,14 +67,14 @@
                         </div>
                         <a class="col-9 text-decoration-none" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
                             <div class="text-light border rounded-3 border-light p-3">
-                                <h2>@report.HazardName</h2>
-                                <h4>Location goes here</h4>
+                                <h2>@report.Description</h2>
+                                <h4>Type of Hazard: @report.HazardName</h4>
                                 <span>Status: </span>
                                 <span style="color: @report.StatusColour">@report.StatusString</span>
                             </div>
                         </a>
-                        <div class="col-2">
-                            <img src=@report.Photo width="128" height="128" alt="Photo of hazard">
+                        <div class="col-2 d-flex justify-content-center align-items-center">
+                            <img class="rounded" src=@report.Photo width="128" height="128" alt="Photo of hazard">
                         </div>
                     </div>
                 }

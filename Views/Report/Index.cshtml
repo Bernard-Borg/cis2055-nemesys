@@ -52,17 +52,21 @@
                         <span class="h5" style="color: @Model.StatusColour">@Model.StatusString</span>
                     </div>
 
-                    @*if (userManager.GetUserAsync(User).Result.Id == Model.AuthorId)
-        {*@
-                    <div class="row">
-                        <div class="col-6 d-grid">
-                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                    @{ 
+                        var user = userManager.GetUserAsync(User).Result;
+                    }
+
+                    @if (user != null && user.Id == Model.AuthorId)
+                    {
+                        <div class="row">
+                            <div class="col-6 d-grid">
+                                <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                            </div>
+                            <div class="col-6 d-grid">
+                                <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
+                            </div>
                         </div>
-                        <div class="col-6 d-grid">
-                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
-                        </div>
-                    </div>
-                    @*}*@
+                    }
                 </div>
                 <div class="col-4">
                     <img src="@Model.Photo" width="256" alt="Image of danger">
