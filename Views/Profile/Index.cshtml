@@ -14,7 +14,7 @@
                 {
                     <div id="changeimage">
                         <label class="profileupload">
-                            <input type="file" alt="Edit Photo">
+                            <input class="profile" type="file" alt="Edit Photo">
                             <i class="bi bi-pencil-square text-light fs-3 mb-3"></i>
                         </label>
                     </div>
@@ -49,7 +49,7 @@
             @if (Model.IsCurrentUser)
             {
                 <div class="col-6 offset-4">
-                    <a type="button" class="w-100 btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Profiledetails">Edit Details</a>
+                    <a type="button" class="w-100 btn btn-outline-light btn-lg mb-2" asp-area="Identity" asp-page="/Account/Manage">Edit Details</a>
                 </div>
             }
         </div>

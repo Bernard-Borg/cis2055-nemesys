@@ -73,9 +73,9 @@ a{
     flex: 1;
 }
 
-/*input[type="file"] {
+input[type="file"].profile {
     display: none;
-}*/
+}
 
 .profileupload {
     display: inline-block;

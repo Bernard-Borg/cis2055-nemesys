@@ -26,9 +26,12 @@
         </div>
         <div class="col-md-10 text-light ps-5 pe-4">
             <div class="row">
-                <div class="col-1">
-                    <i class="bi bi-star-fill clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true"></i>
-                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-1">
+                        <i class="bi bi-star-fill clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
+                    </div>
+                }
                 <div class="col-11 ps-5">
                     <h1>@Model.Description</h1>
                     <h4>Faculty of ICT</h4>
@@ -56,17 +59,23 @@
                         var user = userManager.GetUserAsync(User).Result;
                     }
 
+                <div class="d-flex">
                     @if (user != null && user.Id == Model.AuthorId)
                     {
-                        <div class="row">
-                            <div class="col-6 d-grid">
-                                <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
-                            </div>
-                            <div class="col-6 d-grid">
-                                <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
-                            </div>
+                        <div>
+                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                        </div>
+                        <div>
+                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
                         </div>
                     }
+                    @if (user != null && userManager.GetRolesAsync(user).Result.Contains("Investigator"))
+                    {
+                        <div>
+                            <a type="button" class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Add Investigation</a>
+                        </div>
+                    }
+                    </div>
                 </div>
                 <div class="col-4">
                     <img src="@Model.Photo" width="256" alt="Image of danger">

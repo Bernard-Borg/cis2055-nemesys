@@ -62,10 +62,13 @@
                 foreach (ReportViewModel report in Model.Reports.ReportViewModels)
                 {
                     <div class="row pt-4">
-                        <div class="col-1 d-flex justify-content-center align-items-center">
-                            <i class="bi bi-star-fill clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true"></i>
-                        </div>
-                        <a class="col-9 text-decoration-none" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="col-1 d-flex justify-content-center align-items-center">
+                                <i class="bi bi-star-fill clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                            </div>
+                        }
+                        <a class="@(User.Identity.IsAuthenticated ? "col-9" : "col-10") text-decoration-none" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
                             <div class="text-light border rounded-3 border-light p-3">
                                 <h2>@report.Description</h2>
                                 <h4>Type of Hazard: @report.HazardName</h4>

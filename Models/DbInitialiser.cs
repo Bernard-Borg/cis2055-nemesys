@@ -239,24 +239,6 @@ namespace Nemesys.Models
 
                 context.SaveChanges();
             }
-            
-            if (!context.StarRecords.Any())
-            {
-                var user = userManager.GetUsersInRoleAsync("Reporter").Result.FirstOrDefault();
-
-                context.AddRange
-                (
-                    new StarRecord()
-                    {
-                        UserId = user.Id,
-                        User = user,
-                        ReportId = 1,
-                        Report = context.Reports.Find(1)
-                    }
-                );
-
-                context.SaveChanges();
-            }
         }
     }
 }

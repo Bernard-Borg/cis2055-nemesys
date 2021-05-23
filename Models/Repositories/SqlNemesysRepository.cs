@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nemesys.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -179,27 +180,51 @@ namespace Nemesys.Models.Repositories
 
         public bool StarReport(string userId, int reportId)
         {
-            var record = _appDbContext.StarRecords
-                .SingleOrDefault(record => record.UserId == userId && record.ReportId == reportId);
-
-            if (record != null)
+            try
             {
-                User user = (User)_appDbContext.Users.Find(userId);
-                Report report = _appDbContext.Reports.Find(reportId);
+                Report report = _appDbContext.Reports.Include(r => r.Author)
+                    .SingleOrDefault(r => r.Id == reportId);
 
-                _appDbContext.StarRecords.Add(new StarRecord
+                if (report != null)
                 {
-                    UserId = userId,
-                    User = user,
-                    ReportId = reportId,
-                    Report = report
-                });
-            } else
-            {
-                _appDbContext.StarRecords.Remove(record);
-            }
+                    User author = report.Author;
+                    
+                    var record = _appDbContext.StarRecords
+                        .SingleOrDefault(record => record.UserId == userId && record.ReportId == reportId);
 
-            _appDbContext.SaveChanges();
+                    if (record == null)
+                    {
+                        _appDbContext.StarRecords.Add(new StarRecord
+                        {
+                            UserId = userId,
+                            ReportId = reportId,
+                        });
+
+                        _appDbContext.SaveChanges();
+
+                        report.NumberOfStars++;
+                        author.NumberOfStars++;
+                    }
+                    else
+                    {
+                        _appDbContext.StarRecords.Remove(record);
+                        _appDbContext.SaveChanges();
+
+                        report.NumberOfStars--;
+                        author.NumberOfStars--;
+                    }
+
+                    _appDbContext.Entry(report).State = EntityState.Modified;
+                    _appDbContext.Entry(author).State = EntityState.Modified;
+                    _appDbContext.SaveChanges();
+                } else
+                {
+                    return false;
+                }
+            } catch (Exception)
+            {
+                return false;
+            }
 
             return true;
         }

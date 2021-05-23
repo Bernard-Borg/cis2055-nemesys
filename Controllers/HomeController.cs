@@ -71,6 +71,13 @@ namespace Nemesys.Controllers
             return View("SearchResult", model);
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult Star(int reportId)
+        {
+            return Json(_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId));
+        }
+
         public IActionResult Error()
         {
             return View();
