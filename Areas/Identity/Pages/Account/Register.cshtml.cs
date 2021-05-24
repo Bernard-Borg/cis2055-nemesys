@@ -115,7 +115,11 @@ namespace Nemesys.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, ImagePath), FileMode.Create));
+                    if (Input.Photo != null)
+                    {
+                        Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, ImagePath), FileMode.Create));
+                    }
+
                     await _userManager.AddToRoleAsync(user, "Reporter");
 
                     _logger.LogInformation("User created a new account with password.");
