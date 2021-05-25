@@ -31,9 +31,25 @@ namespace Nemesys.Controllers
             return View(report);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var hazardTypes = _nemesysRepository.GetHazardTypes()
+                .Select(h => new HazardTypeViewModel(h))
+                .ToList();
+
+            var model = new EditReportViewModel()
+            {
+                HazardTypes = hazardTypes
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(EditReportViewModel model)
+        {
+            return Json(true);
         }
     }
 }
