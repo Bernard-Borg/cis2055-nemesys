@@ -1,11 +1,10 @@
-﻿@using Nemesys.ViewModels
-@model SearchResultViewModel
+﻿@model SearchResultViewModel
 
 @{
     ViewData["Title"] = "Search Results for " + Model.SearchString;
 }
 
-<h1 class="text-white text-center m-3">Search Results for "@Model.SearchString"</h1>
+<h1 class="text-white text-center m-3">@ViewData["Title"]</h1>
 
 @if (Model.Reports.ReportViewModels.Count() > 0)
 {

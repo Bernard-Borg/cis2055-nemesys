@@ -1,44 +1,65 @@
+@model EditReportViewModel
 @{
-    ViewData["Title"] = "Submit Report";
+    ViewData["Title"] = "Create a report";
 }
-<div class="form-report text-center" style="max-width: 700px">
-    <h1 class="h1 mb-5 fw-bold text-light">Submit a New Report</h1>
 
-    <form class="text-dark">
-        <div class="form-floating mb-4">
-            <div class="col">
-                <label class="text-light" for="datetimeincident">Approximate Date and Time of Incident:</label>
-                <input type="datetime-local" id="datetimeincident" name="datetimeincident">
+@section head {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+} 
+
+<div class="row">
+    <div class="container-fluid px-sm-1 px-md-5 pt-1 col-md-4">
+        <form asp-area="" asp-controller="Report" asp-action="Create" method="post" enctype="multipart/form-data">
+            <h1 class="text-light text-center mt-5">@ViewData["Title"]</h1>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Latitude"></label>
+                <input id="latitude" type="hidden" asp-for="@Model.Latitude" class="form-control" />
+                <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-floating mb-4">
-            <select class="form-select" id="floatingSelect">
-                <option selected>Choose an Option</option>
-                <option value="1">Unsafe Act</option>
-                <option value="2">Unsafe Conditions</option>
-                <option value="3">Unsafe Equipment</option>
-                <option value="4">Unsafe Structure</option>
-            </select>
-            <label for="floatingSelect">Type of Hazard</label>
-        </div>
-
-        <div class="form-floating mb-4">
-            <div class="row mb-4">
-                <div class="col">
-                    <p class="text-light">Image of Hazard<i> (Optional)</i>:</p>
+            <div class="form-group">
+                <label asp-for="@Model.Longitude"></label>
+                <input id="longitude" type="hidden" asp-for="@Model.Longitude" class="form-control" />
+                <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
+            </div>
+            <div id="map" style="height: 400px;"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Description"></label>
+                <input asp-for="@Model.Description" class="form-control" />
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.HazardTypeId" class="col-md-2"></label>
+                <div class="col-md-5">
+                    <select class="form-select" asp-for="@Model.HazardTypeId"
+                            asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
+                        <option value="">Select a category</option>
+                    </select>
+                    <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
                 </div>
-                <div class="col form-floating text-light">
-                    <input type="file" style="display:block !important;" />
-                </div>
             </div>
-
-            <div class="form-floating mb-4">
-                <textarea class="form-control" placeholder="Description and Additional Information" id="floatingTextarea"></textarea>
-                <label for="floatingTextarea">Description and Additional Information</label>
+            <div class="form-group">
+                <label asp-for="@Model.DateTimeOfHazard"></label>
+                <input asp-for="@Model.DateTimeOfHazard" class="form-control" />
+                <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
             </div>
-
-            <a type="submit" class="btn btn-outline-light btn-block mb-4" asp-area="" asp-controller="Home" asp-action="Index">Submit Report</a>
-        </div>
-    </form>
+            <div class="form-group">
+                <label asp-for="@Model.Photo"></label>
+                <input asp-for="@Model.Photo" class="form-control" />
+                <span asp-validation-for="@Model.Photo" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Report</button>
+        </form>
+    </div>
 </div>
+
+@section scripts {
+    @*<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcl0SXeHBR5U1uMgqNMbsE2Q-WuQezMNc&callback=initMap" async="" defer=""></script>*@
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    <script type="text/javascript" src="~/scripts/map.js"></script>
+}

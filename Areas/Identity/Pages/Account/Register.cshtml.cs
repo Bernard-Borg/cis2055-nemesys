@@ -94,7 +94,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 //Stores the uploaded image in wwwroot/images
-                string ImagePath = "/images/defaultprofileblack.png";
+                string ImagePath = "/images/defaultprofile.png";
 
                 if (Input.Photo != null)
                 {

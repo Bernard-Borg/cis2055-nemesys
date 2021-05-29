@@ -47,7 +47,7 @@ a{
     margin: auto;
 }
 
-.form-control {
+.form-control, .form-select {
     margin-bottom: 15px;
 }
 

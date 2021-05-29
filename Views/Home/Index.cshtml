@@ -1,5 +1,4 @@
 @using Nemesys.Models;
-@using Nemesys.ViewModels;
 @model HomePageViewModel
 
 @{
@@ -36,11 +35,11 @@
                     if (Model.HallOfFame.HallOfFameUsers.Count() == 0)
                     {
                         <div class="mb-3 p-3 d-flex text-white">
-                            There are no users
+                            There are no users.
                         </div>
                     }
                 }
-            <a class="btn btn-light w-100" asp-area="" asp-controller="Home" asp-action="Hall">See More</a>
+            <a class="btn btn-light w-100 mb-3" asp-area="" asp-controller="Home" asp-action="Hall">See More</a>
         </div>
 
         <div class="col-md-1"></div>

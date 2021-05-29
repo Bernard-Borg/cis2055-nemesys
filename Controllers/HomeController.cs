@@ -61,7 +61,7 @@ namespace Nemesys.Controllers
         {
             var reportListViewModel = new ReportListViewModel(
                 _nemesysRepository.GetAllReports()
-                    .Where(report => report.Description.Contains(search))
+                    .Where(report => report.Description.Contains(search, System.StringComparison.CurrentCultureIgnoreCase))
                     .ToList(),
                 _userManager.GetUserAsync(User).Result
             );

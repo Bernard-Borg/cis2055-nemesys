@@ -4,10 +4,10 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-light text-center mt-5">@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+<div class="row form-group d-flex justify-content-center">
+    <div class="col-md-4 text-light">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h4>Create a new account.</h4>
             <hr />
@@ -37,7 +37,9 @@
                 <input type="file" asp-for="Input.Photo" class="form-control" />
                 <span asp-validation-for="Input.Photo" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <div class="form-group d-flex justify-content-center">
+                <button type="submit" class="mt-2 mb-3 btn btn-lg btn-outline-light justify-content-center">Register</button>
+            </div>
         </form>
     </div>
     <!--<div class="col-md-6 col-md-offset-2">

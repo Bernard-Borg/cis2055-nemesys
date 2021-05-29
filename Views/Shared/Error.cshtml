@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container pt-5 text-light">
+    <div class="row">
+        <div class="col-1 d-flex align-items-center justify-content-center">
+            <i class="bi bi-bug-fill fs-1"></i>
+        </div>
+        <div class="col-11">
+            <h1>Error</h1>
+            <h4>Catastophic (or minor) Error</h4>
+        </div>
+    </div>
+
+    <div class="pt-5 fs-4 mb-5">
+        <p class="errorpage-paragraph">
+            Okay so here's the situation. Imagine that this website is the University of Malta. All your peers are there (unless the country is in another multi-year long pandemic), and that's where you're also supposed to be. But you're not, somehow. You managed to go beyond the map and have found yourself far far away, symbolised by that tiny dot on the right.
+        </p>
+        <div class="py-5 d-flex justify-content-md-around flex-column flex-md-row align-items-center">
+            <img class="rounded" height="355" width="400" src="/images/university.png">
+            <img id="wayoverhere" class="rounded" height="355" width="400" src="/images/you.png">
+        </div>
+        <h2><strong>How did I get here?</strong></h2>
+        <p class="errorpage-paragraph my-4">
+            I don't know, you tell us. Something must have badly messed up I guess. Who knows, we sure don't. Maybe we forgot to patch something off before submitting, maybe it's a link we changed and never fixed, maybe it was pure unluckiness. Or maybe you were intentionally trying to find this page, in which case, congratulations! You've done it!
+        </p>
+        <p class="errorpage-paragraph my-4">
+            Unfortunately we didn't really have time to add any rewards for your success, what with GAPT and way too many assignments to deal with in one tiny semester.
+        </p>
+        <h2><strong>How do you leave this page?</strong></h2>
+        <a asp-controller="Home" asp-action="Index" class="text-danger">Just click here<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-danger">, or here!</a></a>
+    </div> 
+</div>

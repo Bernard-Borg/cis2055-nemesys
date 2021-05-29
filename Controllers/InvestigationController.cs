@@ -37,7 +37,7 @@ namespace Nemesys.Controllers
         [Route("Investigation/Create/{id}")]
         public IActionResult Create(int id)
         {
-            var investigation = new CreateInvestigationViewModel
+            var investigation = new EditInvestigationViewModel
             {
                 UserId = _userManager.GetUserId(this.User),
                 ReportId = id
