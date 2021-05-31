@@ -6,6 +6,10 @@
     vertical-align: top;
 }
 
+.form-group > label, form > h4 {
+    color: white;
+}
+
 .bi-star-fill.clickable {
     text-shadow: 0 0 3px #000;
     -webkit-text-stroke-color: white;

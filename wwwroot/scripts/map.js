@@ -22,11 +22,6 @@
     let latitude = $("#latitude");
     let longitude = $("#longitude");
 
-    /*Removing attributes since asp.net core model binder adds a value of 0
-    by default to longitude and latitude due to the double type*/
-    latitude.removeAttr("value");
-    longitude.removeAttr("value");
-
     map.on("click", function (event) {
         if (marker != null) {
             map.removeLayer(marker);   

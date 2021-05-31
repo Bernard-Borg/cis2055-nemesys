@@ -49,7 +49,18 @@ namespace Nemesys.Controllers
         [HttpPost]
         public IActionResult Create(EditReportViewModel model)
         {
-            return Json(true);
+            if (ModelState.IsValid)
+            {
+                return Json(model);
+            } else
+            {
+                var hazardTypes = _nemesysRepository.GetHazardTypes()
+                .Select(h => new HazardTypeViewModel(h))
+                .ToList();
+
+                model.HazardTypes = hazardTypes;
+                return View(model);
+            }
         }
     }
 }

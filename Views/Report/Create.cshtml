@@ -14,32 +14,28 @@
         <form asp-area="" asp-controller="Report" asp-action="Create" method="post" enctype="multipart/form-data">
             <h4>@ViewData["Title"]</h4>
             <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="@Model.Latitude"></label>
-                <input id="latitude" type="hidden" asp-for="@Model.Latitude" class="form-control" />
-                <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Longitude"></label>
-                <input id="longitude" type="hidden" asp-for="@Model.Longitude" class="form-control" />
-                <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
-            </div>
+            @*@<div asp-validation-summary="All" class="text-danger"></div>*@
+             <div class="form-group">
+            <input id="latitude" type="hidden" asp-for="@Model.Latitude" class="form-control" />
+            <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input id="longitude" type="hidden" asp-for="@Model.Longitude" class="form-control" />
+            <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
+        </div>
             <div id="map" style="height: 400px;"></div>
             <div class="form-group">
                 <label asp-for="@Model.Description"></label>
-                <input asp-for="@Model.Description" class="form-control" />
+                <textarea asp-for="@Model.Description" class="form-control" /></textarea>
                 <span asp-validation-for="@Model.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.HazardTypeId" class="col-md-2"></label>
-                <div class="col-md-5">
-                    <select class="form-select" asp-for="@Model.HazardTypeId"
-                            asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
-                        <option value="">Select a category</option>
-                    </select>
-                    <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
-                </div>
+                <label asp-for="@Model.HazardTypeId"></label>
+                <select class="form-select" asp-for="@Model.HazardTypeId"
+                        asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
+                    <option value="">Select a category</option>
+                </select>
+                <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.DateTimeOfHazard"></label>
