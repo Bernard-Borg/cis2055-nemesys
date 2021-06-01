@@ -3,21 +3,27 @@
 @model ReportViewModel
 @inject UserManager<User> userManager
 
-@{ 
+@{
     ViewData["Title"] = Model.Description;
+}
+
+@section head {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
 }
 
 <div class="container-fluid">
     <div class="row mt-5">
-        <div class="col-md-2">
-            <div class="h1 text-light text-center">Reporter</div>
+        <div class="col-md-2 text-light">
+            <div class="h1 text-center">Reporter</div>
             <img src="@Model.AuthorPhoto" width="128" height="128" class="mx-auto d-block mt-5">
-            <div class="h4 pb-4 mb-0 lh-sm">
+            <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
                 <span class="badge badge-pill bg-warning text-dark">
                     @Model.AuthorStarsNumber
                     <i class="bi bi-star-fill" aria-hidden="true"></i>
                 </span>
-                <span class="text-light">@Model.AuthorUserName</span>
+                <span class="ps-3">@Model.AuthorUserName</span>
             </div>
             <div class="d-grid">
                 <a type="button" class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
@@ -27,37 +33,37 @@
             <div class="row">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="col-1">
+                    <div class="col-md-1">
                         <i class="bi bi-star-fill clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
                     </div>
                 }
-                <div class="col-11 ps-5">
+                <div class="col-md-11 h5">
                     <h1>@Model.Description</h1>
-                    <h4>Faculty of ICT</h4>
+                    <span>Current Status:</span>
+                    <span style="color: @Model.StatusColour">@Model.StatusString</span>
                 </div>
             </div>
 
             <div class="row pt-5">
-                <div class="col-8 p">
+                <div class="col-md-8">
                     <div class="h5">
                         Reported: @Model.DateOfReport
                     </div>
                     <div class="p pb-4">
-                        <i>Last Update: 6th April 2021 - 12:06PM</i>
+                        <i>Last Update: @Model.DateOfUpdate</i>
                     </div>
-                    <div>
+                    <div class="mb-4">
                         @Model.Description
                     </div>
-
-                    <div class="pt-5">
-                        <span class="h5 pt-5">Current Status:</span>
-                        <span class="h5" style="color: @Model.StatusColour">@Model.StatusString</span>
-                    </div>
-
-                    @{ 
+                    <img class="mb-5" onerror="style.opacity='0'" src="@Model.Photo" width="256" alt="Image of danger" />
+                    @{
                         var user = userManager.GetUserAsync(User).Result;
                     }
-
+                </div>
+                <div class="col-lg-4">
+                    <h4>Location of Hazard</h4>
+                    <div id="map" style="height: 400px;"></div>
+                </div>
                 <div class="d-flex">
                     @if (user != null && user.Id == Model.AuthorId)
                     {
@@ -74,10 +80,6 @@
                             <a type="button" class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Add Investigation</a>
                         </div>
                     }
-                    </div>
-                </div>
-                <div class="col-4">
-                    <img src="@Model.Photo" width="256" alt="Image of danger">
                 </div>
             </div>
         </div>
@@ -85,5 +87,17 @@
 </div>
 
 @section scripts {
-    <script src="~/scripts/star.js"></script>
+    <script type="text/javascript" src="~/scripts/star.js"></script> <!--Calling star toggle-->
+    
+    <!--Setting latitude and longtitude to be set on map-->
+    <script>
+        var lat = '@Model.Latitude';
+        var long = '@Model.Longitude';
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="">
+    </script>
+    <script type="text/javascript" src="~/scripts/mapdisplay.js"></script>
 } 

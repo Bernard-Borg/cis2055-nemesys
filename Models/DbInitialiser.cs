@@ -187,6 +187,7 @@ namespace Nemesys.Models
                     new Report()
                     {
                         DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 3,
                         HazardType = context.HazardTypes.Find(3),
@@ -198,6 +199,7 @@ namespace Nemesys.Models
                     new Report()
                     {
                         DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 1,
                         HazardType = context.HazardTypes.Find(1),
@@ -209,6 +211,7 @@ namespace Nemesys.Models
                     new Report()
                     {
                         DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 1,
                         Description = "A massive sinkhole has appeared around the Faculty of Law",

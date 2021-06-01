@@ -42,9 +42,7 @@
             <a class="btn btn-light w-100 mb-3" asp-area="" asp-controller="Home" asp-action="Hall">See More</a>
         </div>
 
-        <div class="col-md-1"></div>
-
-        <div id="mainContent" class="col-md-8">
+        <div id="mainContent" class="col-md-8 offset-1">
             <ul class="nav nav-tabs nav-justified text-center">
                 <li class="nav-item fs-5">
                     <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">All</a>
@@ -75,8 +73,8 @@
                                 <span style="color: @report.StatusColour">@report.StatusString</span>
                             </div>
                         </a>
-                        <div class="col-2 d-flex justify-content-center align-items-center">
-                            <img class="rounded" src=@report.Photo width="128" height="128" alt="Photo of hazard">
+                        <div class="col-2 d-flex justify-content-center align-items-center d-none d-md-block">
+                            <img class="rounded" onerror="style.opacity='0'" src=@report.Photo width="128" height="100%" alt="Photo of hazard">
                         </div>
                     </div>
                 }

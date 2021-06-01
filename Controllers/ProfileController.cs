@@ -4,6 +4,8 @@ using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Nemesys.Areas.Identity.Pages.Account;
 
 namespace Nemesys.Controllers
 {
@@ -11,11 +13,13 @@ namespace Nemesys.Controllers
     {
         private readonly INemesysRepository _nemesysRepository;
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public ProfileController(INemesysRepository nemesysRepository, UserManager<User> userManager)
+        public ProfileController(INemesysRepository nemesysRepository, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index(string id)
@@ -28,12 +32,14 @@ namespace Nemesys.Controllers
 
             return View(model);
         }
-
-        /* This is dealt with by identity
-         * 
-         * public IActionResult Profiledetails()
+        public IActionResult SignOut(string returnUrl = null)
         {
-            return View();
-        }*/
+            _signInManager.SignOutAsync().Wait();
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            return Redirect("/Home/Index");
+        }
     }
 }

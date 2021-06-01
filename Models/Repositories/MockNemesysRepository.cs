@@ -92,6 +92,7 @@ namespace Nemesys.Models.Repositories
                 {
                     Id = 1,
                     DateOfReport = new DateTime(2021, 03, 30),
+                    DateOfUpdate = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardTypeId = 3,
                     HazardType = GetHazardTypeById(3),
@@ -106,6 +107,7 @@ namespace Nemesys.Models.Repositories
                 {
                     Id = 2,
                     DateOfReport = new DateTime(2021, 03, 30),
+                    DateOfUpdate = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardTypeId = 1,
                     HazardType = GetHazardTypeById(2),
@@ -120,6 +122,7 @@ namespace Nemesys.Models.Repositories
                 {
                     Id = 3,
                     DateOfReport = new DateTime(2021, 03, 30),
+                    DateOfUpdate = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardTypeId = 1,
                     HazardType = GetHazardTypeById(1),

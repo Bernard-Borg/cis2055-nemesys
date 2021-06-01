@@ -59,7 +59,7 @@
                         <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
                         <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout">Sign out</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
                     </ul>
                 </div>
             }

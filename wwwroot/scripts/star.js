@@ -1,5 +1,4 @@
-﻿window.onload = function () {
-
+﻿window.addEventListener('load', function () {
     //Adds click event handler to make an AJAX request to star when the star is clicked
     $(".clickable").click(function () {
         let star = $(this);
@@ -38,4 +37,4 @@
             alert("Don't mess with the code!");
         }
     });
-}
+});

@@ -26,7 +26,7 @@ namespace Nemesys.Controllers
         [ResponseCache(Duration = 2)]
         public IActionResult Index()
         {
-            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5));
             ReportListViewModel reportsViewModel = new ReportListViewModel(
                 _nemesysRepository.GetAllReports().ToList(),
                 _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
@@ -40,7 +40,7 @@ namespace Nemesys.Controllers
         [Route("Home/Index/{id}")]
         public IActionResult Index(int id)
         { 
-            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5));
             ReportListViewModel reportsViewModel = new ReportListViewModel(
                 _nemesysRepository.GetAllReportsWithStatus(id).ToList(),
                 _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
@@ -52,7 +52,7 @@ namespace Nemesys.Controllers
 
         public IActionResult Hall()
         {
-            var model = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(10));
+            var model = new HallOfFameViewModel(_nemesysRepository.GetUsers().OrderBy(user => user.NumberOfReports));
             return View(model);
         }
         
