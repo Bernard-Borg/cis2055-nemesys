@@ -9,8 +9,8 @@
     <div id="sideNav" class="col-md-2">
         <p class="h4 fw-normal text-light">Sort by</p>
         <ul class="nav nav-pills flex-column">
-            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall">Highest Awarded</a></li>
-            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall">Highest Number of Reports</a></li>
+            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
+            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
         </ul>
         <hr>
     </div>
@@ -28,11 +28,11 @@
                             </span>
                         </div>
                         <div class="col-xl-9 text-light border rounded-3 border-light p-3">
-                            <h2>@user.UserName</h2>
-                            <h4>@user.NumberOfStars Reports</h4>
+                            <h2>@user.Alias</h2>
+                            <h4>@user.NumberOfReports Reports</h4>
                         </div>
                         <div class="col-xl-2">
-                            <img src="@user.Photo" width="96" height="96" alt="User's profile picture">
+                            <img src="@user.Photo" onerror="style.opacity='0'" width="96" height="96" alt="User's profile picture">
                         </div>
                     </a>
 
@@ -40,6 +40,4 @@
             }
         }
     </div>
-
-   
 </div>

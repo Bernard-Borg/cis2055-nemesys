@@ -7,14 +7,11 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Identity\Pages\Account\Logout.cshtml.cs" />
+    <Compile Remove="Models\QueryStringParameters.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Areas\Identity\Pages\Account\Logout.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>

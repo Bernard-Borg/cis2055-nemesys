@@ -93,12 +93,23 @@ namespace Nemesys.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                //Stores the uploaded image in wwwroot/images
-                string ImagePath = "/images/defaultprofile.png";
+                //Stores the uploaded image in wwwroot/profileimages/images
+                string ImagePath = "/images/profileimages/defaultprofile.png";
+
+                Console.WriteLine(Directory.GetCurrentDirectory());
+                Console.WriteLine("\t" + ImagePath);
 
                 if (Input.Photo != null)
                 {
-                    ImagePath = "/images/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
+                    string fileName = "";
+                    var extension = "." + Input.Photo.FileName.Split('.')[Input.Photo.FileName.Split('.').Length - 1];
+                    fileName = Guid.NewGuid().ToString() + extension;
+                    var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\profileimages\\" + fileName;
+                    using (var bits = new FileStream(path, FileMode.Create))
+                    {
+                        Input.Photo.CopyTo(bits);
+                    }
+                    ImagePath = "/images/profileimages/" + fileName;
                 }
 
                 var user = new User {
@@ -117,7 +128,8 @@ namespace Nemesys.Areas.Identity.Pages.Account
                 {
                     if (Input.Photo != null)
                     {
-                        Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, ImagePath), FileMode.Create));
+                        //To try to change this to not need full directory
+                        Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, Directory.GetCurrentDirectory() + "/wwwroot/" + ImagePath), FileMode.Create));
                     }
 
                     await _userManager.AddToRoleAsync(user, "Reporter");

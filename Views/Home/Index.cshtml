@@ -2,7 +2,7 @@
 @model HomePageViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="container-fluid px-sm-1 px-md-5 pt-1">
@@ -10,9 +10,10 @@
         <div id="sideNav" class="col-md-3">
             <p class="h4 fw-normal text-light mb-3">Sort by</p>
             <ul class="nav nav-pills flex-column">
-                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index">Highest Awarded</a></li>
-                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index">Date Added (Newest)</a></li>
-                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index">Date Added (Oldest)</a></li>
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Award" asp-route-StatusId="@Context.Request.Query["StatusId"]">Highest Awarded</a></li>
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Update" asp-route-StatusId="@Context.Request.Query["StatusId"]">Last Updated</a></li>    
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Newest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Newest)</a></li>
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Oldest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Oldest)</a></li>
             </ul>
             <br>
 
@@ -21,7 +22,7 @@
                     foreach (User user in Model.HallOfFame.HallOfFameUsers)
                     {
                         <a class="btn btn-outline-light text-left mb-3 p-3 d-flex" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                            <img style="margin-right: 10px;" src="@user.Photo" width="48" height="48" alt="Profile picture">
+                            <img onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo" width="48" height="48" alt="Profile picture">
                             <div class="pl-3 lh-sm">
                                 <p class="mb-1">@user.Alias</p>
                                 <span class="badge badge-pill bg-warning text-dark">
@@ -50,7 +51,7 @@
                 @foreach (ReportStatus status in Model.Statuses)
                 {
                     <li class="nav-item fs-5">
-                        <a class="nav-link" style="color: @status.HexColour" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@status.Id">@status.StatusName</a>
+                        <a class="nav-link" style="color: @status.HexColour" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.Id">@status.StatusName</a>
                     </li>
                 }
             </ul>
@@ -58,7 +59,7 @@
             @{
                 foreach (ReportViewModel report in Model.Reports.ReportViewModels)
                 {
-                    <div class="row pt-4">
+                    <div class="row mt-3 mb-3">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <div class="col-1 d-flex justify-content-center align-items-center">

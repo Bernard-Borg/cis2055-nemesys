@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Nemesys.Models
 {
@@ -9,5 +10,10 @@ namespace Nemesys.Models
         public string HexColour { get; set; }
 
         public IEnumerable<Report> Reports { get; set; }
+
+        public static explicit operator List<object>(ReportStatus v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

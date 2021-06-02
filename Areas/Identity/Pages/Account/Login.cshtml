@@ -40,3 +40,8 @@
         Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
     </p>
 </form>
+
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

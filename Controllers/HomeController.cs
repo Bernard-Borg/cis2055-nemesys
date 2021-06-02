@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
@@ -22,37 +24,66 @@ namespace Nemesys.Controllers
             _userManager = userManager;
         }
 
-        //Change userId to user's user ID from session
         [ResponseCache(Duration = 2)]
-        public IActionResult Index()
+        public IActionResult Index(HomeSortQueryParameter sort)
         {
+            IEnumerable<Report> reports;
+            if (sort.StatusId != null)
+            {
+                reports = _nemesysRepository.GetAllReportsWithStatus(sort.StatusId) ?? _nemesysRepository.GetAllReports();
+            }
+            else
+            {
+                reports = _nemesysRepository.GetAllReports();
+            }
+
+            switch (sort.SortString)
+            {
+                case "Award":
+                    reports = reports.OrderByDescending(r => r.NumberOfStars).ThenBy(r => r.Description);
+                    break;
+                case "Update":
+                    reports = reports.OrderBy(r => r.DateOfUpdate);
+                    break;
+                case "Newest":
+                    reports = reports.OrderByDescending(r => r.DateOfReport);
+                    break;
+                case "Oldest":
+                    reports = reports.OrderBy(r => r.DateOfReport);
+                    break;
+                default:
+                    reports = reports.OrderBy(r => r.DateOfUpdate);
+                    break;
+            }
+
             HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5));
             ReportListViewModel reportsViewModel = new ReportListViewModel(
-                _nemesysRepository.GetAllReports().ToList(),
-                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
+                reports.ToList(),
+                _nemesysRepository.GetUserById(_userManager.GetUserId(User))
             );
 
             var model = new HomePageViewModel(hofViewModel, reportsViewModel, _nemesysRepository.GetReportStatuses());
             return View(model);
         }
 
-        [ResponseCache(Duration = 2)]
-        [Route("Home/Index/{id}")]
-        public IActionResult Index(int id)
-        { 
-            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5));
-            ReportListViewModel reportsViewModel = new ReportListViewModel(
-                _nemesysRepository.GetAllReportsWithStatus(id).ToList(),
-                _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
-            );
-
-            var model = new HomePageViewModel(hofViewModel, reportsViewModel, _nemesysRepository.GetReportStatuses());
-            return View(model);
-        }
-
-        public IActionResult Hall()
+        public IActionResult Hall(string sort)
         {
-            var model = new HallOfFameViewModel(_nemesysRepository.GetUsers().OrderBy(user => user.NumberOfReports));
+            var users = _nemesysRepository.GetUsers();
+
+            switch (sort)
+            {
+                case "Award":
+                    users = users.OrderByDescending(u => u.NumberOfStars).ThenBy(u => u.Alias);
+                    break;
+                case "Report":
+                    users = users.OrderByDescending(u => u.NumberOfReports).ThenBy(u => u.Alias);
+                    break;
+                default:
+                    users = users.OrderByDescending(u => u.NumberOfStars).ThenBy(u => u.Alias);
+                    break;
+            }
+
+            var model = new HallOfFameViewModel(users);
             return View(model);
         }
         
