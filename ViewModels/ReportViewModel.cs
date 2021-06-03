@@ -6,24 +6,25 @@ namespace Nemesys.ViewModels
 {
     public class ReportViewModel
     {
-        public int ReportId;
-        public string DateOfReport;
-        public string DateOfHazard;
-        public double Latitude;
-        public double Longitude;
-        public string HazardName;
-        public string Description;
-        public string Photo;
-        public int NumberOfStars;
+        public int ReportId { get; set; }
+        public string DateOfReport { get; set; }
+        public string DateOfHazard { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string HazardName { get; set; }
+        public string Description { get; set; }
+        public string Photo { get; set; }
+        public int NumberOfStars { get; set; }
 
-        public bool Starred;
-        public string StatusColour;
-        public string StatusString;
+        public bool Starred { get; set; }
+        public string StatusColour { get; set; }
+        public string StatusString { get; set; }
 
-        public string AuthorUserName;
-        public string AuthorId;
-        public string AuthorPhoto;
-        public int AuthorStarsNumber;
+        public string AuthorUserName { get; set; }
+        public string AuthorId { get; set; }
+        public string AuthorPhoto { get; set; }
+        public int AuthorStarsNumber { get; set; }
+        public bool HasInvestigation { get; set; }
 
         public ReportViewModel(Report report, User currentUser)
         {
@@ -41,6 +42,8 @@ namespace Nemesys.ViewModels
             AuthorId = report.Author.Id;
             AuthorStarsNumber = report.Author.NumberOfStars;
             AuthorPhoto = report.Author.Photo;
+
+            HasInvestigation = report.InvestigationId != null;
 
             Starred = false;
 

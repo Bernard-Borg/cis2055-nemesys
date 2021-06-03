@@ -27,6 +27,11 @@ namespace Nemesys.Models
                 .HasOne(bc => bc.Report)
                 .WithMany(c => c.UsersWhichHaveStarred)
                 .HasForeignKey(bc => bc.ReportId);
+
+            modelBuilder.Entity<Report>()
+                .HasOne(i => i.Investigation)
+                .WithOne(r => r.Report)
+                .HasForeignKey<Investigation>(i => i.ReportId);
         }
 
         public DbSet<StarRecord> StarRecords { get; set; }

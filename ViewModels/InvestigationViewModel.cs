@@ -7,14 +7,14 @@ namespace Nemesys.ViewModels
 {
     public class InvestigationViewModel
     {
-        public string Description;
-        public string DateOfAction;
-        public string ReportName;
-        public string InvestigatorId;
-        public int ReportId;
-        public string ReportDescription;
-        public string StatusName;
-        public string StatusColour;
+        public string Description { get; set; }
+        public string DateOfAction { get; set; }
+        public string ReportName { get; set; }
+        public string InvestigatorId { get; set; }
+        public int ReportId { get; set; }
+        public string ReportDescription { get; set; }
+        public string StatusName { get; set; }
+        public string StatusColour { get; set; }
 
         public InvestigationViewModel(Investigation investigation) {
             Description = investigation.Description;

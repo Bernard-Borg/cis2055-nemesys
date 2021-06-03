@@ -189,7 +189,6 @@ namespace Nemesys.Models
                         DateOfReport = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 3,
-                        HazardType = context.HazardTypes.Find(3),
                         Description = "A Nathan is terrorising the Faculty of ICT",
                         StatusId = 1,
                         UserId = user.Id,
@@ -200,7 +199,6 @@ namespace Nemesys.Models
                         DateOfReport = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 1,
-                        HazardType = context.HazardTypes.Find(1),
                         Description = "A Kyle is terrorising the Faculty of Education",
                         StatusId = 1,
                         UserId = user.Id,
@@ -215,7 +213,8 @@ namespace Nemesys.Models
                         StatusId = 2,
                         UserId = user.Id,
                         Photo = "/images/123.png",
-                        NumberOfStars = 0
+                        NumberOfStars = 0,
+                        InvestigationId = 1
                     }
                 );
 
@@ -231,7 +230,7 @@ namespace Nemesys.Models
                     new Investigation()
                     {
                         Description = "Hello",
-                        ReportId = context.Reports.Find(1).Id,
+                        ReportId = 1,
                         UserId = user.Id,
                         DateOfAction = DateTime.UtcNow
                     }

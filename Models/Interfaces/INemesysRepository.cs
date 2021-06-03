@@ -22,7 +22,7 @@ namespace Nemesys.Models.Interfaces
         bool DeleteUser(string userId);
         User GetUserById(string userId);
         bool UpdateUser(User updatedUser);
-
+        
         Investigation CreateInvestigation(Investigation investigation);
         IEnumerable<Investigation> GetAllInvestigations();
         Investigation GetInvestigationById(int investigationId);

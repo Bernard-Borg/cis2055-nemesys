@@ -16,6 +16,9 @@ namespace Nemesys.Models
 
         public int StatusId { get; set; }
         public ReportStatus Status { get; set; }
+        
+        public int? InvestigationId { get; set; }
+        public Investigation Investigation { get; set; }
 
         public string Description { get; set; }
 

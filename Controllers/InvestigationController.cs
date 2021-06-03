@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
@@ -22,28 +23,67 @@ namespace Nemesys.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "Investigator,Admin")]
-        [Route("Investigation/Index/{id}")]
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {
-            var investigation = new InvestigationViewModel(
-                _nemesysRepository.GetInvestigationById(id)
-            );
-
-            return View(investigation);
+            return NotFound();
         }
 
         [Authorize(Roles = "Investigator,Admin")]
-        [Route("Investigation/Create/{id}")]
+        [Route("/Investigation/Index/{id}")]
+        public IActionResult Index(int id)
+        {
+            var investigation = _nemesysRepository.GetInvestigationById(id);
+
+            if (investigation != null)
+            {
+                return View(new InvestigationViewModel(investigation));
+            } else
+            {
+                return Json("No such investigation");
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Investigator,Admin")]
         public IActionResult Create(int id)
         {
-            var investigation = new EditInvestigationViewModel
+            var model = new EditInvestigationViewModel
             {
-                UserId = _userManager.GetUserId(this.User),
                 ReportId = id
             };
 
-            return View(investigation);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Investigator,Admin")]
+        public IActionResult Create([FromRoute] int id, EditInvestigationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var investigation = new Investigation
+                {
+                    Description = model.Description,
+                    DateOfAction = model.DateOfAction ?? default(DateTime),
+                    UserId = _userManager.GetUserId(User),
+                    ReportId = id
+                };
+
+                var createdInvestigation = _nemesysRepository.CreateInvestigation(investigation);
+
+                if (createdInvestigation != null)
+                {
+                    return RedirectToAction("Index", new { id = createdInvestigation.InvestigationId });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
         }
     }
 }

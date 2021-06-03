@@ -12,7 +12,7 @@ namespace Nemesys.ViewModels
 
         [Required(ErrorMessage = "Date of hazard is required")]
         [Display(Name = "Date hazard was identified")]
-        public DateTime DateTimeOfHazard { get; set; }
+        public DateTime? DateTimeOfHazard { get; set; }
 
         [Required(ErrorMessage = "Location of hazard is required")]
         [Range(35.9009070634084, 35.90377946948467, ErrorMessage = "Keep location within map bounds")]

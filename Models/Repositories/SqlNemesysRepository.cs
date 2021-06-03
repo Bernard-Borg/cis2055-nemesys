@@ -15,11 +15,42 @@ namespace Nemesys.Models.Repositories
             _appDbContext = appDbContext;
         }
 
+        //Creates investigation from instance
         public Investigation CreateInvestigation(Investigation investigation)
         {
-            _appDbContext.Investigations.Add(investigation);
-            _appDbContext.SaveChanges();
-            return investigation;
+            try
+            {
+                Report report = _appDbContext.Reports.Find(investigation.ReportId);
+
+                if (report != null)
+                {
+                    //If the report already has an investigation, null is returned
+                    if (report.InvestigationId == null)
+                    {
+                        //Adds investigation to database
+                        _appDbContext.Investigations.Add(investigation);
+
+                        //Change is immediately committed to get the investigation id
+                        _appDbContext.SaveChanges();
+
+                        //Sets foreign key in report
+                        report.InvestigationId = investigation.InvestigationId;
+                        
+                        //Sets status to "Under Investigation"
+                        report.StatusId = 2;
+
+                        _appDbContext.Entry(report).State = EntityState.Modified;
+                        _appDbContext.SaveChanges();
+
+                        return investigation;
+                    }
+                }
+
+                return null;
+            } catch (Exception)
+            {
+                return null;
+            }
         }
 
         public Report CreateReport(Report report)
@@ -64,7 +95,9 @@ namespace Nemesys.Models.Repositories
 
         public IEnumerable<Investigation> GetAllInvestigations()
         {
-            return _appDbContext.Investigations.Include(i => i.Report);
+            return _appDbContext.Investigations
+                .Include(i => i.Report)
+                .ThenInclude(r => r.Status);
         }
 
         public IEnumerable<Report> GetAllReports()
@@ -97,6 +130,7 @@ namespace Nemesys.Models.Repositories
             return _appDbContext.Investigations
                 .Include(i => i.Investigator)
                 .Include(i => i.Report)
+                    .ThenInclude(r => r.Status)
                 .SingleOrDefault(i => i.InvestigationId == investigationId);
         }
 

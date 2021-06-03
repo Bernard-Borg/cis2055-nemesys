@@ -28,12 +28,5 @@ namespace Nemesys.Controllers
 
             return View(model);
         }
-
-        /* This is dealt with by identity
-         * 
-         * public IActionResult Profiledetails()
-        {
-            return View();
-        }*/
     }
 }
