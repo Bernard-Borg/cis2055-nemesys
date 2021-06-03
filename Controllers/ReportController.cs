@@ -27,7 +27,6 @@ namespace Nemesys.Controllers
                 _nemesysRepository.GetReportById(id), 
                 _nemesysRepository.GetUserById(_userManager.GetUserId(this.User))
             );
-
             return View(report);
         }
 

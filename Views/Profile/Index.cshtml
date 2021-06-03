@@ -1,9 +1,13 @@
+@using Nemesys.Models;
+@using Microsoft.AspNetCore.Identity;
 @model UserViewModel
+@inject UserManager<User> userManager
+
 @if (Model.IsCurrentUser)
 {
     ViewData["Title"] = "My Profile";
 }
-else 
+else
 {
     ViewData["Title"] = @Model.Username;
 }
@@ -35,11 +39,29 @@ else
         </div>
 
         <div class="col-md-8 text-light">
+            @{
+                var user = userManager.GetUserAsync(User).Result;
+            }
             <span class="h2 me-3">@Model.Username</span>
 
             @foreach (RoleViewModel role in Model.Roles)
             {
                 <span class="badge fs-4" style="background-color: @role.BackgroundColour; color: @role.TextColour;">@role.RoleName</span>
+                @if (user != null && userManager.GetRolesAsync(user).Result.Contains("Admin") && !role.RoleName.Contains("Admin"))
+                {
+                    if (role.RoleName.Contains("Investigator"))
+                    {
+                        <form method="POST" asp-area="" asp-controller="Profile" asp-action="Demote" asp-route-id="@Model.UserId">
+                            <button class="btn btn-outline-danger fs-5 mt-3">Demote User</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="POST" asp-area="" asp-controller="Profile" asp-action="Promote" asp-route-id="@Model.UserId">
+                            <button class="btn btn-outline-success fs-5 mt-3">Promote User</button>
+                        </form>
+                    }
+                }
             }
             <h3 class="my-5">Bio</h3>
 

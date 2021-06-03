@@ -32,6 +32,25 @@ namespace Nemesys.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Promote(string id)
+        {
+            var user = _nemesysRepository.GetUserById(id);
+            _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result).Wait();
+            _userManager.AddToRoleAsync(user, "Investigator").Wait();
+            return RedirectToAction("Index", "Profile", new { id });
+        }
+
+        [HttpPost]
+        public IActionResult Demote(string id)
+        {
+            var user = _nemesysRepository.GetUserById(id);
+            _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result).Wait();
+            _userManager.AddToRoleAsync(user, "Reporter").Wait();
+            return RedirectToAction("Index", "Profile", new { id });
+        }
+
         public IActionResult SignOut(string returnUrl = null)
         {
             _signInManager.SignOutAsync().Wait();
