@@ -51,7 +51,7 @@
 
                     <div class="pt-5">
                         <span class="h5 pt-5">Current Status:</span>
-                        <span class="h5" style="color: @Model.StatusColour">@Model.StatusString</span>
+                        <span class="h5" style="color: @Model.ReportStatus.StatusColour">@Model.ReportStatus.StatusName</span>
                     </div>
 
                     @{ 
@@ -92,5 +92,5 @@
 </div>
 
 @section scripts {
-    <script src="~/scripts/star.js"></script>
+    <script src="~/scripts/star.js" async defer></script>
 } 

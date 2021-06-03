@@ -9,10 +9,12 @@
         <form asp-area="" asp-controller="Investigation" asp-action="Create" method="post">
             <h4>@ViewData["Title"]</h4>
             <hr />
-            @*@<div asp-validation-summary="All" class="text-danger"></div>*@
             <div class="form-group">
                 <label asp-for="@Model.Description"></label>
-                <textarea asp-for="@Model.Description" class="form-control" /></textarea>
+                <div class="textarea-with-counter">
+                    <textarea asp-for="@Model.Description" class="form-control" rows="4"></textarea>
+                    <span class="textarea-counter"></span>
+                </div>
                 <span asp-validation-for="@Model.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -28,4 +30,5 @@
 
 @section scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/scripts/textarea-counter.js" async defer></script>
 }

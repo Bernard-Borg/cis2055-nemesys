@@ -14,20 +14,20 @@ namespace Nemesys.ViewModels
         [Display(Name = "Date hazard was identified")]
         public DateTime? DateTimeOfHazard { get; set; }
 
-        [Required(ErrorMessage = "Location of hazard is required")]
-        [Range(35.9009070634084, 35.90377946948467, ErrorMessage = "Keep location within map bounds")]
         public double? Latitude { get; set; }
 
-        [Required(ErrorMessage = "Location of hazard is required")]
-        [Range(14.480948443757697, 14.485854021054182, ErrorMessage = "Keep location within map bounds")]
+        [LatLng(35.9009070634084, 35.90377946948467, 14.480948443757697, 14.485854021054182, ErrorMessage = "Keep location within map bounds")]
         public double? Longitude { get; set; }
 
         [Required(ErrorMessage = "Type of hazard is required")]
         [Display(Name = "Type of hazard")]
         public int HazardTypeId { get; set; }
+
         public int StatusId { get; set; }
 
         [Required(ErrorMessage = "Report description is required")]
+        [MinLength(10, ErrorMessage = "Description must be at least 10 characters long")]
+        [MaxLength(255, ErrorMessage = "Description cannot be longer than 255 characters")]
         public string Description { get; set; }
 
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".webp" })]

@@ -72,7 +72,7 @@
                                 <h2>@report.Description</h2>
                                 <h4>Type of Hazard: @report.HazardName</h4>
                                 <span>Status: </span>
-                                <span style="color: @report.StatusColour">@report.StatusString</span>
+                                <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
                             </div>
                         </a>
                         <div class="col-2 d-flex justify-content-center align-items-center">
@@ -86,5 +86,5 @@
 </div>
 
 @section scripts { 
-    <script src="~/scripts/star.js"></script>
+    <script src="~/scripts/star.js" async defer></script>
 }

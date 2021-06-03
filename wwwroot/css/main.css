@@ -2,6 +2,21 @@
     font-family: 'Work Sans', sans-serif;
 }
 
+textarea {
+    resize: none !important;
+    position: relative;
+}
+
+.textarea-counter {
+    position: relative;
+    color: red;
+    margin-top: -37px;
+    margin-right: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    float: right;
+}
+
 .bi-star-fill {
     vertical-align: top;
 }

@@ -94,11 +94,11 @@ namespace Nemesys.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 //Stores the uploaded image in wwwroot/images
-                string ImagePath = "/images/defaultprofileblack.png";
+                string ImagePath = "/images/profileimages/defaultprofile.png";
 
                 if (Input.Photo != null)
                 {
-                    ImagePath = "/images/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
+                    ImagePath = "/images/profileimages/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
                 }
 
                 var user = new User {
@@ -117,7 +117,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
                 {
                     if (Input.Photo != null)
                     {
-                        Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, ImagePath), FileMode.Create));
+                        Input.Photo.CopyTo(new FileStream(_environment.WebRootPath + ImagePath, FileMode.Create));
                     }
 
                     await _userManager.AddToRoleAsync(user, "Reporter");

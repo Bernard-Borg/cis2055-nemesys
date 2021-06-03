@@ -17,8 +17,8 @@ namespace Nemesys.ViewModels
         public int NumberOfStars { get; set; }
 
         public bool Starred { get; set; }
-        public string StatusColour { get; set; }
-        public string StatusString { get; set; }
+
+        public ReportStatusViewModel ReportStatus { get; set; }
 
         public string AuthorUserName { get; set; }
         public string AuthorId { get; set; }
@@ -55,8 +55,7 @@ namespace Nemesys.ViewModels
                 Starred = starRecord != null;
             }
 
-            StatusColour = report.Status.HexColour;
-            StatusString = report.Status.StatusName;
+            ReportStatus = new ReportStatusViewModel(report.Status);
         }
     }
 }

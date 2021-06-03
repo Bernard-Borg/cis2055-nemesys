@@ -25,11 +25,11 @@ User information (_italic_ = optional);
 Report properties;
 
 * Date of report (date)
-* Location (?)
+* Location (double: longitude, latitude)
 * Date and time when hazard was spotted (datetime)
-* Hazard type (string)
+* Hazard type (database table)
 * Description
-* Status (enum) - only modifyable by investigators
+* Status (database table) - only modifyable by investigators
 	* Open
 	* No action required
 	* Being investigated

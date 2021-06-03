@@ -23,13 +23,7 @@ namespace Nemesys.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
-        {
-            return NotFound();
-        }
-
         [Authorize(Roles = "Investigator,Admin")]
-        [Route("/Investigation/Index/{id}")]
         public IActionResult Index(int id)
         {
             var investigation = _nemesysRepository.GetInvestigationById(id);
@@ -77,7 +71,7 @@ namespace Nemesys.Controllers
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    return StatusCode(500);
                 }
             }
             else
