@@ -55,9 +55,22 @@ namespace Nemesys.Models.Repositories
 
         public Report CreateReport(Report report)
         {
-            _appDbContext.Reports.Add(report);
-            _appDbContext.SaveChanges();
-            return report;
+            try
+            {
+                _appDbContext.Reports.Add(report);
+                _appDbContext.SaveChanges();
+
+                User user = _appDbContext.Users.Find(report.UserId);
+                user.NumberOfReports++;
+
+                _appDbContext.Entry(user).State = EntityState.Modified;
+                _appDbContext.SaveChanges();
+
+                return report;
+            } catch (Exception)
+            {
+                return null;
+            }
         }
 
         public bool DeleteReport(int reportId)
