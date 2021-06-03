@@ -273,24 +273,6 @@ namespace Nemesys.Models.Repositories
             return investigation;
         }
 
-        public IEnumerable<Investigation> GetAllInvestigations()
-        {
-            return investigations;
-        }
-
-        public bool RemoveInvestigation(int investigationId)
-        {
-            Investigation temp = GetInvestigationById(investigationId);
-
-            if (temp == null)
-            {
-                investigations.RemoveAll(item => item.InvestigationId == investigationId);
-                return true;
-            }
-
-            return false;
-        }
-
         public Investigation GetInvestigationById(int investigationId)
         {
             return investigations.FirstOrDefault(investigation => investigation.InvestigationId == investigationId);

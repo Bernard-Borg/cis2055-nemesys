@@ -23,10 +23,8 @@ namespace Nemesys.Models.Interfaces
         /*bool UpdateUser(User updatedUser);*/
 
         Investigation CreateInvestigation(Investigation investigation);
-        IEnumerable<Investigation> GetAllInvestigations();
         Investigation GetInvestigationById(int investigationId);
         bool UpdateInvestigation(Investigation updatedInvestigation);
-        bool RemoveInvestigation(int investigationId);
 
         IEnumerable<HazardType> GetHazardTypes();
         HazardType GetHazardTypeById(int hazardId);

@@ -45,5 +45,10 @@ namespace Nemesys.Controllers
 
             return View(investigation);
         }
+
+        public IActionResult ReportPage(int id)
+        {
+            return RedirectToAction("Report", "Index", new { id });
+        }
     }
 }

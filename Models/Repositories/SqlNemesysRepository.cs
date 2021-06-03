@@ -46,11 +46,6 @@ namespace Nemesys.Models.Repositories
             return true;
         }
 
-        public IEnumerable<Investigation> GetAllInvestigations()
-        {
-            return _appDbContext.Investigations.Include(i => i.Report);
-        }
-
         public IEnumerable<Report> GetAllReports()
         {
             return _appDbContext.Reports
@@ -148,23 +143,6 @@ namespace Nemesys.Models.Repositories
                 .Include(r => r.User)
                 .Where(record => record.ReportId == reportId)
                 .Select(record => record.User);
-        }
-
-        public bool RemoveInvestigation(int investigationId)
-        {
-            var investigation = _appDbContext.Investigations.SingleOrDefault(investigation => investigation.InvestigationId == investigationId);
-
-            if (investigation != null)
-            {
-                _appDbContext.Investigations.Remove(investigation);
-                _appDbContext.SaveChanges();
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public bool StarReport(string userId, int reportId)
