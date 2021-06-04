@@ -1,5 +1,9 @@
 # Gitignore adapted from https://raw.githubusercontent.com/OmniSharp/generator-aspnet/master/templates/gitignore.txt
 
+# Images
+wwwroot/images/reportimages
+wwwroot/images/profileimages
+
 # User-specific files
 *.suo
 *.user
