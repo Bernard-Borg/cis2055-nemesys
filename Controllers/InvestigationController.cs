@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Nemesys.Controllers
 {
@@ -78,11 +74,6 @@ namespace Nemesys.Controllers
             {
                 return View(model);
             }
-        }
-
-        public IActionResult ReportPage(int id)
-        {
-            return RedirectToAction("Report", "Index", new { id });
         }
     }
 }

@@ -6,15 +6,16 @@ namespace Nemesys.Models
 {
     public class User : IdentityUser
     {
-        //IdentityUser.Id
-        //IdentityUser.UserName
-        //IdentityUser.Email
-        //IdentityUser.PasswordHash
-        //IdentityUser.PhoneNumber
+        [PersonalData]
         public string Alias { get; set; }
+
+        [PersonalData]
         public string Bio { get; set; }
+
+        [PersonalData]
         public string Photo { get; set; }
 
+        [PersonalData]
         public DateTime DateJoined { get; set; }
         public DateTime LastActiveDate { get; set; }
 

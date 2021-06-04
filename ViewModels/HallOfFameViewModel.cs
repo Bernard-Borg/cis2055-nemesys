@@ -5,7 +5,7 @@ namespace Nemesys.ViewModels
 {
     public class HallOfFameViewModel
     {
-        public IEnumerable<User> HallOfFameUsers;
+        public IEnumerable<User> HallOfFameUsers { get; set; }
 
         public HallOfFameViewModel(IEnumerable<User> hallOfFameUsers)
         {

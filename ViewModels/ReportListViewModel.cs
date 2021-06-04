@@ -6,7 +6,7 @@ namespace Nemesys.ViewModels
 {
     public class ReportListViewModel
     {
-        public List<ReportViewModel> ReportViewModels;
+        public List<ReportViewModel> ReportViewModels { get; set; }
 
         public ReportListViewModel(List<Report> reports, User currentUser)
         {

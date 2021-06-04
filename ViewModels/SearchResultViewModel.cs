@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Nemesys.ViewModels
+﻿namespace Nemesys.ViewModels
 {
     public class SearchResultViewModel
     {
-        public ReportListViewModel Reports;
-        public string SearchString;
+        public ReportListViewModel Reports { get; set; }
+        public string SearchString { get; set; }
 
         public SearchResultViewModel(ReportListViewModel reports, string searchString)
         {

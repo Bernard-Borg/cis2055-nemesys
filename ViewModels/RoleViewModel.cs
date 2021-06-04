@@ -2,9 +2,9 @@
 {
     public class RoleViewModel
     {
-        public string RoleName;
-        public string BackgroundColour;
-        public string TextColour;
+        public string RoleName { get; set; }
+        public string BackgroundColour { get; set; }
+        public string TextColour { get; set; }
 
         public RoleViewModel(string role)
         {

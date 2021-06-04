@@ -1,16 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.Models.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Nemesys.Models;
-using Microsoft.Extensions.Configuration;
 using System;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Nemesys
 {
@@ -40,7 +38,7 @@ namespace Nemesys
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                 options.SlidingExpiration = true;
             });
 

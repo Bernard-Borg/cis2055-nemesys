@@ -1,22 +1,21 @@
 ﻿using Nemesys.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Nemesys.ViewModels
 {
     public class UserViewModel
     {
-        public ReportListViewModel Reports;
-        public int NumberOfStars;
-        public int NumberOfReports;
-        public string LastActiveDate;
-        public string DateJoined;
-        public string Photo;
-        public string Username;
-        public string UserId;
-        public string UserBio;
-        public bool IsCurrentUser;
-        public List<RoleViewModel> Roles;
+        public ReportListViewModel Reports { get; set; }
+        public int NumberOfStars { get; set; }
+        public int NumberOfReports { get; set; }
+        public string LastActiveDate { get; set; }
+        public string DateJoined { get; set; }
+        public string Photo { get; set; }
+        public string Username { get; set; }
+        public string UserId { get; set; }
+        public string UserBio { get; set; }
+        public bool IsCurrentUser { get; set; }
+        public List<RoleViewModel> Roles { get; set; }
 
         public UserViewModel(User user, User currentUser, IList<string> roles)
         {

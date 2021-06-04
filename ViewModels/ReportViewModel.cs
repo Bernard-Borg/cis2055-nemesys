@@ -1,5 +1,4 @@
 ﻿using Nemesys.Models;
-using System;
 using System.Linq;
 
 namespace Nemesys.ViewModels
@@ -15,6 +14,7 @@ namespace Nemesys.ViewModels
         public string Description { get; set; }
         public string Photo { get; set; }
         public int NumberOfStars { get; set; }
+        public string DateOfUpdate { get; set; }
 
         public bool Starred { get; set; }
 

@@ -35,7 +35,8 @@ namespace Nemesys.Controllers
                 );
 
                 return View(model);
-            } else
+            }
+            else
             {
                 return Json("No such report");
             }
@@ -61,9 +62,11 @@ namespace Nemesys.Controllers
         {
             if (ModelState.IsValid)
             {
-                var report = new Report {
+                var report = new Report
+                {
                     DateOfReport = DateTime.UtcNow,
                     DateTimeOfHazard = model.DateTimeOfHazard ?? default(DateTime),
+                    DateOfUpdate = DateTime.UtcNow,
                     Latitude = model.Latitude ?? default(double),
                     Longitude = model.Longitude ?? default(double),
                     HazardTypeId = model.HazardTypeId,
@@ -93,8 +96,9 @@ namespace Nemesys.Controllers
                 else
                 {
                     return StatusCode(500);
-                }               
-            } else
+                }
+            }
+            else
             {
                 var hazardTypes = _nemesysRepository.GetHazardTypes()
                     .Select(h => new HazardTypeViewModel(h))

@@ -40,7 +40,7 @@
                 <div class="col-md-11 h5">
                     <h1>@Model.Description</h1>
                     <span>Current Status:</span>
-                    <span style="color: @Model.StatusColour">@Model.StatusString</span>
+                    <span style="color: @Model.ReportStatus.StatusColour">@Model.ReportStatus.StatusName</span>
                 </div>
             </div>
 
@@ -55,7 +55,10 @@
                     <div class="mb-4">
                         @Model.Description
                     </div>
-                    <img class="mb-5" onerror="style.opacity='0'" src="@Model.Photo" width="256" alt="Image of danger" />
+                    @if (Model.Photo != null)
+                    {
+                        <img class="mb-5" src="@Model.Photo" width="256" alt="Image of danger" />
+                    }
                     @{
                         var user = userManager.GetUserAsync(User).Result;
                     }
@@ -88,9 +91,6 @@
                             }
                         }
                     </div>
-                </div>
-                <div class="col-4">
-                    <img src="@Model.Photo" width="256" alt="Image of danger">
                 </div>
             </div>
         </div>

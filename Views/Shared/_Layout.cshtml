@@ -56,7 +56,7 @@
                         <img src="@UserManager.GetUserAsync(User).Result.Photo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
                         <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
@@ -87,6 +87,5 @@
     @RenderSection("scripts", required: false)
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 </body>
 </html>

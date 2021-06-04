@@ -93,37 +93,18 @@ namespace Nemesys.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-<<<<<<< HEAD
                 //Stores the uploaded image in wwwroot/images
                 string ImagePath = "/images/profileimages/defaultprofile.png";
 
                 if (Input.Photo != null)
                 {
                     ImagePath = "/images/profileimages/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
-=======
-                //Stores the uploaded image in wwwroot/profileimages/images
-                string ImagePath = "/images/profileimages/defaultprofile.png";
-
-                Console.WriteLine(Directory.GetCurrentDirectory());
-                Console.WriteLine("\t" + ImagePath);
-
-                if (Input.Photo != null)
-                {
-                    string fileName = "";
-                    var extension = "." + Input.Photo.FileName.Split('.')[Input.Photo.FileName.Split('.').Length - 1];
-                    fileName = Guid.NewGuid().ToString() + extension;
-                    var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\profileimages\\" + fileName;
-                    using (var bits = new FileStream(path, FileMode.Create))
-                    {
-                        Input.Photo.CopyTo(bits);
-                    }
-                    ImagePath = "/images/profileimages/" + fileName;
->>>>>>> 3d54c7f3ca034945ddf749a964fe1b14d9a28edb
                 }
 
-                var user = new User {
+                var user = new User
+                {
                     Alias = Input.Alias,
-                    UserName = Input.Email, 
+                    UserName = Input.Email,
                     Email = Input.Email,
                     Photo = ImagePath,
                     DateJoined = DateTime.UtcNow,
@@ -137,12 +118,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
                 {
                     if (Input.Photo != null)
                     {
-<<<<<<< HEAD
                         Input.Photo.CopyTo(new FileStream(_environment.WebRootPath + ImagePath, FileMode.Create));
-=======
-                        //To try to change this to not need full directory
-                        Input.Photo.CopyTo(new FileStream(Path.Combine(_environment.WebRootPath, Directory.GetCurrentDirectory() + "/wwwroot/" + ImagePath), FileMode.Create));
->>>>>>> 3d54c7f3ca034945ddf749a964fe1b14d9a28edb
                     }
 
                     await _userManager.AddToRoleAsync(user, "Reporter");

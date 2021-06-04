@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-using Nemesys.Areas.Identity.Pages.Account;
 
 namespace Nemesys.Controllers
 {

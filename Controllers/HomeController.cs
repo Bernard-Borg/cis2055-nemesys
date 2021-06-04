@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Nemesys.Controllers
 {
@@ -86,10 +82,15 @@ namespace Nemesys.Controllers
             var model = new HallOfFameViewModel(users);
             return View(model);
         }
-        
+
         [HttpGet]
         public IActionResult Search(string search)
         {
+            if (search == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             var reportListViewModel = new ReportListViewModel(
                 _nemesysRepository.GetAllReports()
                     .Where(report => report.Description.Contains(search, System.StringComparison.CurrentCultureIgnoreCase))

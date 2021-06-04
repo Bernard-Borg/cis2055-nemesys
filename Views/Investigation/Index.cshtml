@@ -29,7 +29,7 @@
                     <h1 class="mb-2">@Model.Description</h1>
                     <h2>In relation to: @Model.ReportDescription</h2>
                     <span>Current Status:</span>
-                    <span style="color: @Model.StatusColour">@Model.StatusName</span>
+                    <span style="color: @Model.ReportStatus.StatusColour">@Model.ReportStatus.StatusName</span>
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
                         @Model.Description
                     </div>
                     <div class="mb-4">
-                        <a type="button" class="btn btn-outline-light mt-2" asp-area="" asp-controller="Investigation" asp-action="ReportPage" asp-route-id="@Model.ReportId">View Original Report</a>
+                        <a type="button" class="btn btn-outline-light mt-2" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">View Original Report</a>
                     </div>
                     @{
                         var user = userManager.GetUserAsync(User).Result;

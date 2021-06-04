@@ -174,6 +174,7 @@ namespace Nemesys.Models.Repositories
         public IEnumerable<User> GetUsers()
         {
             return _appDbContext.Users
+                .AsSplitQuery()
                 .Include(u => u.Reports)
                     .ThenInclude(r => r.HazardType)
                 .Include(u => u.Reports)
