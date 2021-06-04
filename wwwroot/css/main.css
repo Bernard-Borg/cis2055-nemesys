@@ -26,6 +26,7 @@ textarea {
 }
 
 .bi-star-fill.clickable {
+    cursor: pointer;
     text-shadow: 0 0 3px #000;
     -webkit-text-stroke-color: white;
     -webkit-text-stroke-width: 2px;

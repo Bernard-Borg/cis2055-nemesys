@@ -187,6 +187,7 @@ namespace Nemesys.Models
                     new Report()
                     {
                         DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 3,
                         Description = "A Nathan is terrorising the Faculty of ICT",
@@ -197,6 +198,7 @@ namespace Nemesys.Models
                     new Report()
                     {
                         DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 1,
                         Description = "A Kyle is terrorising the Faculty of Education",
@@ -207,6 +209,7 @@ namespace Nemesys.Models
                     new Report()
                     {
                         DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 1,
                         Description = "A massive sinkhole has appeared around the Faculty of Law",

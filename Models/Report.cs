@@ -7,6 +7,7 @@ namespace Nemesys.Models
     {
         public int Id { get; set; }
         public DateTime DateOfReport { get; set; }
+        public DateTime DateOfUpdate { get; set; }
         public DateTime DateTimeOfHazard { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

@@ -5,9 +5,9 @@
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h4>@ViewData["Title"]</h4>
+<h1 class="text-light">@ViewData["Title"]</h1>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
-<div class="row">
+<div class="row text-light form-group d-flex">
     <div class="col-md-6">
         <form id="email-form" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -33,7 +33,9 @@
                 <input asp-for="Input.NewEmail" class="form-control" />
                 <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-primary">Change email</button>
+            <div class="form-group d-flex">
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="mt-2 mb-3 btn btn-lg btn-outline-light">Change Email</button>
+            </div>        
         </form>
     </div>
 </div>

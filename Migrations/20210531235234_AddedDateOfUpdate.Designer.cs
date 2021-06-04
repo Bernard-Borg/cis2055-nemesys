@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Models;
 
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210531235234_AddedDateOfUpdate")]
+    partial class AddedDateOfUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,8 +192,7 @@ namespace Nemesys.Migrations
 
                     b.HasKey("InvestigationId");
 
-                    b.HasIndex("ReportId")
-                        .IsUnique();
+                    b.HasIndex("ReportId");
 
                     b.HasIndex("UserId");
 
@@ -218,9 +219,6 @@ namespace Nemesys.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("HazardTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InvestigationId")
                         .HasColumnType("int");
 
                     b.Property<double>("Latitude")
@@ -425,8 +423,8 @@ namespace Nemesys.Migrations
             modelBuilder.Entity("Nemesys.Models.Investigation", b =>
                 {
                     b.HasOne("Nemesys.Models.Report", "Report")
-                        .WithOne("Investigation")
-                        .HasForeignKey("Nemesys.Models.Investigation", "ReportId")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -490,8 +488,6 @@ namespace Nemesys.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Report", b =>
                 {
-                    b.Navigation("Investigation");
-
                     b.Navigation("UsersWhichHaveStarred");
                 });
 

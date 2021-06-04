@@ -9,33 +9,35 @@
     <div id="sideNav" class="col-md-2">
         <p class="h4 fw-normal text-light">Sort by</p>
         <ul class="nav nav-pills flex-column">
-            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall">Highest Awarded</a></li>
-            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall">Highest Number of Reports</a></li>
+            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
+            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
         </ul>
         <hr>
     </div>
 
-    @{
-        foreach (User user in Model.HallOfFameUsers)
-        {
-            <div id="maincontent" class="col-md-10">
-                <a class="row pt-4" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                    <div class="col-1 d-flex justify-content-center align-items-center">
-                        <span class="badge badge-pill bg-warning text-dark fs-3">
-                            @user.NumberOfStars
-                            <i class="bi bi-star-fill" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                    <div class="col-9 text-light border rounded-3 border-light p-3">
-                        <h2>@user.UserName</h2>
-                        <h4>@user.NumberOfStars Reports</h4>
-                    </div>
-                    <div class="col-2">
-                        <img src="@user.Photo" width="96" height="96" alt="User's profile picture">
-                    </div>
-                </a>
+    <div class="col-md-10">
+        @{
+            foreach (User user in Model.HallOfFameUsers)
+            {
+                <div id="maincontent" class="col-md-10">
+                    <a class="row pt-4" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
+                        <div class="col-xl-1 d-flex align-items-stretch">
+                            <span class="badge badge-pill bg-warning text-dark fs-3 d-flex align-items-center">
+                                @user.NumberOfStars
+                                <i class="bi bi-star-fill" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div class="col-xl-9 text-light border rounded-3 border-light p-3">
+                            <h2>@user.Alias</h2>
+                            <h4>@user.NumberOfReports Reports</h4>
+                        </div>
+                        <div class="col-xl-2">
+                            <img src="@user.Photo" onerror="style.opacity='0'" width="96" height="96" alt="User's profile picture">
+                        </div>
+                    </a>
 
-            </div>
+                </div>
+            }
         }
-    }
+    </div>
 </div>

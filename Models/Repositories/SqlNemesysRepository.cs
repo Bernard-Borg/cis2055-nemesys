@@ -90,29 +90,6 @@ namespace Nemesys.Models.Repositories
             return true;
         }
 
-        public bool DeleteUser(string userId)
-        {
-            var user = _appDbContext.Users.Find(userId);
-
-            if (user != null)
-            {
-                _appDbContext.Users.Remove(user);
-                _appDbContext.SaveChanges();
-            } else
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public IEnumerable<Investigation> GetAllInvestigations()
-        {
-            return _appDbContext.Investigations
-                .Include(i => i.Report)
-                .ThenInclude(r => r.Status);
-        }
-
         public IEnumerable<Report> GetAllReports()
         {
             return _appDbContext.Reports
@@ -121,9 +98,12 @@ namespace Nemesys.Models.Repositories
                 .Include(r => r.Status);
         }
 
-        public IEnumerable<Report> GetAllReportsWithStatus(int statusId)
+        public IEnumerable<Report> GetAllReportsWithStatus(int id)
         {
-            return GetReportStatusById(statusId).Reports;
+            var statusId = GetReportStatusById(id);
+            if (statusId == null)
+                return null;
+            return statusId.Reports;
         }
 
         public HazardType GetHazardTypeById(int hazardId)
@@ -156,11 +136,11 @@ namespace Nemesys.Models.Repositories
                 .SingleOrDefault(r => r.Id == reportId);
         }
 
-        public ReportStatus GetReportStatusById(int statusId)
+        public ReportStatus GetReportStatusById(int id)
         {
             return _appDbContext.ReportStatuses
                 .Include(s => s.Reports)
-                .SingleOrDefault(status => status.Id == statusId);
+                .SingleOrDefault(status => status.Id == id);
         }
 
         public IEnumerable<ReportStatus> GetReportStatuses()
@@ -180,7 +160,9 @@ namespace Nemesys.Models.Repositories
 
         public IEnumerable<User> GetTopUsers(int amount)
         {
-            return GetUsers().OrderBy(user => user.NumberOfReports).Take(amount);
+            return GetUsers().OrderByDescending(user => user.NumberOfStars)
+                .ThenBy(user => user.Alias)
+                .Take(amount);
         }
 
         public User GetUserById(string userId)
@@ -206,23 +188,6 @@ namespace Nemesys.Models.Repositories
                 .Include(r => r.User)
                 .Where(record => record.ReportId == reportId)
                 .Select(record => record.User);
-        }
-
-        public bool RemoveInvestigation(int investigationId)
-        {
-            var investigation = _appDbContext.Investigations.SingleOrDefault(investigation => investigation.InvestigationId == investigationId);
-
-            if (investigation != null)
-            {
-                _appDbContext.Investigations.Remove(investigation);
-                _appDbContext.SaveChanges();
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public bool StarReport(string userId, int reportId)
@@ -307,7 +272,7 @@ namespace Nemesys.Models.Repositories
             return true;
         }
 
-        public bool UpdateUser(User updatedUser)
+        /*public bool UpdateUser(User updatedUser)
         {
             var existingUser = _appDbContext.Users.SingleOrDefault(p => p.Id == updatedUser.Id);
 
@@ -321,6 +286,6 @@ namespace Nemesys.Models.Repositories
             }
 
             return true;
-        }
+        }*/
     }
 }

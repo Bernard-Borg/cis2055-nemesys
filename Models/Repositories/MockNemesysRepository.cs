@@ -92,6 +92,7 @@ namespace Nemesys.Models.Repositories
                 {
                     Id = 1,
                     DateOfReport = new DateTime(2021, 03, 30),
+                    DateOfUpdate = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardTypeId = 3,
                     HazardType = GetHazardTypeById(3),
@@ -106,6 +107,7 @@ namespace Nemesys.Models.Repositories
                 {
                     Id = 2,
                     DateOfReport = new DateTime(2021, 03, 30),
+                    DateOfUpdate = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardTypeId = 1,
                     HazardType = GetHazardTypeById(2),
@@ -120,6 +122,7 @@ namespace Nemesys.Models.Repositories
                 {
                     Id = 3,
                     DateOfReport = new DateTime(2021, 03, 30),
+                    DateOfUpdate = new DateTime(2021, 03, 30),
                     DateTimeOfHazard = new DateTime(2021, 03, 30),
                     HazardTypeId = 1,
                     HazardType = GetHazardTypeById(1),
@@ -143,7 +146,7 @@ namespace Nemesys.Models.Repositories
                     Id = "1",
                     Alias = "Bernard Borg",
                     Email = "bernard.borg36@gmail.com",
-                    Photo = "/images/defaultprofile.png",
+                    Photo = "/images/profileimages/defaultprofile.png",
                     PhoneNumber = "+35679297880",
                     NumberOfReports = 0,
                     NumberOfStars = 0,
@@ -249,15 +252,9 @@ namespace Nemesys.Models.Repositories
 
         public IEnumerable<User> GetTopUsers(int amount)
         {
-            return users.OrderBy(x => x.NumberOfReports)
+            return users.OrderByDescending(x => x.NumberOfStars)
                 .Take(amount)
                 .ToList();
-        }
-
-        public bool DeleteUser(string userId)
-        {
-            users.Remove(GetUserById(userId));
-            return true;
         }
 
         public User GetUserById(string userId)
@@ -274,24 +271,6 @@ namespace Nemesys.Models.Repositories
         {
             investigations.Add(investigation);
             return investigation;
-        }
-
-        public IEnumerable<Investigation> GetAllInvestigations()
-        {
-            return investigations;
-        }
-
-        public bool RemoveInvestigation(int investigationId)
-        {
-            Investigation temp = GetInvestigationById(investigationId);
-
-            if (temp == null)
-            {
-                investigations.RemoveAll(item => item.InvestigationId == investigationId);
-                return true;
-            }
-
-            return false;
         }
 
         public Investigation GetInvestigationById(int investigationId)
@@ -340,7 +319,7 @@ namespace Nemesys.Models.Repositories
             return true;
         }
 
-        public bool UpdateUser(User updatedUser)
+        /*public bool UpdateUser(User updatedUser)
         {
             var existingUser = users.FirstOrDefault(p => p.Id == updatedUser.Id);
 
@@ -354,7 +333,7 @@ namespace Nemesys.Models.Repositories
             }
 
             return true;
-        }
+        }*/
 
         public bool UpdateInvestigation(Investigation updatedInvestigation)
         {

@@ -51,7 +51,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Remember me")]
             public bool RememberMe { get; set; }
         }
 
@@ -85,6 +85,10 @@ namespace Nemesys.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    user.LastActiveDate = DateTime.UtcNow;
+                    _userManager.UpdateAsync(user).Wait();
+                    Console.WriteLine(user.LastActiveDate.ToString());
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

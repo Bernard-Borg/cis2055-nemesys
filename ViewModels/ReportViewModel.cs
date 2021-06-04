@@ -31,6 +31,7 @@ namespace Nemesys.ViewModels
             ReportId = report.Id;
             DateOfReport = report.DateOfReport.ToShortDateString();
             DateOfHazard = report.DateTimeOfHazard.ToString();
+            DateOfUpdate = report.DateOfUpdate.ToShortDateString();
             Latitude = report.Latitude;
             Longitude = report.Longitude;
             HazardName = report.HazardType.HazardName;

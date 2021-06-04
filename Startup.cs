@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Nemesys
 {
@@ -44,11 +45,11 @@ namespace Nemesys
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
-            
+
             if (_env.IsDevelopment())
             {
                 services.AddSingleton<INemesysRepository, MockNemesysRepository>();
-            } 
+            }
             else
             {
                 services.AddTransient<INemesysRepository, SqlNemesysRepository>();
@@ -61,10 +62,11 @@ namespace Nemesys
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            } else
-            {
-                app.UseExceptionHandler("/Home/Error");
             } 
+            else
+            {
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            }
 
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones
             app.UseStatusCodePages(); //Returns simple messages for errors (can customise later)
