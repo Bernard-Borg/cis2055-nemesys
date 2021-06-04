@@ -35,6 +35,9 @@
     <div class="form-group d-flex justify-content-center">
         <button type="submit" class="mt-2 mb-3 btn btn-lg btn-outline-light justify-content-center">Register</button>
     </div>
+    <p class="d-flex align-items-center flex-column">
+        Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign In.</a>
+    </p>
 </form>
 
 @section scripts {

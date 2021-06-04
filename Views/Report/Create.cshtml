@@ -1,6 +1,6 @@
 @model EditReportViewModel
 @{
-    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
     ViewData["Title"] = "Create a report";
 }
 
@@ -11,19 +11,19 @@
 }
 
 <form asp-area="" asp-controller="Report" asp-action="Create" method="post" enctype="multipart/form-data">
-    <noscript>Enabling JavaScript is recommended for a better user experience. Click <a href="https://www.enable-javascript.com/">here</a> to learn how</noscript>
-    <div class="form-group">
+    <noscript>Enabling JavaScript is recommended for a better user experience. Click <a href="https://www.enable-javascript.com/">here</a> to learn how.</noscript>
+    <div class="form-group mt-3">
         <label id="latitude-label" asp-for="@Model.Latitude"></label>
-        <input id="latitude" asp-for="@Model.Latitude" class="form-control" />
+        <input placeholder="35.902470" id="latitude" asp-for="@Model.Latitude" class="form-control" />
         <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group mt-2">
         <label id="longitude-label" asp-for="@Model.Longitude"></label>
-        <input id="longitude" asp-for="@Model.Longitude" class="form-control" />
+        <input placeholder="14.483849" id="longitude" asp-for="@Model.Longitude" class="form-control" />
         <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
     </div>
     <div id="map"></div>
-    <div class="form-group">
+    <div class="form-group pt-3">
         <label asp-for="@Model.Description"></label>
         <div class="textarea-with-counter">
             <textarea asp-for="@Model.Description" class="form-control" rows="4"></textarea>
@@ -31,7 +31,7 @@
         </div>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group pt-3">
         <label asp-for="@Model.HazardTypeId"></label>
         <select class="form-select" asp-for="@Model.HazardTypeId"
                 asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
@@ -39,17 +39,19 @@
         </select>
         <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group pt-3">
         <label asp-for="@Model.DateTimeOfHazard"></label>
         <input asp-for="@Model.DateTimeOfHazard" class="form-control" />
         <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group pt-3">
         <label asp-for="@Model.Photo"></label>
         <input asp-for="@Model.Photo" class="form-control" />
         <span asp-validation-for="@Model.Photo" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Submit Report</button>
+    <div class="text-center mb-3">
+        <button type="submit" class="btn btn-outline-light">Submit Report</button>
+    </div> 
 </form>
 
 @section scripts {

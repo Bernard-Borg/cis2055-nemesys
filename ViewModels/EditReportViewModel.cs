@@ -16,7 +16,7 @@ namespace Nemesys.ViewModels
 
         public double? Latitude { get; set; }
 
-        [LatLng(35.9009070634084, 35.90377946948467, 14.480948443757697, 14.485854021054182, ErrorMessage = "Keep location within map bounds")]
+        [LatLng(35.9009070634084, 35.90377946948467, 14.480948443757697, 14.485854021054182, ErrorMessage = "Keep location within university bounds")]
         public double? Longitude { get; set; }
 
         [Required(ErrorMessage = "Type of hazard is required")]
