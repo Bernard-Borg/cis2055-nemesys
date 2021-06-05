@@ -1,30 +1,37 @@
+/* Sets font of everything on the website to Work Sans */
 * {
     font-family: 'Work Sans', sans-serif;
 }
 
+/* Sets style of textareas (Create/Edit pages) */
 textarea {
     resize: none !important;
     position: relative;
 }
 
+/* Sets style of textarea counter */
 .textarea-counter {
     position: relative;
     color: black;
-    margin-top: -37px;
+    margin-top: -20px;
     margin-right: 5px;
     font-size: 14px;
     font-weight: bold;
     float: right;
 }
 
+/* Sets small top margin for validation errors */
+.field-validation-error {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Aligns stars within line */
 .bi-star-fill {
     vertical-align: top;
 }
 
-.form-group > label, form > h4 {
-    color: white;
-}
-
+/* Sets style of clickable stars */
 .bi-star-fill.clickable {
     cursor: pointer;
     text-shadow: 0 0 3px #000;
@@ -33,53 +40,51 @@ textarea {
     font-size: 40px;
 }
 
+/* Sets colour of starred stars / hovering over star */
 .bi-star-fill.clickable.starred, .bi-star-fill.clickable.unstarred:hover {
     color: gold;
     -webkit-text-stroke-color: gold;
 }
 
+/* Sets colour of unstarred stars */
 .bi-star-fill.clickable.unstarred {
     color: transparent;
 }
 
+/* Aligns "Way over here" 404 image on smaller devices */
 @media (max-width: 768px) {
     #wayoverhere {
         margin-top: 100px;
     }
 }
 
+/* Sets style for 404 paragraph */
 .errorpage-paragraph {
     line-height: 30px; 
     text-align: justify;
 }
 
+/* Sets background colour of the website to black */
 .bodycolour {
     background-color: #000000;
 }
 
+/* Removes text decoration from all links */
 a{
     text-decoration: none !important;
 }
 
-.form-report {
-    width: 100%;
-    padding: 15px;
-    margin: auto;
+/* Sets margin for all form elements (inputs/selects/textareas) */
+.form-group {
+    margin-bottom: 20px;
 }
 
-.form-control, .form-select {
-    margin-bottom: 15px;
-}
-
-.form-signin input[type="email"] {
-    margin-top: 15px;
-}
-
-.text-left
-{
+/* Aligns badge to the left in home page hall of fame section */
+.text-left {
     text-align: left !important;
 }
 
+/* These three rules make the ReportStatus tabs look better */
 .nav-tabs {
     display: flex;
 }
@@ -93,10 +98,12 @@ a{
     flex: 1;
 }
 
+/* Hides default file input for image edit icon in profile page */
 input[type="file"].profile {
     display: none;
 }
 
+/* Sets style for image edit icon in profile page */
 .profileupload {
     display: inline-block;
     padding: 6px 12px;

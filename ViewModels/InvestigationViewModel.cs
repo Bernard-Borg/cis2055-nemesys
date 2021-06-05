@@ -25,6 +25,7 @@ namespace Nemesys.ViewModels
             ReportDescription = investigation.Report.Description;
             ReportStatus = new ReportStatusViewModel(investigation.Report.Status);
 
+            InvestigationId = investigation.InvestigationId;
             InvestigatorId = investigation.Investigator.Id;
             InvestigatorUserName = investigation.Investigator.Alias;
             InvestigatorEmail = investigation.Investigator.Email;

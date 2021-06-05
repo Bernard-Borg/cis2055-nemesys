@@ -70,12 +70,8 @@
                 <div class="d-flex">
                     @if (user != null && user.Id == Model.AuthorId)
                     {
-                        <div>
-                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
-                        </div>
-                        <div>
-                            <a type="button" class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
-                        </div>
+                        <a class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                        <a class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
                     }
                     @{
                         if (user != null && !Model.HasInvestigation)
@@ -84,16 +80,18 @@
 
                             if (roles.Contains("Investigator") || roles.Contains("Admin"))
                             {
-                            <div>
-                                <a type="button" class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Investigation" asp-action="Create" asp-route-id="@Model.ReportId">Add Investigation</a>
-                            </div>
-                                }
+                                <a class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Investigation" asp-action="Create" asp-route-id="@Model.ReportId">Add Investigation</a>
                             }
                         }
-                    </div>
+
+                        if (user != null && Model.HasInvestigation)
+                        {
+                            <a class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Investigation" asp-action="Index" asp-route-id="@Model.InvestigationId">View Investigation</a>
+                        }
+                    }
                 </div>
             </div>
-        </div>
+         </div>
     </div>
 </div>
 

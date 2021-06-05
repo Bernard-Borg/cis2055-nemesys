@@ -16,9 +16,10 @@ namespace Nemesys.ViewModels
         [Required(ErrorMessage = "Date of action is required")]
         [Display(Name = "Date of action")]
         public DateTime? DateOfAction { get; set; }
-
-        public string UserId { get; set; }
-        public int ReportId { get; set; }
+        
+        [Required(ErrorMessage = "An investigation status is required")]
+        [Display(Name = "Status of investigation")]
+        public int StatusId { get; set; }
 
         //Used to fill up drop down
         public List<ReportStatusViewModel> ReportStatuses { get; set; }

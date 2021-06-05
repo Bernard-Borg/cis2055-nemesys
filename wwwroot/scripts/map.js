@@ -34,6 +34,14 @@
     ).addTo(map);
 
     let marker = null;
+
+    //Draws marker if user is editing or previous report creation failed (server-side)
+    let latitudeValue = latitude.val();
+    let longitudeValue = longitude.val();
+
+    if (latitudeValue && longitudeValue) {
+        marker = L.marker(L.latLng(latitudeValue, longitudeValue), { draggable: false }).addTo(map);
+    }
     
     map.on("click", function (event) {
         //Disallows multiple markers

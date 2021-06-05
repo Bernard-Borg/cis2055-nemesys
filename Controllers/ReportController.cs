@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
@@ -42,6 +43,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
@@ -56,9 +58,11 @@ namespace Nemesys.Controllers
 
             return View(model);
         }
-
+        
+        [Authorize]
         [HttpPost]
-        public IActionResult Create(EditReportViewModel model)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("DateTimeOfHazard", "Latitude", "Longitude", "HazardTypeId", "Description", "Photo")] EditReportViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -78,9 +82,7 @@ namespace Nemesys.Controllers
                 };
 
                 if (model.Photo != null)
-                {
                     report.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-                }
 
                 var createdReport = _nemesysRepository.CreateReport(report);
 
@@ -106,6 +108,110 @@ namespace Nemesys.Controllers
 
                 model.HazardTypes = hazardTypes;
                 return View(model);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var existingReport = _nemesysRepository.GetReportById(id);
+
+            if (existingReport != null)
+            {
+                if (existingReport.UserId == _userManager.GetUserId(User))
+                {
+                    EditReportViewModel model = new EditReportViewModel
+                    {
+                        Id = existingReport.Id,
+                        DateTimeOfHazard = existingReport.DateTimeOfHazard,
+                        Latitude = existingReport.Latitude,
+                        Longitude = existingReport.Longitude,
+                        HazardTypeId = existingReport.HazardTypeId,
+                        Description = existingReport.Description,
+                        ImageUrl = existingReport.Photo,
+                    };
+
+                    model.HazardTypes = _nemesysRepository.GetHazardTypes()
+                        .Select(h => new HazardTypeViewModel(h))
+                        .ToList();
+
+                    return View(model);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit([FromRoute] int id, [Bind("DateTimeOfHazard", "Latitude", "Longitude", "HazardTypeId", "Description", "Photo")] EditReportViewModel updatedReport)
+        {
+            Report existingReport = _nemesysRepository.GetReportById(id);
+
+            //Check if the report being edited exists
+            if (existingReport == null) {
+                return NotFound();
+            }
+
+            //Checks whether the user is the owner of the report
+            if (existingReport.UserId == _userManager.GetUserId(User))
+            {
+                if (ModelState.IsValid)
+                {
+                    string oldFilePath = existingReport.Photo;
+
+                    existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard ?? default(DateTime);
+                    existingReport.Latitude = updatedReport.Latitude ?? default(double);
+                    existingReport.Longitude = updatedReport.Longitude ?? default(double);
+                    existingReport.HazardTypeId = updatedReport.HazardTypeId;
+                    existingReport.Description = updatedReport.Description;
+
+                    if (updatedReport.Photo != null)
+                    {
+                        existingReport.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + updatedReport.Photo.FileName;
+                    }
+
+                    if (_nemesysRepository.UpdateReport(existingReport))
+                    {
+                        //After the report has successfully been updated, the image file is created
+                        if (updatedReport.Photo != null)
+                        {
+                            updatedReport.Photo.CopyTo(new FileStream(_environment.WebRootPath + existingReport.Photo, FileMode.Create));
+
+                            //OldFilePath can be null if the user hadn't submitted an image previously
+                            if (oldFilePath != null)
+                            {
+                                System.IO.File.Delete(_environment.WebRootPath + oldFilePath);
+                            }
+                        }
+
+                        return RedirectToAction("Index", new { id = id });
+                    } 
+                    else
+                    {
+                        return StatusCode(500);
+                    }
+                } 
+                else
+                {
+                    updatedReport.HazardTypes = _nemesysRepository.GetHazardTypes()
+                        .Select(h => new HazardTypeViewModel(h))
+                        .ToList();
+
+                    return View(updatedReport);
+                }
+            }
+            else
+            {
+                return Unauthorized();
             }
         }
     }

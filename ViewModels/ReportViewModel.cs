@@ -24,6 +24,8 @@ namespace Nemesys.ViewModels
         public string AuthorId { get; set; }
         public string AuthorPhoto { get; set; }
         public int AuthorStarsNumber { get; set; }
+
+        public int InvestigationId { get; set; }
         public bool HasInvestigation { get; set; }
 
         public ReportViewModel(Report report, User currentUser)
@@ -43,6 +45,11 @@ namespace Nemesys.ViewModels
             AuthorId = report.Author.Id;
             AuthorStarsNumber = report.Author.NumberOfStars;
             AuthorPhoto = report.Author.Photo;
+
+            if (report.InvestigationId != null)
+            {
+                InvestigationId = report.InvestigationId ?? default(int);
+            }
 
             HasInvestigation = report.InvestigationId != null;
 

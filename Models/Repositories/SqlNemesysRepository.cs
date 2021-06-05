@@ -20,34 +20,12 @@ namespace Nemesys.Models.Repositories
         {
             try
             {
-                Report report = _appDbContext.Reports.Find(investigation.ReportId);
+                _appDbContext.Investigations.Add(investigation);
+                _appDbContext.SaveChanges();
 
-                if (report != null)
-                {
-                    //If the report already has an investigation, null is returned
-                    if (report.InvestigationId == null)
-                    {
-                        //Adds investigation to database
-                        _appDbContext.Investigations.Add(investigation);
-
-                        //Change is immediately committed to get the investigation id
-                        _appDbContext.SaveChanges();
-
-                        //Sets foreign key in report
-                        report.InvestigationId = investigation.InvestigationId;
-                        
-                        //Sets status to "Under Investigation"
-                        report.StatusId = 2;
-
-                        _appDbContext.Entry(report).State = EntityState.Modified;
-                        _appDbContext.SaveChanges();
-
-                        return investigation;
-                    }
-                }
-
-                return null;
-            } catch (Exception)
+                return investigation;
+            } 
+            catch (DbUpdateException)
             {
                 return null;
             }
@@ -67,45 +45,66 @@ namespace Nemesys.Models.Repositories
                 _appDbContext.SaveChanges();
 
                 return report;
-            } catch (Exception)
+            } 
+            catch (DbUpdateException)
             {
                 return null;
             }
         }
 
-        public bool DeleteReport(int reportId)
+        public bool StarReport(string userId, int reportId)
         {
-            var report = _appDbContext.Reports.Find(reportId);
-
-            if (report != null)
+            try
             {
-                _appDbContext.Reports.Remove(report);
-                _appDbContext.SaveChanges();
+                Report report = _appDbContext.Reports.Include(r => r.Author)
+                    .SingleOrDefault(r => r.Id == reportId);
+
+                if (report != null)
+                {
+                    User author = report.Author;
+
+                    var record = _appDbContext.StarRecords
+                        .SingleOrDefault(record => record.UserId == userId && record.ReportId == reportId);
+
+                    if (record == null)
+                    {
+                        _appDbContext.StarRecords.Add(new StarRecord
+                        {
+                            UserId = userId,
+                            ReportId = reportId,
+                        });
+
+                        _appDbContext.SaveChanges();
+
+                        report.NumberOfStars++;
+                        author.NumberOfStars++;
+                    }
+                    else
+                    {
+                        _appDbContext.StarRecords.Remove(record);
+                        _appDbContext.SaveChanges();
+
+                        report.NumberOfStars--;
+                        author.NumberOfStars--;
+                    }
+
+                    _appDbContext.Entry(report).State = EntityState.Modified;
+                    _appDbContext.Entry(author).State = EntityState.Modified;
+                    _appDbContext.SaveChanges();
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (DbUpdateException)
             {
                 return false;
             }
 
             return true;
         }
-
-        public IEnumerable<Report> GetAllReports()
-        {
-            return _appDbContext.Reports
-                .Include(r => r.Author)
-                .Include(r => r.HazardType)
-                .Include(r => r.Status);
-        }
-
-        public IEnumerable<Report> GetAllReportsWithStatus(int id)
-        {
-            var statusId = GetReportStatusById(id);
-            if (statusId == null)
-                return null;
-            return statusId.Reports;
-        }
-
+        
         public HazardType GetHazardTypeById(int hazardId)
         {
             return _appDbContext.HazardTypes
@@ -136,6 +135,22 @@ namespace Nemesys.Models.Repositories
                 .SingleOrDefault(r => r.Id == reportId);
         }
 
+        public IEnumerable<Report> GetAllReports()
+        {
+            return _appDbContext.Reports
+                .Include(r => r.Author)
+                .Include(r => r.HazardType)
+                .Include(r => r.Status);
+        }
+
+        public IEnumerable<Report> GetAllReportsWithStatus(int id)
+        {
+            var statusId = GetReportStatusById(id);
+            if (statusId == null)
+                return null;
+            return statusId.Reports;
+        }
+
         public ReportStatus GetReportStatusById(int id)
         {
             return _appDbContext.ReportStatuses
@@ -158,11 +173,13 @@ namespace Nemesys.Models.Repositories
                 .Select(record => record.Report);
         }
 
-        public IEnumerable<User> GetTopUsers(int amount)
+        public IEnumerable<User> GetUsersWhoStarredReport(int reportId)
         {
-            return GetUsers().OrderByDescending(user => user.NumberOfStars)
-                .ThenBy(user => user.Alias)
-                .Take(amount);
+            return _appDbContext.StarRecords
+                .Include(r => r.Report)
+                .Include(r => r.User)
+                .Where(record => record.ReportId == reportId)
+                .Select(record => record.User);
         }
 
         public User GetUserById(string userId)
@@ -182,95 +199,71 @@ namespace Nemesys.Models.Repositories
                 .Include(u => u.StarredReports);
         }
 
-        public IEnumerable<User> GetUsersWhoStarredReport(int reportId)
+        public IEnumerable<User> GetTopUsers(int amount)
         {
-            return _appDbContext.StarRecords
-                .Include(r => r.Report)
-                .Include(r => r.User)
-                .Where(record => record.ReportId == reportId)
-                .Select(record => record.User);
-        }
-
-        public bool StarReport(string userId, int reportId)
-        {
-            try
-            {
-                Report report = _appDbContext.Reports.Include(r => r.Author)
-                    .SingleOrDefault(r => r.Id == reportId);
-
-                if (report != null)
-                {
-                    User author = report.Author;
-                    
-                    var record = _appDbContext.StarRecords
-                        .SingleOrDefault(record => record.UserId == userId && record.ReportId == reportId);
-
-                    if (record == null)
-                    {
-                        _appDbContext.StarRecords.Add(new StarRecord
-                        {
-                            UserId = userId,
-                            ReportId = reportId,
-                        });
-
-                        _appDbContext.SaveChanges();
-
-                        report.NumberOfStars++;
-                        author.NumberOfStars++;
-                    }
-                    else
-                    {
-                        _appDbContext.StarRecords.Remove(record);
-                        _appDbContext.SaveChanges();
-
-                        report.NumberOfStars--;
-                        author.NumberOfStars--;
-                    }
-
-                    _appDbContext.Entry(report).State = EntityState.Modified;
-                    _appDbContext.Entry(author).State = EntityState.Modified;
-                    _appDbContext.SaveChanges();
-                } else
-                {
-                    return false;
-                }
-            } catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
+            return GetUsers().OrderByDescending(user => user.NumberOfStars)
+                .ThenBy(user => user.Alias)
+                .Take(amount);
         }
 
         public bool UpdateInvestigation(Investigation updatedInvestigation)
         {
-            var existingInvestigation = _appDbContext.Investigations.SingleOrDefault(p => p.InvestigationId == updatedInvestigation.InvestigationId);
+            var existingInvestigation = _appDbContext.Investigations.Find(updatedInvestigation.InvestigationId);
 
             if (existingInvestigation != null)
             {
-                existingInvestigation.Description = updatedInvestigation.Description;
-                existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction;
+                try
+                {
+                    existingInvestigation.Description = updatedInvestigation.Description;
+                    existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction;
+                    
+                    _appDbContext.Entry(existingInvestigation).State = EntityState.Modified;
+                    _appDbContext.SaveChanges();
+                } 
+                catch (DbUpdateException)
+                {
+                    return false;
+                }
 
-                _appDbContext.Entry(existingInvestigation).State = EntityState.Modified;
-                _appDbContext.SaveChanges();
+                return true;
             }
-
-            return true;
+            else
+            {
+                return false;
+            }
         }
 
         public bool UpdateReport(Report updatedReport)
         {
-            var existingReport = _appDbContext.Reports.SingleOrDefault(p => p.Id == updatedReport.Id);
+            var existingReport = _appDbContext.Reports.Find(updatedReport.Id);
 
             if (existingReport != null)
             {
-                existingReport.HazardType = updatedReport.HazardType;
-                existingReport.Description = updatedReport.Description;
-                existingReport.Status = updatedReport.Status;
-                existingReport.Photo = updatedReport.Photo;
-            }
+                try
+                {
+                    existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard;
+                    existingReport.HazardTypeId = updatedReport.HazardTypeId;
+                    existingReport.Description = updatedReport.Description;
+                    existingReport.Latitude = updatedReport.Latitude;
+                    existingReport.Longitude = updatedReport.Longitude;
+                    existingReport.StatusId = updatedReport.StatusId;
+                    existingReport.Photo = updatedReport.Photo;
+                    existingReport.DateOfUpdate = DateTime.UtcNow;
 
-            return true;
+                    _appDbContext.Entry(existingReport).State = EntityState.Modified;
+                    _appDbContext.SaveChanges();
+                } 
+                catch (DbUpdateException)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /*public bool UpdateUser(User updatedUser)
@@ -288,5 +281,23 @@ namespace Nemesys.Models.Repositories
 
             return true;
         }*/
+
+        public bool DeleteReport(int reportId)
+        {
+            var report = _appDbContext.Reports.Find(reportId);
+
+            if (report != null)
+            {
+                _appDbContext.Reports.Remove(report);
+                _appDbContext.SaveChanges();
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

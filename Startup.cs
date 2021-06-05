@@ -27,18 +27,21 @@ namespace Nemesys
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //Sets up EF core
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection"))
             );
 
-            services.AddDefaultIdentity<User>(/*options => options.User.RequireUniqueEmail = true*/)
+            //Sets up Identity core
+            services.AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            //Configures sessions and cookies
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.ExpireTimeSpan = TimeSpan.FromHours(2);
                 options.SlidingExpiration = true;
             });
 

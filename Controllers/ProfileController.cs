@@ -26,7 +26,7 @@ namespace Nemesys.Controllers
                 _userManager.GetUserAsync(User).Result,
                 _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result
             );
-
+            
             return View(model);
         }
 

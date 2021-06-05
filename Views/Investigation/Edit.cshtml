@@ -2,10 +2,11 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
-    ViewData["Title"] = "Create an investigation";
+    ViewData["Title"] = "Edit Investigation";
 }
 
-<form asp-area="" asp-controller="Investigation" asp-action="Create" method="post">
+<form asp-area="" asp-controller="Investigation" asp-action="Edit" method="post">
+    <noscript>Enabling JavaScript is recommended for a better user experience. Click <a href="https://www.enable-javascript.com/">here</a> to learn how</noscript>
     <div class="form-group">
         <label asp-for="@Model.Description"></label>
         <div class="textarea-with-counter">
@@ -28,11 +29,11 @@
         <span asp-validation-for="@Model.StatusId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create Investigation</button>
+        <button type="submit" class="btn btn-primary">Submit Report</button>
     </div>
 </form>
 
 @section scripts {
-    <script src="~/scripts/textarea-counter.js" async defer></script>
+    <script type="text/javascript" src="~/scripts/textarea-counter.js" async defer></script>
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

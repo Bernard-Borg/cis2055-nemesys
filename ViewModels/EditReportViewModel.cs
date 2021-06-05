@@ -9,21 +9,21 @@ namespace Nemesys.ViewModels
     public class EditReportViewModel
     {
         public int Id { get; set; }
-
+        
         [Required(ErrorMessage = "Date of hazard is required")]
         [Display(Name = "Date hazard was identified")]
         public DateTime? DateTimeOfHazard { get; set; }
 
         public double? Latitude { get; set; }
 
-        [LatLng(35.9009070634084, 35.90377946948467, 14.480948443757697, 14.485854021054182, ErrorMessage = "Keep location within map bounds")]
+        [LatLng(35.9009070634084, 35.90377946948467, 14.480948443757697, 14.485854021054182, ErrorMessage = "Keep location within University")]
         public double? Longitude { get; set; }
 
         [Required(ErrorMessage = "Type of hazard is required")]
         [Display(Name = "Type of hazard")]
         public int HazardTypeId { get; set; }
 
-        public int StatusId { get; set; }
+        public string ImageUrl { get; set; }
 
         [Required(ErrorMessage = "Report description is required")]
         [MinLength(10, ErrorMessage = "Description must be at least 10 characters long")]

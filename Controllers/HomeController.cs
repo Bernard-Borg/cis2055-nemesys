@@ -39,7 +39,7 @@ namespace Nemesys.Controllers
                     reports = reports.OrderByDescending(r => r.NumberOfStars).ThenBy(r => r.Description);
                     break;
                 case "Update":
-                    reports = reports.OrderBy(r => r.DateOfUpdate);
+                    reports = reports.OrderByDescending(r => r.DateOfUpdate);
                     break;
                 case "Newest":
                     reports = reports.OrderByDescending(r => r.DateOfReport);

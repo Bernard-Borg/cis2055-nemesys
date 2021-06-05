@@ -20,7 +20,7 @@
                 <span class="ps-3">@Model.InvestigatorEmail</span>
             </div>
             <div class="d-grid">
-                <a type="button" class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.InvestigatorId">Profile</a>
+                <a class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.InvestigatorId">Profile</a>
             </div>
         </div>
         <div class="col-md-10 text-light ps-5 pe-4">
@@ -41,9 +41,6 @@
                     <div class="mb-2">
                         @Model.Description
                     </div>
-                    <div class="mb-4">
-                        <a type="button" class="btn btn-outline-light mt-2" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">View Original Report</a>
-                    </div>
                     @{
                         var user = userManager.GetUserAsync(User).Result;
                     }
@@ -51,10 +48,8 @@
                 <div class="d-flex">
                     @if (user != null && user.Id == Model.InvestigatorId)
                     {
-                        <div>
-                            <!--TO ADD EDIT ACTION IN INVESTIGATION-->
-                            <a type="button" class="btn btn-outline-light mt-2" asp-area="" asp-controller="Investigation" asp-action="Edit" asp-route-id="@Model.InvestigationId">Edit Investigation</a>
-                        </div>
+                        <a class="btn btn-outline-light mt-2" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">View Original Report</a>
+                        <a class="btn btn-outline-light mt-2" asp-area="" asp-controller="Investigation" asp-action="Edit" asp-route-id="@Model.InvestigationId">Edit Investigation</a>
                     }
                 </div>
             </div>
