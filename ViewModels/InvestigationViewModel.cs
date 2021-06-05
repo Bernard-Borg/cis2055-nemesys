@@ -20,7 +20,7 @@ namespace Nemesys.ViewModels
 
         public InvestigationViewModel(Investigation investigation) {
             Description = investigation.Description;
-            DateOfAction = investigation.DateOfAction.ToShortDateString();
+            DateOfAction = investigation.DateOfAction.ToString();
             ReportId = investigation.ReportId;
             ReportDescription = investigation.Report.Description;
             ReportStatus = new ReportStatusViewModel(investigation.Report.Status);

@@ -58,7 +58,7 @@ namespace Nemesys.Controllers
 
             return View(model);
         }
-        
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -194,12 +194,12 @@ namespace Nemesys.Controllers
                         }
 
                         return RedirectToAction("Index", new { id = id });
-                    } 
+                    }
                     else
                     {
                         return StatusCode(500);
                     }
-                } 
+                }
                 else
                 {
                     updatedReport.HazardTypes = _nemesysRepository.GetHazardTypes()
@@ -208,6 +208,32 @@ namespace Nemesys.Controllers
 
                     return View(updatedReport);
                 }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var reportToDelete = _nemesysRepository.GetReportById(id);
+
+            if (reportToDelete == null)
+            {
+                return NotFound();
+            }
+
+            if (reportToDelete.UserId == _userManager.GetUserId(User))
+            {
+                if (_nemesysRepository.DeleteReport(id))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return StatusCode(500);
             }
             else
             {

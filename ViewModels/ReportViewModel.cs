@@ -31,9 +31,9 @@ namespace Nemesys.ViewModels
         public ReportViewModel(Report report, User currentUser)
         {
             ReportId = report.Id;
-            DateOfReport = report.DateOfReport.ToShortDateString();
+            DateOfReport = report.DateOfReport.ToString();
             DateOfHazard = report.DateTimeOfHazard.ToString();
-            DateOfUpdate = report.DateOfUpdate.ToShortDateString();
+            DateOfUpdate = report.DateOfUpdate.ToString();
             Latitude = report.Latitude;
             Longitude = report.Longitude;
             HazardName = report.HazardType.HazardName;

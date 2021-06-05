@@ -22,7 +22,8 @@ namespace Nemesys.ViewModels
             if (currentUser != null)
             {
                 IsCurrentUser = user.Id.Equals(currentUser.Id);
-            } else
+            } 
+            else
             {
                 IsCurrentUser = false;
             }
@@ -30,7 +31,7 @@ namespace Nemesys.ViewModels
             Reports = new ReportListViewModel(user.Reports, currentUser);
             NumberOfStars = user.NumberOfStars;
             NumberOfReports = user.NumberOfReports;
-            LastActiveDate = user.LastActiveDate.ToShortDateString();
+            LastActiveDate = user.LastActiveDate.ToString();
             DateJoined = user.DateJoined.ToShortDateString();
             Photo = user.Photo;
             Username = user.Alias;

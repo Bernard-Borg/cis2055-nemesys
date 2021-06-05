@@ -19,10 +19,12 @@ namespace Nemesys.Models
 
             modelBuilder.Entity<StarRecord>()
                 .HasKey(bc => new { bc.ReportId, bc.UserId });
+
             modelBuilder.Entity<StarRecord>()
                 .HasOne(bc => bc.User)
                 .WithMany(b => b.StarredReports)
                 .HasForeignKey(bc => bc.UserId);
+
             modelBuilder.Entity<StarRecord>()
                 .HasOne(bc => bc.Report)
                 .WithMany(c => c.UsersWhichHaveStarred)

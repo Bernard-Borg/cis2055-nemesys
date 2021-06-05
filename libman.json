@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "defaultProvider": "cdnjs",
+    "version": "1.0",
+    "defaultProvider": "cdnjs",
     "libraries": [
         {
             "library": "twitter-bootstrap@5.0.1",
@@ -17,6 +17,10 @@
         {
             "library": "jquery-validation-unobtrusive@3.2.12",
             "destination": "wwwroot/lib/jquery-validate-unobtrusive/"
+        },
+        {
+            "library": "moment.js@2.29.1",
+            "destination": "wwwroot/lib/momentjs"
         }
     ]
 }
