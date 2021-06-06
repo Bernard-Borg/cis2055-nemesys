@@ -5,9 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.Models.Repositories;
+using SixLabors.ImageSharp.Web.DependencyInjection;
+using SixLabors.ImageSharp.Web.Processors;
 using System;
 
 namespace Nemesys
@@ -45,6 +48,11 @@ namespace Nemesys
                 options.SlidingExpiration = true;
             });
 
+            //Image sharp used for loading images correctly
+            services.AddImageSharp()
+                .RemoveProcessor<FormatWebProcessor>()
+                .RemoveProcessor<BackgroundColorWebProcessor>(); ;
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
 
             if (_env.IsDevelopment())
@@ -69,9 +77,21 @@ namespace Nemesys
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
 
+            app.UseImageSharp();
+
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones
             app.UseStatusCodePages(); //Returns simple messages for errors (can customise later)
-            app.UseStaticFiles(); //Allows access to static resources in the wwwroot folder
+
+            //Allows access to static resources in the wwwroot folder
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    const int durationInSeconds = 60 * 60 * 24 * 365;
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+                        "public,max-age=" + durationInSeconds;
+                }
+            }); 
 
             app.UseRouting(); //Allows routing URLs to specific endpoints (such as a controller)
 

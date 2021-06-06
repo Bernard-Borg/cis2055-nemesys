@@ -47,7 +47,7 @@ else
             @foreach (RoleViewModel role in Model.Roles)
             {
                 <span class="badge fs-4" style="background-color: @role.BackgroundColour; color: @role.TextColour;">@role.RoleName</span>
-                @if (user != null && userManager.GetRolesAsync(user).Result.Contains("Admin") && !role.RoleName.Contains("Admin"))
+                @if (user != null && User.IsInRole("Admin") && !role.RoleName.Contains("Admin"))
                 {
                     if (role.RoleName.Contains("Investigator"))
                     {

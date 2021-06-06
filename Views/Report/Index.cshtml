@@ -17,7 +17,7 @@
     <div class="row mt-5">
         <div class="col-md-2 text-light">
             <div class="h1 text-center">Reporter</div>
-            <img src="@Model.AuthorPhoto" width="128" height="128" class="mx-auto d-block mt-5">
+            <img src="@Model.AuthorPhoto" width="128" height="128" class="mx-auto d-block mt-5" alt="Photo of report author">
             <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
                 <span class="badge badge-pill bg-warning text-dark">
                     @Model.AuthorStarsNumber
@@ -64,7 +64,7 @@
                     }
                 </div>
                 <div class="col-lg-4">
-                    <h4>Location of Hazard</h4>
+                    <p class="h4">Location of Hazard</p>
                     <div id="map" style="height: 400px;"></div>
                 </div>
                 <div class="d-flex">
@@ -76,9 +76,7 @@
                     @{
                         if (user != null && !Model.HasInvestigation)
                         {
-                            var roles = userManager.GetRolesAsync(user).Result;
-
-                            if (roles.Contains("Investigator") || roles.Contains("Admin"))
+                            if (User.IsInRole("Investigator") || User.IsInRole("Admin"))
                             {
                                 <a class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Investigation" asp-action="Create" asp-route-id="@Model.ReportId">Add Investigation</a>
                             }

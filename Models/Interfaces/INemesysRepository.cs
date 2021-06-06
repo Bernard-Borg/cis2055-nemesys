@@ -18,7 +18,6 @@ namespace Nemesys.Models.Interfaces
         IEnumerable<User> GetUsers();
         IEnumerable<User> GetTopUsers(int amount);
         User GetUserById(string userId);
-        /*bool UpdateUser(User updatedUser);*/
 
         Investigation CreateInvestigation(Investigation investigation);
         Investigation GetInvestigationById(int investigationId);

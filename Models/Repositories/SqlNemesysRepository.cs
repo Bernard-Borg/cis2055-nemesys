@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Nemesys.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,12 @@ namespace Nemesys.Models.Repositories
     public class SqlNemesysRepository : INemesysRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly ILogger<SqlNemesysRepository> _logger;
 
-        public SqlNemesysRepository(AppDbContext appDbContext)
+        public SqlNemesysRepository(AppDbContext appDbContext, ILogger<SqlNemesysRepository> logger)
         {
             _appDbContext = appDbContext;
+            _logger = logger;
         }
 
         //Creates investigation from instance
@@ -27,6 +30,7 @@ namespace Nemesys.Models.Repositories
             } 
             catch (DbUpdateException)
             {
+                _logger.LogError("Failed to create investigation by user " + investigation.UserId);
                 return null;
             }
         }
@@ -48,6 +52,7 @@ namespace Nemesys.Models.Repositories
             } 
             catch (DbUpdateException)
             {
+                _logger.LogError($"Failed to create report by user {0}", report.UserId);
                 return null;
             }
         }
@@ -99,6 +104,7 @@ namespace Nemesys.Models.Repositories
             }
             catch (DbUpdateException)
             {
+                _logger.LogError($"Failed to star report (ID: {0}) by user {1}", reportId, userId);
                 return false;
             }
 
@@ -222,6 +228,7 @@ namespace Nemesys.Models.Repositories
                 } 
                 catch (DbUpdateException)
                 {
+                    _logger.LogError($"Failed to update investigation (ID: {0})", updatedInvestigation.InvestigationId);
                     return false;
                 }
 
@@ -255,6 +262,7 @@ namespace Nemesys.Models.Repositories
                 } 
                 catch (DbUpdateException)
                 {
+                    _logger.LogError($"Failed to update report (ID: {0})", updatedReport.Id);
                     return false;
                 }
 
@@ -265,22 +273,6 @@ namespace Nemesys.Models.Repositories
                 return false;
             }
         }
-
-        /*public bool UpdateUser(User updatedUser)
-        {
-            var existingUser = _appDbContext.Users.SingleOrDefault(p => p.Id == updatedUser.Id);
-
-            if (existingUser != null)
-            {
-                existingUser.UserName = updatedUser.UserName;
-                existingUser.Email = updatedUser.Email;
-                existingUser.PasswordHash = updatedUser.PasswordHash;
-                existingUser.Photo = updatedUser.Photo;
-                existingUser.PhoneNumber = updatedUser.PhoneNumber;
-            }
-
-            return true;
-        }*/
 
         public bool DeleteReport(int reportId)
         {
@@ -293,6 +285,7 @@ namespace Nemesys.Models.Repositories
             }
             else
             {
+                _logger.LogError($"Failed to delete report (ID: {0})", reportId);
                 return false;
             }
 

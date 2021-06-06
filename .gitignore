@@ -4,6 +4,9 @@
 wwwroot/images/reportimages
 wwwroot/images/profileimages
 
+# ImageSharp cache
+wwwroot/is-cache/
+
 # User-specific files
 *.suo
 *.user

@@ -20,7 +20,7 @@ namespace Nemesys.Controllers
             _userManager = userManager;
         }
 
-        [ResponseCache(Duration = 2)]
+        [ResponseCache(Duration = 3)]
         public IActionResult Index(HomeSortQueryParameter sort)
         {
             IEnumerable<Report> reports;
