@@ -22,12 +22,12 @@
                     foreach (User user in Model.HallOfFame.HallOfFameUsers)
                     {
                         <a class="btn btn-outline-light text-left mb-3 p-3 d-flex" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                            <img onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48" width="48" height="48" alt="Profile picture">
+                            <img onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48&rmode=crop" width="48" height="48" alt="Profile picture">
                             <div class="pl-3 lh-sm">
                                 <p class="mb-1">@user.Alias</p>
                                 <span class="badge badge-pill bg-warning text-dark">
                                     @user.NumberOfStars
-                                    <i class="bi bi-star-fill" aria-hidden="true"></i>
+                                    <i class="fa icon-star" aria-hidden="true"></i>
                                 </span>
                             </div>
                         </a>
@@ -62,9 +62,9 @@
                     <div class="row mt-3 mb-3">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
-                                <i class="bi bi-star-fill clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
-                            </div>
+                        <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
+                            <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                        </div>
                         }
                         <a class="@(User.Identity.IsAuthenticated ? "col-10 col-lg-9" : "col-12 col-lg-10")" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
                             <div class="text-light border border-light rounded-3 p-3 overflow-hidden">

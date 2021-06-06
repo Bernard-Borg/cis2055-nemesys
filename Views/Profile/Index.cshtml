@@ -17,20 +17,20 @@ else
     <div class="row mt-5">
         <div id="sideNav" class="col-md-3 p-5 text-center">
             <div id="parentimage">
-                <img id="profileimage" src="@Model.Photo" width="150" height="150" class="mx-auto d-block">
+                <img id="profileimage" src="@Model.Photo?width=150&height=150?rmode=crop" width="150" height="150" class="mx-auto d-block">
                 @if (Model.IsCurrentUser)
                 {
                     <div id="changeimage">
                         <label class="profileupload">
                             <input class="profile" type="file" alt="Edit Photo">
-                            <i class="bi bi-pencil-square text-light fs-3 mb-3"></i>
+                            <i class="icon-edit text-light fs-3 mb-3"></i>
                         </label>
                     </div>
                 }
             </div>
             <span class="mt-5 mb-3 w-50 badge badge-pill bg-warning text-dark">
                 <span class="fs-3">@Model.NumberOfStars</span>
-                <i class="bi bi-star-fill fs-3"></i>
+                <i class="icon-star fs-3"></i>
             </span>
             <div class="mt-5 text-light fs-5">
                 <p>Member since @Model.DateJoined</p>
@@ -90,7 +90,7 @@ else
                         <span class="col-1"></span>
                         <span class="col-1 badge badge-pill bg-warning text-dark d-flex justify-content-center align-items-center">
                             <span class="fs-3">@report.NumberOfStars</span>
-                            <i style="font-size: 24px;" class="bi bi-star-fill"></i>
+                            <i style="font-size: 24px;" class="icon-star"></i>
                         </span>
                         <a class="col-6 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
                             <div class="rounded-3 border border-light p-2">

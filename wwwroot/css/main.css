@@ -27,12 +27,12 @@ textarea {
 }
 
 /* Aligns stars within line */
-.bi-star-fill {
-    vertical-align: top;
+.icon-star {
+    vertical-align: middle;
 }
 
 /* Sets style of clickable stars */
-.bi-star-fill.clickable {
+.icon-star.clickable {
     cursor: pointer;
     text-shadow: 0 0 3px #000;
     -webkit-text-stroke-color: white;
@@ -41,13 +41,13 @@ textarea {
 }
 
 /* Sets colour of starred stars / hovering over star */
-.bi-star-fill.clickable.starred, .bi-star-fill.clickable.unstarred:hover {
+.icon-star.clickable.starred, .icon-star.clickable.unstarred:hover {
     color: gold;
     -webkit-text-stroke-color: gold;
 }
 
 /* Sets colour of unstarred stars */
-.bi-star-fill.clickable.unstarred {
+.icon-star.clickable.unstarred {
     color: transparent;
 }
 

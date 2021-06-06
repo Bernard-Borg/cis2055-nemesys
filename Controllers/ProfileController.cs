@@ -21,8 +21,15 @@ namespace Nemesys.Controllers
 
         public IActionResult Index(string id)
         {
+            User user = _nemesysRepository.GetUserById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             UserViewModel model = new UserViewModel(
-                _nemesysRepository.GetUserById(id),
+                user,
                 _userManager.GetUserAsync(User).Result,
                 _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result
             );

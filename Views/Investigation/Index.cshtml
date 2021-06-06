@@ -10,11 +10,11 @@
     <div class="row mt-5">
         <div class="col-md-2 text-light">
             <div class="h1 text-center">Reporter</div>
-            <img src="@Model.InvestigatorPhoto" width="128" height="128" class="mx-auto d-block mt-5">
+            <img src="@Model.InvestigatorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="mx-auto d-block mt-5">
             <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
                 <span class="badge badge-pill bg-warning text-dark">
                     @Model.InvestigatorStarsNumber
-                    <i class="bi bi-star-fill" aria-hidden="true"></i>
+                    <i class="icon-star" aria-hidden="true"></i>
                 </span>
                 <span class="ps-3">@Model.InvestigatorUserName</span>
                 <span class="ps-3">@Model.InvestigatorEmail</span>
