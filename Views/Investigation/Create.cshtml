@@ -1,12 +1,13 @@
 ﻿@model EditInvestigationViewModel
 
 @{
-    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
     ViewData["Title"] = "Create an investigation";
 }
 
 <form asp-area="" asp-controller="Investigation" asp-action="Create" method="post">
-    <div class="form-group">
+
+    <div class="form-group pt-3">
         <label asp-for="@Model.Description"></label>
         <div class="textarea-with-counter">
             <textarea asp-for="@Model.Description" class="form-control" rows="4"></textarea>
@@ -14,7 +15,7 @@
         </div>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group pt-3">
         <label asp-for="@Model.DateOfAction"></label>
         <input asp-for="@Model.DateOfAction" class="form-control" />
         <span asp-validation-for="@Model.DateOfAction" class="text-danger"></span>
@@ -28,7 +29,7 @@
         <span asp-validation-for="@Model.StatusId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create Investigation</button>
+        <button type="submit" class="btn btn-outline-light">Create Investigation</button>
     </div>
 </form>
 

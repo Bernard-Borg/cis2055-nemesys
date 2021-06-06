@@ -1,7 +1,7 @@
 ﻿@model SearchResultViewModel
 
 @{
-    ViewData["Title"] = "Search Results for " + Model.SearchString;
+    ViewData["Title"] = "Search Results for \"" + Model.SearchString + "\"";
 }
 
 <h1 class="text-white text-center m-3">@ViewData["Title"]</h1>
@@ -28,6 +28,6 @@
 else
 {
     <div class="text-white m-3 pt-4">
-        <h2 class="text-center">No search results</h2>
+        <h2 class="text-center">No search results found.</h2>
     </div>
 }
