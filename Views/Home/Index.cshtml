@@ -76,7 +76,10 @@
                         </a>
                         <div class="col-2 d-none d-lg-inline-block justify-content-center align-content-center">
                             <span class="d-inline-block align-middle h-100"></span>
-                            <img class="rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+                            @if (report.Photo != null)
+                            {
+                                <img class="rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+                            }
                         </div>
                     </div>
                 }

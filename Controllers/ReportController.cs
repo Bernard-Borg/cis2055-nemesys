@@ -69,10 +69,10 @@ namespace Nemesys.Controllers
                 var report = new Report
                 {
                     DateOfReport = DateTime.UtcNow,
-                    DateTimeOfHazard = model.DateTimeOfHazard ?? default(DateTime),
+                    DateTimeOfHazard = model.DateTimeOfHazard ?? default,
                     DateOfUpdate = DateTime.UtcNow,
-                    Latitude = model.Latitude ?? default(double),
-                    Longitude = model.Longitude ?? default(double),
+                    Latitude = model.Latitude ?? default,
+                    Longitude = model.Longitude ?? default,
                     HazardTypeId = model.HazardTypeId,
                     StatusId = 1,
                     InvestigationId = null,
@@ -168,9 +168,9 @@ namespace Nemesys.Controllers
                 {
                     string oldFilePath = existingReport.Photo;
 
-                    existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard ?? default(DateTime);
-                    existingReport.Latitude = updatedReport.Latitude ?? default(double);
-                    existingReport.Longitude = updatedReport.Longitude ?? default(double);
+                    existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard ?? default;
+                    existingReport.Latitude = updatedReport.Latitude ?? default;
+                    existingReport.Longitude = updatedReport.Longitude ?? default;
                     existingReport.HazardTypeId = updatedReport.HazardTypeId;
                     existingReport.Description = updatedReport.Description;
 
@@ -193,7 +193,7 @@ namespace Nemesys.Controllers
                             }
                         }
 
-                        return RedirectToAction("Index", new { id = id });
+                        return RedirectToAction("Index", new { id });
                     }
                     else
                     {

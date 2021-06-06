@@ -17,7 +17,7 @@ else
     <div class="row mt-5">
         <div id="sideNav" class="col-md-3 p-5 text-center">
             <div id="parentimage">
-                <img id="profileimage" src="@Model.Photo?width=150&height=150?rmode=crop" width="150" height="150" class="mx-auto d-block">
+                <img id="profileimage" src="@Model.Photo?width=150&height=150&rmode=crop" width="150" height="150" class="mx-auto d-block" alt="Profile picture">
                 @if (Model.IsCurrentUser)
                 {
                     <div id="changeimage">
@@ -84,7 +84,7 @@ else
         @{
             if (Model.Reports != null && Model.Reports.ReportViewModels.Count() > 0)
             {
-                foreach (ReportViewModel report in Model.Reports.ReportViewModels)
+                foreach (ReportViewModel report in Model.Reports.ReportViewModels.OrderByDescending(r => r.DateOfUpdate))
                 {
                     <div class="row my-3">
                         <span class="col-1"></span>

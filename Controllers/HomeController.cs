@@ -24,9 +24,10 @@ namespace Nemesys.Controllers
         public IActionResult Index(HomeSortQueryParameter sort)
         {
             IEnumerable<Report> reports;
+
             if (sort.StatusId != null)
             {
-                reports = _nemesysRepository.GetAllReportsWithStatus(sort.StatusId) ?? _nemesysRepository.GetAllReports();
+                reports = _nemesysRepository.GetAllReportsWithStatus(sort.StatusId ?? default) ?? _nemesysRepository.GetAllReports();
             }
             else
             {
