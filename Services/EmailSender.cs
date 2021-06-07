@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nemesys.Services
 {
-    //https://stackoverflow.com/questions/65070487/how-to-configure-email-sending-in-asp-net-core-for-identity-library
+    //Adapted from https://stackoverflow.com/questions/65070487/how-to-configure-email-sending-in-asp-net-core-for-identity-library
     public class EmailSender : IEmailSender
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -20,7 +20,10 @@ namespace Nemesys.Services
                 Credentials = new NetworkCredential("identity.nemesys@gmail.com", "Cud453M6VC3Nj5E")
             };
 
-            return client.SendMailAsync("identity.nemesys@gmail.com", email, subject, htmlMessage);
+            MailMessage message = new MailMessage("identity.nemesys@gmail.com", email, subject, htmlMessage);
+            message.IsBodyHtml = true;
+
+            return client.SendMailAsync(message);
         }
     }
 }

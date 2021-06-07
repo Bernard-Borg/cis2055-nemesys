@@ -17,7 +17,7 @@
     <div class="row mt-5">
         <div class="col-md-2 text-light">
             <div class="h1 text-center">Reporter</div>
-            <img src="@Model.AuthorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="mx-auto d-block mt-5" alt="Photo of report author">
+            <img src="@Model.AuthorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of report author">
             <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
                 <span class="badge badge-pill bg-warning text-dark">
                     @Model.AuthorStarsNumber
@@ -53,7 +53,7 @@
                         <i>Last Update: @Model.DateOfUpdate</i>
                     </div>
                     <div class="mb-4">
-                        @Model.Description
+                        Date of incident occurence: @Model.DateOfHazard
                     </div>
                     @if (Model.Photo != null)
                     {
@@ -70,8 +70,8 @@
                 <div class="d-flex">
                     @if (user != null && user.Id == Model.AuthorId)
                     {
-                        <a class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
-                        <a class="btn btn-outline-light mt-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
+                        <a class="btn btn-outline-light mt-3 me-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                        <a class="btn btn-outline-light mt-3 me-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
                     }
                     @{
                         if (user != null && !Model.HasInvestigation)

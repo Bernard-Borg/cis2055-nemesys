@@ -14,20 +14,18 @@
 <form asp-area="" asp-controller="Report" asp-action="Edit" method="post" enctype="multipart/form-data">
     <noscript>Enabling JavaScript is recommended for a better user experience. Click <a href="https://www.enable-javascript.com/">here</a> to learn how</noscript>
     <div class="form-group">
-        <div class="row">
-            <div class="form-group col">
-                <label id="latitude-label" asp-for="@Model.Latitude"></label>
-                <input id="latitude" asp-for="@Model.Latitude" class="form-control" />
-                <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
-            </div>
-            <div class="form-group col">
-                <label id="longitude-label" asp-for="@Model.Longitude"></label>
-                <input id="longitude" asp-for="@Model.Longitude" class="form-control" />
-                <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
-            </div>
+        <div class="form-group col">
+            <label id="latitude-label" asp-for="@Model.Latitude"></label>
+            <input id="latitude" asp-for="@Model.Latitude" class="form-control" />
+            <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
         </div>
-        <div id="map"></div>
+        <div class="form-group col">
+            <label id="longitude-label" asp-for="@Model.Longitude"></label>
+            <input id="longitude" asp-for="@Model.Longitude" class="form-control" />
+            <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
+        </div>
     </div>
+    <div id="map"></div>
     <div class="form-group">
         <label asp-for="@Model.Description"></label>
         <div class="textarea-with-counter">
@@ -36,23 +34,22 @@
         </div>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
-    <div class="row">
-        <div class="form-group col">
-            <label asp-for="@Model.HazardTypeId"></label>
-            <select class="form-select" asp-for="@Model.HazardTypeId"
-                    asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
-                <option value="">Select a category</option>
-            </select>
-            <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
-        </div>
-        <div class="form-group col">
-            <label asp-for="@Model.DateTimeOfHazard"></label>
-            <input asp-for="@Model.DateTimeOfHazard" class="form-control" />
-            <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
-        </div>
+    <div class="form-group col">
+        <label asp-for="@Model.HazardTypeId"></label>
+        <select class="form-select" asp-for="@Model.HazardTypeId"
+                asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
+            <option value="">Select a category</option>
+        </select>
+        <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
+    </div>
+    <div class="form-group col">
+        <label asp-for="@Model.DateTimeOfHazard"></label>
+        <input asp-for="@Model.DateTimeOfHazard" class="form-control" />
+        <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
     </div>
     @if (Model.ImageUrl != null)
     {
+        <p>Current Report Image</p>
         <img src="@Model.ImageUrl" alt="Current report image" />
     }
     else
