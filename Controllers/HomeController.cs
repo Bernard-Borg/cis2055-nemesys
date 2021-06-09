@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -94,7 +95,7 @@ namespace Nemesys.Controllers
 
             var reportListViewModel = new ReportListViewModel(
                 _nemesysRepository.GetAllReports()
-                    .Where(report => report.Description.Contains(search, System.StringComparison.CurrentCultureIgnoreCase))
+                    .Where(report => report.Description.Contains(search, StringComparison.CurrentCultureIgnoreCase))
                     .ToList(),
                 _userManager.GetUserAsync(User).Result
             );
@@ -106,9 +107,30 @@ namespace Nemesys.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Star(int reportId)
+        public IActionResult Star(int reportId, HomeSortQueryParameter sort)
         {
-            return Json(_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId));
+            var report = _nemesysRepository.GetReportById(reportId);
+
+            if (report == null)
+            {
+                return NotFound();
+            }
+
+            if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId));
+            }
+            else
+            {
+                if (_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId))
+                {
+                    return RedirectToAction("Index", sort);
+                }
+                else
+                {
+                    return StatusCode(500);
+                }
+            }
         }
 
         public IActionResult Error()

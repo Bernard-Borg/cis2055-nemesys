@@ -21,7 +21,7 @@ namespace Nemesys.ViewModels
 
         [Required(ErrorMessage = "Type of hazard is required")]
         [Display(Name = "Type of hazard")]
-        public int HazardTypeId { get; set; }
+        public int? HazardTypeId { get; set; }
 
         public string ImageUrl { get; set; }
 

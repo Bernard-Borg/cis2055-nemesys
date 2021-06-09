@@ -66,6 +66,8 @@ namespace Nemesys.Controllers
         {
             if (ModelState.IsValid)
             {
+                Console.WriteLine(model.HazardTypeId);
+
                 var report = new Report
                 {
                     DateOfReport = DateTime.UtcNow,
@@ -73,7 +75,7 @@ namespace Nemesys.Controllers
                     DateOfUpdate = DateTime.UtcNow,
                     Latitude = model.Latitude ?? default,
                     Longitude = model.Longitude ?? default,
-                    HazardTypeId = model.HazardTypeId,
+                    HazardTypeId = model.HazardTypeId ?? default,
                     StatusId = 1,
                     InvestigationId = null,
                     Description = model.Description,
@@ -171,7 +173,7 @@ namespace Nemesys.Controllers
                     existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard ?? default;
                     existingReport.Latitude = updatedReport.Latitude ?? default;
                     existingReport.Longitude = updatedReport.Longitude ?? default;
-                    existingReport.HazardTypeId = updatedReport.HazardTypeId;
+                    existingReport.HazardTypeId = updatedReport.HazardTypeId ?? default;
                     existingReport.Description = updatedReport.Description;
 
                     if (updatedReport.Photo != null)

@@ -10,7 +10,8 @@
         zoomControl: false,
         dragging: false,
         keyboard: false,
-        maxBoundsViscosity: 1.0
+        maxBoundsViscosity: 1.0,
+        attributionControl: false
     });
 
     map.setMinZoom(18);

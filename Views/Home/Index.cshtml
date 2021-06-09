@@ -59,29 +59,36 @@
             @{
                 foreach (ReportViewModel report in Model.Reports.ReportViewModels)
                 {
-                    <div class="row mt-3 mb-3">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                        <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
-                            <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
-                        </div>
-                        }
-                        <a class="@(User.Identity.IsAuthenticated ? "col-10 col-lg-9" : "col-12 col-lg-10")" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                            <div class="text-light border border-light rounded-3 p-3 overflow-hidden">
-                                <p class="h2">@report.Description</p>
-                                <p class="h4">Type of Hazard: @report.HazardName</p>
-                                <span>Status: </span>
-                                <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
-                            </div>
-                        </a>
-                        <div class="col-2 d-none d-lg-inline-block justify-content-center align-content-center">
-                            <span class="d-inline-block align-middle h-100"></span>
-                            @if (report.Photo != null)
+                    <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star" asp-route-StarRecord="@Context.Request.Query["SortString"]" asp-route-StatusId="@Context.Request.Query["StatusId"]">
+                        <div class="row mt-3 mb-3">
+                            @if (User.Identity.IsAuthenticated)
                             {
-                                <img class="rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+
+                                <input type="hidden" name="reportId" value="@report.ReportId" />
+                                <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
+                                    <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description">
+                                        <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                                    </button>
+                                </div>
+
                             }
+                            <a class="@(User.Identity.IsAuthenticated ? "col-10 col-lg-9" : "col-12 col-lg-10")" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                                <div class="text-light border border-light rounded-3 p-3 overflow-hidden">
+                                    <p class="h2">@report.Description</p>
+                                    <p class="h4">Type of Hazard: @report.HazardName</p>
+                                    <span>Status: </span>
+                                    <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
+                                </div>
+                            </a>
+                            <div class="col-2 d-none d-lg-inline-block justify-content-center align-content-center">
+                                <span class="d-inline-block align-middle h-100"></span>
+                                @if (report.Photo != null)
+                                {
+                                    <img class="rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+                                }
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 }
             }
         </div>

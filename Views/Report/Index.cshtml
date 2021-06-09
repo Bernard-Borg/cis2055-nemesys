@@ -33,9 +33,15 @@
             <div class="row">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="col-md-1">
-                        <i class="icon-star clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
-                    </div>
+                    
+                    <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
+                        <div class="col-md-1">
+                            <input type="hidden" name="reportId" value="@Model.ReportId">
+                            <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @Model.Description">
+                                <i class="icon-star clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
+                            </button>
+                        </div>
+                    </form>
                 }
                 <div class="col-md-11 h5">
                     <h1>@Model.Description</h1>

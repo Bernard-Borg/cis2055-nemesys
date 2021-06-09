@@ -23,7 +23,8 @@
         zoom: 18,
         zoomControl: false,
         maxBounds: bounds,
-        maxBoundsViscosity: 1.0
+        maxBoundsViscosity: 1.0,
+        attributionControl: false
     });
 
     map.setMinZoom(18);
@@ -42,7 +43,7 @@
     if (latitudeValue && longitudeValue) {
         marker = L.marker(L.latLng(latitudeValue, longitudeValue), { draggable: false }).addTo(map);
     }
-    
+
     map.on("click", function (event) {
         //Disallows multiple markers
         if (marker != null) {
