@@ -46,7 +46,10 @@
             {
                 <!--Add Report button-->
                 <div class="d-flex justify-content-md-around justify-content-lg-end">
-                    <a class="btn btn-outline-light" style="width: 125px;" asp-area="" asp-controller="Report" asp-action="Create">Add Report</a>
+                    <a class="btn btn-outline-light" asp-area="" asp-controller="Report" asp-action="Create">
+                        <span class="d-block d-sm-none">+</span>
+                        <span class="d-none d-sm-block">Add Report</span>
+                    </a>
                 </div>
 
                 <!--Drop down profile menu-->

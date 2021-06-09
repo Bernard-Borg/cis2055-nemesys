@@ -15,8 +15,9 @@
     let bottomRightCorner = L.latLng(35.9009070634084, 14.485854021054182);
     let bounds = L.latLngBounds(topLeftCorner, bottomRightCorner);
 
-    //Sets the height of the map div when JS is enabled
+    //Sets the height and max-width of the map div when JS is enabled
     $("#map").css("height", "400px");
+    $("#map").css("max-width", "900px");
 
     let map = L.map("map", {
         center: [35.902470, 14.483849],
