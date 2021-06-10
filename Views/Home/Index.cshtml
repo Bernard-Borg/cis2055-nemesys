@@ -11,7 +11,7 @@
             <div class="bgsidebar">
                 <p class="h4 fw-normal text-light mb-3">Sort by</p>
                 <div class="sortitems">
-                    <ul class="nav nav-pills flex-column">
+                    <ul class="nav nav-pills flex-column" role="navigation" aria-label="Sort by">
                         <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Award" asp-route-StatusId="@Context.Request.Query["StatusId"]">Highest Awarded</a></li>
                         <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Update" asp-route-StatusId="@Context.Request.Query["StatusId"]">Last Updated</a></li>
                         <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Newest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Newest)</a></li>
@@ -21,14 +21,14 @@
             </div>
             <br>
 
-            <div class="bgsidebar">
+            <div class="bgsidebar" role="navigation" aria-label="Hall of fame">
                 <p class="h4 fw-normal text-light mb-3">Hall of Fame</p>
                 @{
                     <div class="mb-3">
                         @foreach (User user in Model.HallOfFame.HallOfFameUsers)
                         {
                         <a class="btn btn-outline-light text-left p-1 p-lg-3 d-flex custom-rounded" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                            <img class="rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48&rmode=crop" width="48" height="48" alt="Profile picture">
+                            <img class="d-md-none d-lg-inline-block rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48&rmode=crop" width="48" height="48" alt="@user.Alias's profile picture">
                             <div class="pl-3 lh-sm">
                                 <p class="mb-1">@user.Alias</p>
                                 <span class="badge badge-pill bg-warning text-dark">
@@ -81,12 +81,12 @@
                 foreach (ReportViewModel report in Model.Reports.ReportViewModels)
                 {
                     <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star" asp-route-StarRecord="@Context.Request.Query["SortString"]" asp-route-StatusId="@Context.Request.Query["StatusId"]">
-                        <div class="row mt-3 mb-3 d-flex align-items-center">
+                        <div class="row mt-3 mb-3 d-flex align-items-center" role="listitem">
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <input type="hidden" name="reportId" value="@report.ReportId" />
                                 <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
-                                    <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description">
+                                    <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description (Is starred: @report.Starred)">
                                         <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
                                     </button>
                                 </div>

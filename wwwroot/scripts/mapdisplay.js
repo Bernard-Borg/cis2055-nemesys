@@ -20,5 +20,8 @@
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     ).addTo(map);
 
-    marker = L.marker([lat, long], { draggable: false }).addTo(map);
+    marker = L.marker([lat, long], {
+        draggable: false,
+        alt: "Marker of hazard location"
+    }).addTo(map);
 });

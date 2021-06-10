@@ -201,7 +201,7 @@ namespace Nemesys.Models
                         DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         HazardTypeId = 1,
-                        Description = "A Kyle is terrorising the Faculty of Education",
+                        Description = "Dr. Porter is haunting the hall of the Faculty of ICT",
                         StatusId = 1,
                         UserId = user.Id,
                         NumberOfStars = 0

@@ -87,19 +87,13 @@
                 <div class="col-md-8">
                     @if (Model.Photo != null)
                     {
-                        <div style="width: 650px; max-height: 650px;">
-                            <img class="mb-5 custom-rounded" src="@Model.Photo?width=650&height=650&rmode=max" alt="Image of danger" />
+                        <div class="d-flex justify-content-center">
+                            <img class="mb-5 custom-rounded" style="max-width: 60%;" src="@Model.Photo?height=600&width=600&rmode=max" alt="Image of hazard" />
                         </div>
                     }
-                    <div class="h4 mb-4">
-                        Date of incident occurence: @Model.DateOfHazard
-                    </div>
-                    <div class="h5">
-                        Reported on: @Model.DateOfReport
-                    </div>
-                    <div class="p pb-4">
-                        <i>Last Update: @Model.DateOfUpdate</i>
-                    </div>
+                    <p class="h4 mb-4">Date of incident occurence: @Model.DateOfHazard</p>
+                    <p class="h5">Reported on: @Model.DateOfReport</p>
+                    <p class="p pb-4 fst-italic">Last Update: @Model.DateOfUpdate</p>
                 </div>
             </div>
         </div>

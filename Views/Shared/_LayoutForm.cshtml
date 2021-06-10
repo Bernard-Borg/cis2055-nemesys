@@ -6,12 +6,14 @@
     @RenderSection("head", required: false)
 }
 
-<h1 class="text-light text-center mt-5">@ViewData["Title"]</h1>
-<div class="text-light d-flex justify-content-center row">
-    <div class="col-md-4">
-        @RenderBody()
+<h1 class="text-light text-center mt-5" role="heading">@ViewData["Title"]</h1>
+<main>
+    <div class="text-light d-flex justify-content-center row">
+        <div class="col-md-4">
+            @RenderBody()
+        </div>
     </div>
-</div>
+</main>
 
 @section scripts
 {
