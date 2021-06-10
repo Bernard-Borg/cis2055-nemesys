@@ -66,8 +66,6 @@ namespace Nemesys.Controllers
         {
             if (ModelState.IsValid)
             {
-                Console.WriteLine(model.HazardTypeId);
-
                 var report = new Report
                 {
                     DateOfReport = DateTime.UtcNow,

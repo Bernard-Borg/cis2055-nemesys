@@ -5,43 +5,41 @@
     ViewData["Title"] = "Hall of Fame";
 }
 
-<div class="container-fluid row">
-    <div class="">
-        <h1 class="text-light text-center pt-3">Hall of Fame</h1>
-    </div>
-    <div id="sideNav" class="col-lg-2">
-        <div class="bgsidebar">
-            <p class="h4 fw-normal text-light">Sort by</p>
-            <ul class="nav nav-pills flex-column">
-                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
-                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
-            </ul>
+<div class="container-fluid px-sm-1 px-md-3 pt-1">
+    <h1 class="text-light text-center py-3">@ViewData["Title"]</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-3 col-lg-2">
+            <div class="bgsidebar sortitems mx-3 mx-md-0">
+                <p class="h4 fw-normal text-light">Sort by</p>
+                <ul class="nav nav-pills flex-column">
+                    <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
+                    <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
+                </ul>
+            </div>
         </div>
-        <hr>
-    </div>
-    <div class="col-lg-9 offset-md-1">
-        @{
-            foreach (User user in Model.HallOfFameUsers)
-            {
-                <div id="maincontent">
-                    <a class="row pt-4" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                        <div class="col-2 col-xd-1 d-flex justify-content-center align-items-center align-items-stretch" style="max-width: 100px">
-                            <span class="badge badge-pill bg-warning text-dark fs-3 d-flex align-items-center">
+        <div class="col-12 col-md-9 col-lg-10">
+            @{
+                foreach (User user in Model.HallOfFameUsers)
+                {
+                    <div class="row pt-4 justify-content-center">
+                        <div class="col-0 d-none col-md-2 col-lg-1 d-md-flex justify-content-center align-self-stretch">
+                            <span class="badge badge-pill bg-warning text-dark fs-3 d-flex align-items-center custom-rounded">
                                 @user.NumberOfStars
                                 <i class="icon-star" aria-hidden="true"></i>
                             </span>
                         </div>
-                        <div class="col-10 col-xl-8 text-light border border-light rounded-3 p-3 overflow-hidden">
-                            <h2>@user.Alias</h2>
-                            <h4>@user.NumberOfReports Reports</h4>
+                        <a class="col-10 col-lg-9" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
+                            <div class="text-light border border-light custom-rounded p-3 overflow-hidden">
+                                <h2>@user.Alias</h2>
+                                <h4>@user.NumberOfReports Reports (@user.NumberOfStars stars)</h4>
+                            </div>
+                        </a>
+                        <div class="col-0 col-lg-1 d-none d-lg-flex justify-content-start p-2">
+                            <img class="custom-rounded" src="@user.Photo?width=96&height=96&rmode=crop" onerror="style.opacity='0'" width="96" height="96" alt="@user.Alias's profile picture">
                         </div>
-                        <div class="col-2 d-none d-xl-inline-block justify-content-center align-content-center p-2">
-                            <span class="d-inline-block align-middle h-100"></span>
-                            <img class="rounded align-content-center" src="@user.Photo?width=96&height=96&rmode=crop" onerror="style.opacity='0'" width="96" height="96" alt="User's profile picture">
-                        </div>
-                    </a>
-                </div>
+                    </div>
+                }
             }
-        }
+        </div>
     </div>
 </div>

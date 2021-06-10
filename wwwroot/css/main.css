@@ -20,6 +20,10 @@ textarea {
     float: right;
 }
 
+.custom-rounded {
+    border-radius: 25px !important;
+}
+
 /* Sets small top margin for validation errors */
 .field-validation-error {
     display: inline-block;

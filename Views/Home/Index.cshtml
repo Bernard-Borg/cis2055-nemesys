@@ -26,13 +26,13 @@
                 @{
                     foreach (User user in Model.HallOfFame.HallOfFameUsers)
                     {
-                        <a class="btn btn-outline-light text-left mb-3 p-3 d-flex" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
+                        <a class="btn btn-outline-light text-left mb-3 p-1 p-lg-3 d-flex custom-rounded" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
                             <img class="rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48&rmode=crop" width="48" height="48" alt="Profile picture">
                             <div class="pl-3 lh-sm">
                                 <p class="mb-1">@user.Alias</p>
                                 <span class="badge badge-pill bg-warning text-dark">
                                     @user.NumberOfStars
-                                    <i class="fa icon-star" aria-hidden="true"></i>
+                                    <i class="icon-star" aria-hidden="true"></i>
                                 </span>
                             </div>
                         </a>
@@ -40,12 +40,12 @@
 
                     if (Model.HallOfFame.HallOfFameUsers.Count() == 0)
                     {
-                        <div class="mb-3 p-3 d-flex text-white">
+                        <div class="mb-3 p-3 d-flex text-white custom-rounded">
                             There are no users.
                         </div>
                     }
                 }
-                <a class="btn btn-light w-100" asp-area="" asp-controller="Home" asp-action="Hall">Go to Hall of Fame</a>
+                <a class="btn btn-light w-100 custom-rounded" asp-area="" asp-controller="Home" asp-action="Hall">Go to Hall of Fame</a>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
                 foreach (ReportViewModel report in Model.Reports.ReportViewModels)
                 {
                     <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star" asp-route-StarRecord="@Context.Request.Query["SortString"]" asp-route-StatusId="@Context.Request.Query["StatusId"]">
-                        <div class="row mt-3 mb-3">
+                        <div class="row mt-3 mb-3 d-flex align-items-center">
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <input type="hidden" name="reportId" value="@report.ReportId" />
@@ -79,18 +79,17 @@
                                 </div>
                             }
                             <a class="@(User.Identity.IsAuthenticated ? "col-10 col-lg-9" : "col-12 col-lg-10")" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                                <div class="text-light border border-light rounded-3 p-3 overflow-hidden">
+                                <div class="text-light border border-light custom-rounded p-3 overflow-hidden">
                                     <p class="h2">@report.Description</p>
                                     <p class="h4">Type of Hazard: @report.HazardName</p>
                                     <span>Status: </span>
                                     <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
                                 </div>
                             </a>
-                            <div class="col-2 d-none d-xl-inline-block justify-content-center align-content-center p-0">
-                                <span class="d-inline-block align-middle h-100"></span>
+                            <div class="col-2 d-none d-lg-inline-block justify-content-center align-content-center p-0">
                                 @if (report.Photo != null)
                                 {
-                                    <img class="rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+                                    <img class="custom-rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
                                 }
                             </div>
                         </div>

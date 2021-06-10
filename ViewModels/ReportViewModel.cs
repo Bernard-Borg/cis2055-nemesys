@@ -48,7 +48,7 @@ namespace Nemesys.ViewModels
 
             if (report.InvestigationId != null)
             {
-                InvestigationId = report.InvestigationId ?? default(int);
+                InvestigationId = report.InvestigationId ?? default;
             }
 
             HasInvestigation = report.InvestigationId != null;

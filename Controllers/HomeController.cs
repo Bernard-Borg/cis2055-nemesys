@@ -110,6 +110,7 @@ namespace Nemesys.Controllers
         public IActionResult Star(int reportId, HomeSortQueryParameter sort)
         {
             var report = _nemesysRepository.GetReportById(reportId);
+            Console.WriteLine(HttpContext.Request.Headers["Referer"].ToString());
 
             if (report == null)
             {

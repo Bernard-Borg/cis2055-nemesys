@@ -95,19 +95,25 @@ else
                 {
                     foreach (ReportViewModel report in Model.Reports.ReportViewModels.OrderByDescending(r => r.DateOfUpdate))
                     {
-                        <div class="row my-3">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
-                                    <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
-                                </div>
-                            }
-                            <a class="col-10 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                                <div class="rounded-3 border border-light p-2">
-                                    <p class="fs-3 m-0">@report.Description</p>
-                                </div>
-                            </a>
-                        </div>
+                        <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
+                            <div class="row my-3">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div class="col-2 col-lg-1 d-flex align-items-center justify-content-center">
+                                        <input type="hidden" name="reportId" value="@report.ReportId">
+                                        <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description">
+                                            <i class="icon-star clickable d-flex justify-content-center @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                                        </button>
+                                    </div>
+                                }
+                                <a class="col-10 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                                    <div class="rounded-3 border border-light p-2">
+                                        <p class="fs-3 m-0">@report.Description</p>
+                                        <p>Date Submitted: @report.DateOfReport</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </form>
                     }
                 }
                 else
