@@ -35,7 +35,7 @@
                 <!--Search bar-->
                 <div class="d-none d-lg-block">
                     <form method="GET" class="w-100 d-flex" asp-area="" asp-controller="Home" asp-action="Search">
-                        <input name="search" class="form-control m-0" type="search" placeholder="Search Reports..." aria-label="Search">
+                        <input id="search" name="search" class="form-control m-0" type="search" placeholder="Search Reports">
                     </form>
                 </div>
             </div>
@@ -44,7 +44,7 @@
             {
                 <!--Add Report button-->
                 <div class="d-flex justify-content-md-around justify-content-lg-end">
-                    <a class="btn btn-outline-light" asp-area="" asp-controller="Report" asp-action="Create">
+                    <a class="btn btn-outline-light" asp-area="" asp-controller="Report" asp-action="Create" aria-label="Add Report">
                         <span class="d-block d-sm-none">+</span>
                         <span class="d-none d-sm-block">Add Report</span>
                     </a>
@@ -58,7 +58,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                         <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
                         <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
         <!--Drop down search bar-->
         <div class="collapse navbar-collapse d-lg-none" id="navbarCollapse">
             <form method="GET" class="d-flex p-3" style="background-color: black;" asp-area="" asp-controller="Home" asp-action="Search">
-                <input name="search" class="form-control" type="search" placeholder="Search Reports..." aria-label="Search" style="font-family: 'Work Sans'">
+                <input name="search" class="form-control" type="search" placeholder="Search Reports">
             </form>
         </div>
     </header>
