@@ -16,27 +16,54 @@
 <div class="container-fluid">
     <div class="row mt-5">
         <div class="col-xl-2 text-light mb-3">
-            <div class="bgsidebar">
-                <div class="h1 text-center">Reporter</div>
+            <div class="bgsidebar mb-4">
+                <div class="h2 text-center">Reporter</div>
                 <img src="@Model.AuthorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of report author">
-                <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
-                    <span class="badge badge-pill bg-warning text-dark">
-                        @Model.AuthorStarsNumber
+                <div class="h4 pt-3 lh-sm text-center">
+                    <span class="badge badge-pill bg-warning text-dark mb-2 mt-3">
+                        @Model.NumberOfStars
                         <i class="icon-star" aria-hidden="true"></i>
                     </span>
-                    <span class="ps-3">@Model.AuthorUserName</span>
+                    <p>@Model.AuthorUserName</p> 
                 </div>
                 <div class="d-grid">
-                    <a type="button" class="btn btn-outline-light btn-lg" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
+                    <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
+                </div>
+            </div>
+            @{
+                var user = userManager.GetUserAsync(User).Result;
+            }
+            @if (user != null && user.Id == Model.AuthorId)
+            {
+                <div class="bgsidebar mb-4">
+                    <div class="h4 pb-3 text-center">Report Options</div>
+                    <div class="d-grid">
+                        <a class="btn btn-outline-light fs-5 custom-rounded mb-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                        <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
+                    </div>
+                </div>
+            }
+
+            <div class="bgsidebar mb-4" style="border-color: @Model.ReportStatus.StatusColour;">
+                <div class="h4 text-center">Current Status: @Model.ReportStatus.StatusName</div>
+                <div class="d-grid">
+                    @if ((User.IsInRole("Investigator") || User.IsInRole("Admin")) && !Model.HasInvestigation)
+                    {
+                        <a class="btn btn-light fs-5 custom-rounded mt-3" asp-area="" asp-controller="Investigation" asp-action="Create" asp-route-id="@Model.ReportId">Add Investigation</a>
+                    }
+                    @if (Model.HasInvestigation)
+                    {
+                        <a class="btn btn-light fs-5 custom-rounded mt-3" asp-area="" asp-controller="Investigation" asp-action="Index" asp-route-id="@Model.InvestigationId">View Investigation</a>
+                    }
                 </div>
             </div>
         </div>
-        <div class="col-xl-10 text-light ps-5 pe-4">
+        <div class="col-xl-7 text-light ps-5 pe-4">
             <div class="row">
-                <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
+                <form class="input-group" method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <div class="col-md-1">
+                        <div class="col-md-1 mt-2">
                             <input type="hidden" name="reportId" value="@Model.ReportId">
                             <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @Model.Description">
                                 <i class="icon-star clickable d-flex justify-content-center @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
@@ -46,65 +73,46 @@
                     }
                     else
                     {
-                        <div class="col-md-1 d-flex justify-content-center align-self-center">
-                            <p class="h3 d-flex" style="color: gold;">@Model.NumberOfStars</p>
-                        </div>
+                    <div class="col-md-1 d-flex justify-content-center align-items-center" style="color: gold;">
+                        <p class="h2">@Model.NumberOfStars</p>
+                        <i class="icon-star fs-4" aria-hidden="true"></i>
+                    </div>
                     }
-                    <div class="col-md-11 h5">
+                    <div class="col-md-11 ps-3 h5">
                         <h1>@Model.Description</h1>
-                        <span>Current Status:</span>
-                        <span style="color: @Model.ReportStatus.StatusColour">@Model.ReportStatus.StatusName</span>
                     </div>
                 </form>
             </div>
             <div class="row pt-5">
                 <div class="col-md-8">
+                    @if (Model.Photo != null)
+                    {
+                        <div style="width: 650px; max-height: 650px;">
+                            <img class="mb-5 custom-rounded" src="@Model.Photo?width=650&height=650&rmode=max" alt="Image of danger" />
+                        </div>
+                    }
+                    <div class="h4 mb-4">
+                        Date of incident occurence: @Model.DateOfHazard
+                    </div>
                     <div class="h5">
-                        Reported: @Model.DateOfReport
+                        Reported on: @Model.DateOfReport
                     </div>
                     <div class="p pb-4">
                         <i>Last Update: @Model.DateOfUpdate</i>
                     </div>
-                    <div class="mb-4">
-                        Date of incident occurence: @Model.DateOfHazard
-                    </div>
-                    @if (Model.Photo != null)
-                    {
-                        <img class="mb-5" src="@Model.Photo" width="256" alt="Image of danger" />
-                    }
-                    @{
-                        var user = userManager.GetUserAsync(User).Result;
-                    }
-                </div>
-                <div class="col-lg-4">
-                    <p class="h4">Location of Hazard</p>
-                    <div id="map" style="height: 400px;"></div>
-                </div>
-                <div class="d-flex">
-                    @if (user != null && user.Id == Model.AuthorId)
-                    {
-                        <a class="btn btn-outline-light mt-3 me-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
-                        <a class="btn btn-outline-light mt-3 me-3" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
-                    }
-                    @{
-                        if (user != null && !Model.HasInvestigation)
-                        {
-                            if (User.IsInRole("Investigator") || User.IsInRole("Admin"))
-                            {
-                                <a class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Investigation" asp-action="Create" asp-route-id="@Model.ReportId">Add Investigation</a>
-                            }
-                        }
-
-                        if (user != null && Model.HasInvestigation)
-                        {
-                            <a class="btn btn-light text-dark mt-3" asp-area="" asp-controller="Investigation" asp-action="Index" asp-route-id="@Model.InvestigationId">View Investigation</a>
-                        }
-                    }
                 </div>
             </div>
         </div>
+        <div class="col-xl-3 text-light mb-3">
+            <div class="bgsidebar">
+                <h2 class="text-center mb-4">Location of Hazard</h2>
+                <noscript>JavaScript must be enabled to view the map. Click <a href="https://www.enable-javascript.com/">here</a> to learn how to enable JavaScript.</noscript>
+                <div class="custom-rounded" id="map" style="height: 400px;"></div>
+            </div>
+        </div>
+        
     </div>
-</div>
+    </div>
 
 @section scripts {
     <script type="text/javascript" src="~/scripts/star.js"></script>

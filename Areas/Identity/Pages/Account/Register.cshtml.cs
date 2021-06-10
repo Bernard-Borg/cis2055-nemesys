@@ -70,7 +70,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
-            [MaxLength(45, ErrorMessage = "Cannot have a username with more than 45 characters")]
+            [MaxLength(20, ErrorMessage = "Cannot have a username with more than 20 characters")]
             [MinLength(3, ErrorMessage = "Cannot have a username with less than 3 characters")]
             [Display(Name = "Username")]
             public string Alias { get; set; }

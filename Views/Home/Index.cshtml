@@ -24,9 +24,10 @@
             <div class="bgsidebar">
                 <p class="h4 fw-normal text-light mb-3">Hall of Fame</p>
                 @{
-                    foreach (User user in Model.HallOfFame.HallOfFameUsers)
-                    {
-                        <a class="btn btn-outline-light text-left mb-3 p-1 p-lg-3 d-flex custom-rounded" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
+                    <div class="mb-3">
+                        @foreach (User user in Model.HallOfFame.HallOfFameUsers)
+                        {
+                        <a class="btn btn-outline-light text-left p-1 p-lg-3 d-flex custom-rounded" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
                             <img class="rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48&rmode=crop" width="48" height="48" alt="Profile picture">
                             <div class="pl-3 lh-sm">
                                 <p class="mb-1">@user.Alias</p>
@@ -36,7 +37,8 @@
                                 </span>
                             </div>
                         </a>
-                    }
+                        }
+                    </div>
 
                     if (Model.HallOfFame.HallOfFameUsers.Count() == 0)
                     {
@@ -45,14 +47,25 @@
                         </div>
                     }
                 }
-                <a class="btn btn-light w-100 custom-rounded" asp-area="" asp-controller="Home" asp-action="Hall">Go to Hall of Fame</a>
+                <a class="btn btn-light fs-5 w-100 custom-rounded" asp-area="" asp-controller="Home" asp-action="Hall">Go to Hall of Fame</a>
             </div>
         </div>
 
         <div class="col-md-8 offset-md-1">
             <h2 class="text-light d-flex d-sm-none justify-content-center mt-4">Reports</h2>
 
-            <ul class="nav nav-tabs nav-justified text-center mt-2">
+            <div class="btn-group mt-3 mb-3 d-block d-md-none dropend">
+                <button type="button" class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">Filter Reports</button>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">All</a></li>
+                    @foreach (ReportStatus status in Model.Statuses)
+                    {
+                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.Id">@status.StatusName</a></li>
+                    }
+                </ul>
+            </div>
+
+            <ul class="nav nav-tabs nav-justified text-center mt-2 d-none d-md-flex">
                 <li class="nav-item fs-5">
                     <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">All</a>
                 </li>
@@ -79,7 +92,7 @@
                                 </div>
                             }
                             <a class="@(User.Identity.IsAuthenticated ? "col-10 col-lg-9" : "col-12 col-lg-10")" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                                <div class="text-light border border-light custom-rounded p-3 overflow-hidden">
+                                <div class="text-light border custom-rounded border-light p-3">
                                     <p class="h2">@report.Description</p>
                                     <p class="h4">Type of Hazard: @report.HazardName</p>
                                     <span>Status: </span>
