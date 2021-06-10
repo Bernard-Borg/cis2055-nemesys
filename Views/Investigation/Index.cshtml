@@ -7,25 +7,41 @@
 }
 
 <div class="container-fluid">
-    <div class="row mt-5">
-        <div class="col-md-2 text-light">
-            <div class="h1 text-center">Investigator</div>
-            <img src="@Model.InvestigatorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="mx-auto d-block mt-5 rounded-circle">
-            <div class="h4 pt-3 pb-2 lh-sm d-flex justify-content-center align-items-center">
-                <span class="badge badge-pill bg-warning text-dark">
-                    @Model.InvestigatorStarsNumber
-                    <i class="icon-star" aria-hidden="true"></i>
-                </span>
-                <span class="ps-3">@Model.InvestigatorUserName</span>
+    <div class="row mt-5 text-light">
+        <div class="col-xl-2 text-light mb-3">
+            <div class="bgsidebar mb-4">
+                <div class="h2 text-center">Investigator</div>
+                <img src="@Model.InvestigatorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of investigator">
+                <div class="h4 pt-3 lh-sm text-center">
+                    <span class="badge badge-pill bg-warning text-dark mb-2 mt-3">
+                        @Model.InvestigatorStarsNumber
+                        <i class="icon-star" aria-hidden="true"></i>
+                    </span>
+                    <p>@Model.InvestigatorUserName</p>
+                </div>
+                <div class="d-grid">
+                    <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.InvestigatorId">Profile</a>
+                </div>
             </div>
-            <div class="h5 d-flex justify-content-center">
-                <span class="h4">@Model.InvestigatorEmail</span>
+            <div class="bgsidebar mb-4">
+                <div class="d-grid">
+                    <a class="btn btn-light fs-5 custom-rounded" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">View Original Report</a>
+                </div>
             </div>
-            <div class="d-grid">
-                <a class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.InvestigatorId">Profile</a>
+            @{
+                var user = userManager.GetUserAsync(User).Result;
+            }
+            @if (user != null && user.Id == Model.InvestigatorId)
+            {
+            <div class="bgsidebar mb-4">
+                <div class="h4 text-center">Investigation Options</div>
+                <div class="d-grid">
+                    <a class="btn btn-light fs-5 custom-rounded mt-3" asp-area="" asp-controller="Investigation" asp-action="Edit" asp-route-id="@Model.InvestigationId">Edit Investigation</a>
+                </div>
             </div>
+            }
         </div>
-        <div class="col-md-10 text-light ps-5 pe-4">
+        <div class="col-md-8 text-light ps-5 pe-4">
             <div class="row">
                 <div class="col-md-11 h5">
                     <h1 class="mb-2">@Model.Description</h1>
@@ -40,19 +56,6 @@
                     <div class="h5">
                         Date of Action: @Model.DateOfAction
                     </div>
-                    <div class="mb-2">
-                        @Model.Description
-                    </div>
-                    @{
-                        var user = userManager.GetUserAsync(User).Result;
-                    }
-                </div>
-                <div class="d-flex">
-                    @if (user != null && user.Id == Model.InvestigatorId)
-                    {
-                        <a class="btn btn-outline-light mt-2 me-3" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">View Original Report</a>
-                        <a class="btn btn-outline-light mt-2" asp-area="" asp-controller="Investigation" asp-action="Edit" asp-route-id="@Model.InvestigationId">Edit Investigation</a>
-                    }
                 </div>
             </div>
         </div>
