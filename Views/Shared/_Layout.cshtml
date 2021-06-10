@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using Nemesys.Models; 
+@using Nemesys.Models;
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -22,14 +22,12 @@
     <header>
         <div class="container-fluid d-grid gap-4 align-items-center p-3" style="grid-template-columns: 1fr 2fr 0.75fr 0.25fr;">
             <!--NEMESYS "logo"-->
-            <a asp-controller="Home" asp-action="Index">
-                <h2 class="m-0 text-white" style="font-size: 32px;">NEMESYS</h2>
-            </a>
+            <h2 class="m-0" style="font-size: 32px;"><a class="text-white" asp-controller="Home" asp-action="Index">NEMESYS</a></h2>
 
             <!--Search bar and button-->
             <div>
                 <div class="d-flex justify-content-end">
-                    <button class="navbar-toggler btn-outline-light d-lg-none border-light p-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Press to open search bar">
+                    <button class="navbar-toggler btn-outline-light d-lg-none border-light p-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="icon-search"></i>
                     </button>
                 </div>
@@ -67,11 +65,20 @@
             }
             else
             {
-                <div class="d-flex justify-content-md-around justify-content-lg-end">
+                <div class="d-none d-sm-flex justify-content-md-around justify-content-lg-end">
                     <a class="btn btn-outline-light" style="width: 125px;" asp-area="Identity" asp-page="/Account/Register">Register</a>
                 </div>
-                <div class="d-flex justify-content-md-around justify-content-lg-end">
+                <div class="d-none d-sm-block justify-content-md-around justify-content-lg-end">
                     <a class="btn btn-outline-dark btn-light" style="width: 125px;" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </div>
+                <div class="dropdown d-block d-sm-none justify-content-end">
+                    <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/images/profileimages/defaultprofile.png" height="32" width="32" class="rounded-circle" alt="Your profile picture">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </ul>
                 </div>
             }
         </div>
@@ -87,7 +94,7 @@
         @RenderBody()
     </main>
     <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js" async defer></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

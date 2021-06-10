@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label asp-for="@Model.DateOfAction"></label>
-        <input asp-for="@Model.DateOfAction" class="form-control" />
+        <input asp-for="@Model.DateOfAction" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" min="@DateTime.Now.AddYears(-1).ToString("yyyy-MM-ddThh:mm")" />
         <span asp-validation-for="@Model.DateOfAction" class="text-danger"></span>
     </div>
     <div class="form-group">

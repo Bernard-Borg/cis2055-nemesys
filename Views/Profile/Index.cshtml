@@ -57,16 +57,21 @@ else
                 {
                     if (role.RoleName.Contains("Investigator"))
                     {
-                        <form method="POST" asp-area="" asp-controller="Profile" asp-action="Demote" asp-route-id="@Model.UserId">
-                            <button class="btn btn-outline-danger fs-5 mt-3">Demote User</button>
+                        <form style="display: inline-block;" method="POST" asp-area="" asp-controller="Profile" asp-action="Demote" asp-route-id="@Model.UserId">
+                            <button class="btn btn-outline-danger fs-5 mb-2 fw-bold">Demote User</button>
                         </form>
                     }
                     else
                     {
-                        <form method="POST" asp-area="" asp-controller="Profile" asp-action="Promote" asp-route-id="@Model.UserId">
-                            <button class="btn btn-outline-success fs-5 mt-3">Promote User</button>
+                        <form style="display: inline-block;" method="POST" asp-area="" asp-controller="Profile" asp-action="Promote" asp-route-id="@Model.UserId">
+                            <button class="btn btn-outline-success fs-5 mb-2 fw-bold">Promote User</button>
                         </form>
                     }
+                }
+                @if (role.RoleName.Contains("Investigator"))
+                {
+                    <h3 class="mt-5">Email</h3>
+                    <p class="fs-5" style="text-align: justify;">@Model.Email</p>
                 }
             }
             <h3 class="mt-5">Bio</h3>
@@ -78,23 +83,25 @@ else
                 }
                 else
                 {
-                    <div class="col-12 text-light">
+                    <div class="col-12 text-light fst-italic">
                         This user takes the right to silence too seriously.
                     </div>
                 }
             </p>
 
-            <h2 class="mt-5 text-light">Reports Submitted</h2>
+            <h2 class="mt-5 mb-4 text-light">Reports Submitted</h2>
             @{
                 if (Model.Reports != null && Model.Reports.ReportViewModels.Count() > 0)
                 {
                     foreach (ReportViewModel report in Model.Reports.ReportViewModels.OrderByDescending(r => r.DateOfUpdate))
                     {
                         <div class="row my-3">
-                            <span class="col-2 badge badge-pill bg-warning text-dark d-flex justify-content-center align-items-center">
-                                <span class="fs-3">@report.NumberOfStars</span>
-                                <i style="font-size: 24px;" class="icon-star"></i>
-                            </span>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
+                                    <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                                </div>
+                            }
                             <a class="col-10 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
                                 <div class="rounded-3 border border-light p-2">
                                     <p class="fs-3 m-0">@report.Description</p>
@@ -113,3 +120,7 @@ else
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script src="~/scripts/star.js" async defer></script>
+}

@@ -10,22 +10,22 @@
 {
     foreach (ReportViewModel report in Model.Reports.ReportViewModels)
     {
-<div class="row pt-4 m-3">
-    <a class="col-11" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-        <div class="text-light border rounded-3 border-light p-3">
-            <h2>@report.Description</h2>
-            <h4>Hazard Type: @report.HazardName</h4>
-            <span>Status: </span>
-            <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
+        <div class="row pt-4 m-3">
+            <a class="col-11" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                <div class="text-light border rounded-3 border-light p-3">
+                    <h2>@report.Description</h2>
+                    <h4>Hazard Type: @report.HazardName</h4>
+                    <span>Status: </span>
+                    <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
+                </div>
+            </a>
+            @if (report.Photo != null)
+            {
+                <div class="col-1 d-none d-lg-inline-block justify-content-center align-items-center p-0">
+                    <img class="rounded" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+                </div>
+            }
         </div>
-    </a>
-    @if (report.Photo != null)
-    {
-        <div class="col-1 d-none d-lg-inline-block justify-content-center align-items-center p-0">
-            <img class="rounded" onerror="style.opacity='0'" src="@report.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
-        </div>
-    }   
-    </div>
     }
 }
 else

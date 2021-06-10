@@ -15,33 +15,36 @@
 
 <div class="container-fluid">
     <div class="row mt-5">
-        <div class="col-md-2 text-light">
-            <div class="h1 text-center">Reporter</div>
-            <img src="@Model.AuthorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of report author">
-            <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
-                <span class="badge badge-pill bg-warning text-dark">
-                    @Model.AuthorStarsNumber
-                    <i class="icon-star" aria-hidden="true"></i>
-                </span>
-                <span class="ps-3">@Model.AuthorUserName</span>
-            </div>
-            <div class="d-grid">
-                <a type="button" class="btn btn-outline-light btn-lg mb-2" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
+        <div class="col-xl-2 text-light mb-3">
+            <div class="bgsidebar">
+                <div class="h1 text-center">Reporter</div>
+                <img src="@Model.AuthorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of report author">
+                <div class="h4 pt-3 pb-4 lh-sm d-flex justify-content-center align-items-center">
+                    <span class="badge badge-pill bg-warning text-dark">
+                        @Model.AuthorStarsNumber
+                        <i class="icon-star" aria-hidden="true"></i>
+                    </span>
+                    <span class="ps-3">@Model.AuthorUserName</span>
+                </div>
+                <div class="d-grid">
+                    <a type="button" class="btn btn-outline-light btn-lg" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
+                </div>
             </div>
         </div>
-        <div class="col-md-10 text-light ps-5 pe-4">
+        <div class="col-xl-10 text-light ps-5 pe-4">
             <div class="row">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    
-                    <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
-                        <div class="col-md-1">
-                            <input type="hidden" name="reportId" value="@Model.ReportId">
-                            <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @Model.Description">
-                                <i class="icon-star clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
-                            </button>
-                        </div>
-                    </form>
+                    <div class="col-md-1">
+                        <i class="icon-star clickable d-flex justify-content-center @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
+                        <p class="h3 d-flex justify-content-center">@Model.NumberOfStars</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-1 d-flex justify-content-center align-self-center">
+                        <p class="h3 d-flex" style="color: gold;">@Model.NumberOfStars</p>
+                    </div>
                 }
                 <div class="col-md-11 h5">
                     <h1>@Model.Description</h1>
@@ -95,13 +98,12 @@
                     }
                 </div>
             </div>
-         </div>
+        </div>
     </div>
 </div>
 
 @section scripts {
     <script type="text/javascript" src="~/scripts/star.js"></script> <!--Calling star toggle-->
-    
     <!--Setting latitude and longtitude to be set on map-->
     <script>
         var lat = '@Model.Latitude';

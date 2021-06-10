@@ -8,6 +8,7 @@ namespace Nemesys.ViewModels
         public ReportListViewModel Reports { get; set; }
         public int NumberOfStars { get; set; }
         public int NumberOfReports { get; set; }
+        public string Email { get; set; }
         public string LastActiveDate { get; set; }
         public string DateJoined { get; set; }
         public string Photo { get; set; }
@@ -22,7 +23,7 @@ namespace Nemesys.ViewModels
             if (currentUser != null)
             {
                 IsCurrentUser = user.Id.Equals(currentUser.Id);
-            } 
+            }
             else
             {
                 IsCurrentUser = false;
@@ -31,6 +32,7 @@ namespace Nemesys.ViewModels
             Reports = new ReportListViewModel(user.Reports, currentUser);
             NumberOfStars = user.NumberOfStars;
             NumberOfReports = user.NumberOfReports;
+            Email = user.Email;
             LastActiveDate = user.LastActiveDate.ToString();
             DateJoined = user.DateJoined.ToShortDateString();
             Photo = user.Photo;
@@ -40,7 +42,7 @@ namespace Nemesys.ViewModels
 
             Roles = new List<RoleViewModel>();
 
-            foreach(string role in roles)
+            foreach (string role in roles)
             {
                 Roles.Add(new RoleViewModel(role));
             }

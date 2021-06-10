@@ -1,41 +1,45 @@
 @using Nemesys.Models;
 @model HallOfFameViewModel
 
-@{ 
+@{
     ViewData["Title"] = "Hall of Fame";
 }
 
 <div class="container-fluid row">
-    <div id="sideNav" class="col-md-2">
-        <p class="h4 fw-normal text-light">Sort by</p>
-        <ul class="nav nav-pills flex-column">
-            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
-            <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
-        </ul>
+    <div class="">
+        <h1 class="text-light text-center pt-3">Hall of Fame</h1>
+    </div>
+    <div id="sideNav" class="col-lg-2">
+        <div class="bgsidebar">
+            <p class="h4 fw-normal text-light">Sort by</p>
+            <ul class="nav nav-pills flex-column">
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
+                <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
+            </ul>
+        </div>
         <hr>
     </div>
-
-    <div class="col-md-10">
+    <div class="col-lg-9 offset-md-1">
         @{
             foreach (User user in Model.HallOfFameUsers)
             {
-                <div id="maincontent" class="col-md-10">
+                <div id="maincontent">
                     <a class="row pt-4" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                        <div class="col-xl-1 d-flex align-items-stretch">
+                        <div class="col-2 col-xd-1 d-flex justify-content-center align-items-center align-items-stretch" style="max-width: 100px">
                             <span class="badge badge-pill bg-warning text-dark fs-3 d-flex align-items-center">
                                 @user.NumberOfStars
                                 <i class="icon-star" aria-hidden="true"></i>
                             </span>
                         </div>
-                        <div class="col-xl-9 text-light border rounded-3 border-light p-3">
+                        <div class="col-10 col-xl-8 text-light border border-light rounded-3 p-3 overflow-hidden">
                             <h2>@user.Alias</h2>
                             <h4>@user.NumberOfReports Reports</h4>
                         </div>
-                        <div class="col-xl-2">
-                            <img src="@user.Photo?width=96&height=96&rmode=crop" onerror="style.opacity='0'" width="96" height="96" alt="User's profile picture">
+                        <div class="col-2 d-none d-xl-inline-block justify-content-center align-content-center p-2">
+                            <span class="d-inline-block align-middle h-100"></span>
+                            <img class="rounded align-content-center" src="@user.Photo?width=96&height=96&rmode=crop" onerror="style.opacity='0'" width="96" height="96" alt="User's profile picture">
                         </div>
                     </a>
-
                 </div>
             }
         }

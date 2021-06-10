@@ -44,13 +44,13 @@
     </div>
     <div class="form-group col">
         <label asp-for="@Model.DateTimeOfHazard"></label>
-        <input asp-for="@Model.DateTimeOfHazard" class="form-control" />
+        <input asp-for="@Model.DateTimeOfHazard" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" min="@DateTime.Now.AddYears(-1).ToString("yyyy-MM-ddThh:mm")" />
         <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
     </div>
     @if (Model.ImageUrl != null)
     {
         <p>Current Report Image</p>
-        <img src="@Model.ImageUrl" alt="Current report image" />
+        <img onerror="style.opacity='0'" width="200" src="@Model.ImageUrl" alt="Current report image" />
     }
     else
     {

@@ -15,7 +15,7 @@
     <div class="form-group">
         <div class="form-group">
             <label id="latitude-label" asp-for="@Model.Latitude"></label>
-            <input type="number" min="35.9009070634084" max="35.90377946948467" id="latitude" asp-for="@Model.Latitude" class="form-control" placeholder="35.902470"/>
+            <input type="number" min="35.9009070634084" max="35.90377946948467" id="latitude" asp-for="@Model.Latitude" class="form-control" placeholder="35.902470" />
             <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
             <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
         </div>
@@ -44,12 +44,12 @@
     </div>
     <div class="form-group">
         <label asp-for="@Model.DateTimeOfHazard"></label>
-        <input asp-for="@Model.DateTimeOfHazard" class="form-control" />
+        <input asp-for="@Model.DateTimeOfHazard" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" min="@DateTime.Now.AddYears(-1).ToString("yyyy-MM-ddThh:mm")" />
         <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
     </div>
     <div class="form-group pt-3">
         <label asp-for="@Model.Photo"></label>
-        <input asp-for="@Model.Photo" class="form-control" accept=".jpg, .jpeg, .png, .webp"/>
+        <input asp-for="@Model.Photo" class="form-control" accept=".jpg, .jpeg, .png, .webp" />
         <span asp-validation-for="@Model.Photo" class="text-danger"></span>
     </div>
     <div class="form-group text-center">
