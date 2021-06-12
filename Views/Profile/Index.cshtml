@@ -96,6 +96,7 @@ else
                                         <input type="hidden" name="reportId" value="@report.ReportId">
                                         <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description">
                                             <i class="icon-star clickable d-flex justify-content-center @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                                            <p class="h3 d-flex justify-content-center" style="color: gold;">@report.NumberOfStars</p>
                                         </button>
                                     </div>
                                 }
