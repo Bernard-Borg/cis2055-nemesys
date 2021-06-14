@@ -19,7 +19,7 @@ namespace Nemesys.ViewModels
         
         [Required(ErrorMessage = "An investigation status is required")]
         [Display(Name = "Status of investigation")]
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
 
         //Used to fill up drop down
         public List<ReportStatusViewModel> ReportStatuses { get; set; }

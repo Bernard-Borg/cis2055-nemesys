@@ -24,6 +24,16 @@ textarea {
     border-radius: 25px !important;
 }
 
+.half-rounded-top {
+    border-top-left-radius: 25px !important;
+    border-top-right-radius: 25px !important;
+}
+
+.half-rounded-bottom {
+    border-bottom-left-radius: 25px !important;
+    border-bottom-right-radius: 25px !important;
+}
+
 /* Sets small top margin for validation errors */
 .field-validation-error {
     display: inline-block;

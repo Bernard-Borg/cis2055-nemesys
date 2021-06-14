@@ -31,7 +31,7 @@
                         <a class="col-10 col-lg-9" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
                             <div class="text-light border border-light custom-rounded p-3 overflow-hidden">
                                 <h2>@user.Alias</h2>
-                                <h4>@user.NumberOfReports Reports (@user.NumberOfStars stars)</h4>
+                                <h4>@user.NumberOfReports Reports <span class="d-inline d-md-none">(@user.NumberOfStars stars)</span></h4>
                             </div>
                         </a>
                         <div class="col-0 col-lg-1 d-none d-lg-flex justify-content-start p-2">

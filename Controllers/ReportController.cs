@@ -166,14 +166,13 @@ namespace Nemesys.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string oldFilePath = existingReport.Photo;
-
                     existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard ?? default;
                     existingReport.Latitude = updatedReport.Latitude ?? default;
                     existingReport.Longitude = updatedReport.Longitude ?? default;
                     existingReport.HazardTypeId = updatedReport.HazardTypeId ?? default;
                     existingReport.Description = updatedReport.Description;
 
+                    Console.WriteLine("PHOTO" + updatedReport.Photo);
                     if (updatedReport.Photo != null)
                     {
                         existingReport.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + updatedReport.Photo.FileName;
@@ -185,12 +184,6 @@ namespace Nemesys.Controllers
                         if (updatedReport.Photo != null)
                         {
                             updatedReport.Photo.CopyTo(new FileStream(_environment.WebRootPath + existingReport.Photo, FileMode.Create));
-
-                            //OldFilePath can be null if the user hadn't submitted an image previously
-                            if (oldFilePath != null)
-                            {
-                                System.IO.File.Delete(_environment.WebRootPath + oldFilePath);
-                            }
                         }
 
                         return RedirectToAction("Index", new { id });

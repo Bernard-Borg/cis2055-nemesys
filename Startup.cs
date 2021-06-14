@@ -55,9 +55,7 @@ namespace Nemesys
                 .RemoveProcessor<FormatWebProcessor>()
                 .RemoveProcessor<BackgroundColorWebProcessor>(); ;
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
-
-            
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities            
 
             if (_env.IsDevelopment())
             {

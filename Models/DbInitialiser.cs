@@ -232,7 +232,7 @@ namespace Nemesys.Models
                 (
                     new Investigation()
                     {
-                        Description = "Hello",
+                        Description = "Nathan is being investigated for embezzlement and money laundering by MFSA, and is therefore currently suspended from the Faculty. His reign of terror is, for now, over.",
                         ReportId = 1,
                         UserId = user.Id,
                         DateOfAction = DateTime.UtcNow

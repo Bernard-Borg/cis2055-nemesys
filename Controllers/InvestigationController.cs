@@ -88,7 +88,7 @@ namespace Nemesys.Controllers
 
                 if (createdInvestigation != null)
                 {
-                    investigationReport.StatusId = model.StatusId;
+                    investigationReport.StatusId = model.StatusId ?? default;
                     investigationReport.InvestigationId = createdInvestigation.InvestigationId;
 
                     if (_nemesysRepository.UpdateReport(investigationReport))
@@ -182,7 +182,7 @@ namespace Nemesys.Controllers
                 {
                     existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction ?? default(DateTime);
                     existingInvestigation.Description = updatedInvestigation.Description;
-                    investigationReport.StatusId = updatedInvestigation.StatusId;
+                    investigationReport.StatusId = updatedInvestigation.StatusId ?? default;
 
                     if (_nemesysRepository.UpdateInvestigation(existingInvestigation))
                     {
