@@ -63,7 +63,7 @@
             <div class="btn-group mt-3 mb-3 d-block d-md-none dropend">
                 <button type="button" class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">Filter Reports</button>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">All</a></li>
+                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-SortString="@Context.Request.Query["SortString"]">All</a></li>
                     @foreach (ReportStatus status in Model.Statuses)
                     {
                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.Id">@status.StatusName</a></li>
@@ -73,7 +73,7 @@
 
             <ul class="nav nav-tabs nav-justified text-center mt-2 d-none d-md-flex">
                 <li class="nav-item fs-5">
-                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">All</a>
+                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-SortString="@Context.Request.Query["SortString"]">All</a>
                 </li>
                 @foreach (ReportStatus status in Model.Statuses)
                 {
@@ -94,6 +94,7 @@
                                 <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
                                     <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description (Is starred: @report.Starred)">
                                         <i class="icon-star clickable @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                                        <p class="h3 d-flex justify-content-center" style="color: gold;">@report.NumberOfStars</p>
                                     </button>
                                 </div>
                             }

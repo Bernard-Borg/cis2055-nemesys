@@ -15,36 +15,29 @@ else
 
 <div class="container-fluid">
     <div class="row mt-5">
-        <div id="sideNav" class="col-md-3 p-5 text-center">
-            <div id="parentimage">
-                <img id="profileimage" src="@Model.Photo?width=150&height=150&rmode=crop" width="150" height="150" class="rounded-circle mx-auto d-block" alt="Profile picture">
-                @if (Model.IsCurrentUser)
-                {
-                    <div id="changeimage">
-                        <label class="profileupload">
-                            <input class="profile" type="file" alt="Edit Photo">
-                            <i class="icon-edit text-light pt-5 h3"></i>
-                        </label>
-                    </div>
-                }
-            </div>
-            <span class="badge badge-pill bg-warning text-dark d-inline-flex mt-4 pe-5 ps-5 align-items-center">
-                <span class="fs-3">@Model.NumberOfStars</span>
-                <i style="font-size: 24px;" class="icon-star"></i>
-            </span>
-            <div class="mt-5 text-light fs-5">
-                <p>Member since @Model.DateJoined</p>
-                <p>Last Active on @Model.LastActiveDate</p>
-            </div>
-            <div>
-                @if (Model.IsCurrentUser)
-                {
-                    <a type="button" class="w-100 btn btn-outline-light btn-lg mb-2" asp-area="Identity" asp-page="/Account/Manage">Edit Details</a>
-                }
+        <div id="sideNav" class="col-xl-2 text-center">
+            <div class="bgsidebar mb-4">
+                <div id="parentimage">
+                    <img id="profileimage" src="@Model.Photo?width=150&height=150&rmode=crop" width="150" height="150" class="rounded-circle mx-auto d-block" alt="Profile picture">
+                </div>
+                <span class="badge badge-pill bg-warning text-dark d-inline-flex mt-4 pe-5 ps-5 align-items-center">
+                    <span class="fs-3">@Model.NumberOfStars</span>
+                    <i style="font-size: 24px;" class="icon-star"></i>
+                </span>
+                <div class="mt-5 text-light fs-5">
+                    <p>Member since @Model.DateJoined</p>
+                    <p>Last Active on @Model.LastActiveDate</p>
+                </div>
+                <div>
+                    @if (Model.IsCurrentUser)
+                    {
+                        <a type="button" class="w-100 btn btn-outline-light btn-lg mb-2 custom-rounded" asp-area="Identity" asp-page="/Account/Manage">Edit Details</a>
+                    }
+                </div>
             </div>
         </div>
 
-        <div class="col-md-8 text-light">
+        <div class="col-xl-10 ps-5 text-light">
             @{
                 var user = userManager.GetUserAsync(User).Result;
             }
@@ -103,13 +96,16 @@ else
                                         <input type="hidden" name="reportId" value="@report.ReportId">
                                         <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description">
                                             <i class="icon-star clickable d-flex justify-content-center @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
+                                            <p class="h3 d-flex justify-content-center" style="color: gold;">@report.NumberOfStars</p>
                                         </button>
                                     </div>
                                 }
                                 <a class="col-10 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                                    <div class="rounded-3 border border-light p-2">
-                                        <p class="fs-3 m-0">@report.Description</p>
-                                        <p>Date Submitted: @report.DateOfReport</p>
+                                    <div class="text-light border custom-rounded border-light p-3">
+                                        <p class="h2">@report.Description</p>
+                                        <p class="h4">Date Submitted: @report.DateOfReport</p>
+                                        <span>Status: </span>
+                                        <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
                                     </div>
                                 </a>
                             </div>
@@ -118,7 +114,7 @@ else
                 }
                 else
                 {
-                    <div class="col-12 text-light">
+                    <div class="col-12 text-light fst-italic">
                         User has not submitted any reports yet.
                     </div>
                 }
