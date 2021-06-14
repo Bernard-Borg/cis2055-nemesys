@@ -24,7 +24,7 @@
                         @Model.NumberOfStars
                         <i class="icon-star" aria-hidden="true"></i>
                     </span>
-                    <p>@Model.AuthorUserName</p> 
+                    <p>@Model.AuthorUserName</p>
                 </div>
                 <div class="d-grid">
                     <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
@@ -73,10 +73,10 @@
                     }
                     else
                     {
-                    <div class="col-md-1 d-flex justify-content-center align-items-center" style="color: gold;">
-                        <p class="h2">@Model.NumberOfStars</p>
-                        <i class="icon-star fs-4" aria-hidden="true"></i>
-                    </div>
+                        <div class="col-md-1 d-flex justify-content-center align-items-center" style="color: gold;">
+                            <p class="h2">@Model.NumberOfStars</p>
+                            <i class="icon-star fs-4" aria-hidden="true"></i>
+                        </div>
                     }
                     <div class="col-md-11 ps-3 h5">
                         <h1>@Model.Description</h1>
@@ -104,12 +104,16 @@
                 <div class="custom-rounded" id="map" style="height: 400px;"></div>
             </div>
         </div>
-        
+
     </div>
-    </div>
+</div>
 
 @section scripts {
-    <script type="text/javascript" src="~/scripts/star.js"></script>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/scripts/star.js" async defer></script>
+    }
+
     <!--Setting latitude and longtitude to be set on map-->
     <script>
         var lat = '@Model.Latitude';

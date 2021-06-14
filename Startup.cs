@@ -57,6 +57,8 @@ namespace Nemesys
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities
 
+            
+
             if (_env.IsDevelopment())
             {
                 services.AddSingleton<INemesysRepository, MockNemesysRepository>();

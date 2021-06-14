@@ -128,5 +128,8 @@ else
 </div>
 
 @section scripts {
-    <script src="~/scripts/star.js" async defer></script>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/scripts/star.js" async defer></script>
+    }
 }

@@ -23,29 +23,35 @@
 
             <div class="bgsidebar" role="navigation" aria-label="Hall of fame">
                 <p class="h4 fw-normal text-light mb-3">Hall of Fame</p>
-                @{
-                    <div class="mb-3">
-                        @foreach (User user in Model.HallOfFame.HallOfFameUsers)
-                        {
+                <div class="mb-3">
+                    @{int counter = 0; }
+                    @foreach (User user in Model.HallOfFame.HallOfFameUsers)
+                    {
+                        counter++;
+                        
                         <a class="btn btn-outline-light text-left p-1 p-lg-3 d-flex custom-rounded" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
                             <img class="d-md-none d-lg-inline-block rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=48&height=48&rmode=crop" width="48" height="48" alt="@user.Alias's profile picture">
-                            <div class="pl-3 lh-sm">
+                            <div class="pl-3 lh-sm text-md-center text-lg-start w-100">
                                 <p class="mb-1">@user.Alias</p>
                                 <span class="badge badge-pill bg-warning text-dark">
                                     @user.NumberOfStars
                                     <i class="icon-star" aria-hidden="true"></i>
                                 </span>
                             </div>
-                        </a>
-                        }
-                    </div>
 
-                    if (Model.HallOfFame.HallOfFameUsers.Count() == 0)
-                    {
-                        <div class="mb-3 p-3 d-flex text-white custom-rounded">
-                            There are no users.
-                        </div>
+                        </a>
+                        if (!(counter >= Model.HallOfFame.HallOfFameUsers.Count()))
+                        {
+                            <hr style="border: 1px solid white; margin: 0;"/>
+                        }
                     }
+                </div>
+
+                @if (Model.HallOfFame.HallOfFameUsers.Count() == 0)
+                {
+                    <div class="mb-3 p-3 d-flex text-white custom-rounded">
+                        There are no users.
+                    </div>
                 }
                 <a class="btn btn-light fs-5 w-100 custom-rounded" asp-area="" asp-controller="Home" asp-action="Hall">Go to Hall of Fame</a>
             </div>
@@ -114,5 +120,8 @@
 </div>
 
 @section scripts {
-    <script src="~/scripts/star.js" async defer></script>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/scripts/star.js" async defer></script>
+    }
 }
