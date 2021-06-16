@@ -6,32 +6,42 @@
 
 <h1 class="text-white text-center m-3">@ViewData["Title"]</h1>
 
-<h2 class="text-light m-3 text-center">Reports</h2>
+<h3 class="text-light ms-4">Reports</h3>
+<hr style="color: white; opacity: 1;" />
 @if (Model.Reports.ReportViewModels.Count() > 0)
 {
-    foreach (ReportViewModel report in Model.Reports.ReportViewModels)
-    {
-        <div class="row pt-4 m-3">
-            <a class="col-11" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                <div class="text-light border custom-rounded border-light p-3">
-                    <p class="h2">@report.Description</p>
-                    <p class="h4">Hazard Type: @report.HazardName</p>
-                    <span>Status: </span>
-                    <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
-                </div>
-            </a>
-            @if (report.Photo != null)
-            {
-                <div class="col-1 d-none d-lg-inline-block justify-content-center align-items-center p-0">
-                    <img class="custom-rounded align-content-center" onerror="style.opacity='0'" src="@report.Photo?width=128&height=140&rmode=crop" width="128" height="140" alt="Photo of hazard">
-                </div>
-            }
-        </div>
-    }
+    <div class="ms-md-5">
+        @foreach (ReportViewModel report in Model.Reports.ReportViewModels)
+        {
+            <partial name="/Views/Shared/_ReportCard.cshtml" model="@report" />
+        }
+    </div>  
 }
 else
 {
     <div class="text-white m-3 pt-4">
-        <h2 class="text-center">No reports found.</h2>
+        <h4 class="text-center" style="color: lightgray">No reports found.</h4>
     </div>
+}
+
+<h3 class="text-light ms-4" style="margin-top: 100px;">Users</h3>
+<hr style="color: white; opacity: 1;" />
+@foreach (ProfileCardViewModel user in Model.Users)
+{
+    <div class="me-md-5">
+        <partial name="/Views/Shared/_UserCard.cshtml" model="@user" />
+    </div>  
+}
+@if (Model.Users.Count() == 0)
+{
+    <div class="h4 m-5 text-center" style="color: lightgray">
+        There are no users.
+    </div>
+}
+
+@section scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/scripts/star.js" async defer></script>
+    }
 }

@@ -52,7 +52,7 @@ namespace Nemesys.ViewModels
 
             Starred = false;
 
-            if (currentUser != null && currentUser.StarredReports != null)
+            if (currentUser != null)
             {
                 var starRecord = currentUser.StarredReports
                     .FirstOrDefault(record => record.ReportId == report.Id);
