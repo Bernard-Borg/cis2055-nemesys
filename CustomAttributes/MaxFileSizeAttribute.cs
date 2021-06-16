@@ -19,7 +19,7 @@ namespace Nemesys.CustomAttributes
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
+            IFormFile file = value as IFormFile;
             if (file != null)
             {
                 if (file.Length > _maxFileSize)

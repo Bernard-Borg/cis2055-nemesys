@@ -220,6 +220,8 @@ namespace Nemesys.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
                         existingInvestigation.DateOfAction = TimeZoneInfo.ConvertTimeToUtc(updatedInvestigation.DateOfAction ?? default, timeZone);
                         existingInvestigation.Description = updatedInvestigation.Description;
                         investigationReport.StatusId = updatedInvestigation.StatusId ?? default;

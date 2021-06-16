@@ -99,7 +99,7 @@ namespace Nemesys.Controllers
                         break;
                 }
 
-                var model = new HallOfFameViewModel(users);
+                var model = new HallOfFameViewModel(users.Select(u => new ProfileCardViewModel(u)));
                 return View(model);
             }
             catch(Exception ex)
@@ -107,9 +107,6 @@ namespace Nemesys.Controllers
                 _logger.LogError(ex, ex.Message, ex.Data);
                 return View("Error");
             }
-
-            var model = new HallOfFameViewModel(users.Select(u => new ProfileCardViewModel(u)));
-            return View(model);
         }
 
         [HttpGet]
@@ -144,31 +141,18 @@ namespace Nemesys.Controllers
         [Authorize]
         public IActionResult Star(int reportId, string returnUrl = null)
         {
-<<<<<<< HEAD
-            var report = _nemesysRepository.GetReportById(reportId);
-
-            if (report == null)
-=======
-            try 
->>>>>>> 3f7fccba190e1e401920cc4de44ccdf5dc547aa9
+            try
             {
                 var report = _nemesysRepository.GetReportById(reportId);
 
                 if (report == null)
                 {
-<<<<<<< HEAD
-                    if (Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
-                    else
-                        return RedirectToAction("Index", "Home");
-=======
                     return NotFound();
                 }
-
+                
                 if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
                     return Json(_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId));
->>>>>>> 3f7fccba190e1e401920cc4de44ccdf5dc547aa9
                 }
                 else
                 {

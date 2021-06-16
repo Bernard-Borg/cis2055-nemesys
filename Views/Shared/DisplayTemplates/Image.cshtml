@@ -1,0 +1,8 @@
+﻿@using Microsoft.AspNetCore.Http
+@model IFormFile
+
+<div class="form-group">
+    <label asp-for="@Model"></label>
+    <input asp-for="@Model" class="form-control" accept=".jpg, .jpeg, .png, .webp" />
+    <span asp-validation-for="@Model" class="text-danger"></span>
+</div>

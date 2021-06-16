@@ -47,11 +47,7 @@
             <p>This report has no image</p>
         </div>
     }
-    <div class="form-group">
-        <label asp-for="@Model.Photo"></label>
-        <input asp-for="@Model.Photo" class="form-control" accept=".jpg, .jpeg, .png, .webp" />
-        <span asp-validation-for="@Model.Photo" class="text-danger"></span>
-    </div>
+    @Html.DisplayFor(model => model.Photo)
     <div class="form-group text-center">
         <button type="submit" class="btn btn-outline-light">Submit Report</button>
     </div>

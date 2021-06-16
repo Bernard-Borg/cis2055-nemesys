@@ -36,6 +36,7 @@ namespace Nemesys.ViewModels
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".webp" })]
         [MaxFileSize(10 * 1024 * 1024)]
         [Display(Name = "Picture of hazard")]
+        [UIHint("Image")]
         public IFormFile Photo { get; set; }
 
         //Used to fill up drop down

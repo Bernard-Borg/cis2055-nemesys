@@ -9,8 +9,8 @@ namespace Nemesys.CustomAttributes
         private static readonly TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
         private static readonly DateTime dateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zone);
 
-        private static readonly string minimumDate = dateTime.AddYears(-1).ToString("yyyy-MM-ddTHH:mm");
-        private static readonly string maximumDate = dateTime.ToString("yyyy-MM-ddTHH:mm");
+        private static readonly string minimumDate = dateTime.AddYears(-1).ToString("yyyy-MM-dd HH:mm");
+        private static readonly string maximumDate = dateTime.ToString("yyyy-MM-dd HH:mm");
 
         public DateRangeAttribute()
         {

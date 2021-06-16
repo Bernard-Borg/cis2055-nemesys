@@ -36,11 +36,7 @@
         <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
     </div>
     @Html.DisplayFor(model => model.DateTimeOfHazard)
-    <div class="form-group pt-3">
-        <label asp-for="@Model.Photo"></label>
-        <input asp-for="@Model.Photo" class="form-control" accept=".jpg, .jpeg, .png, .webp" />
-        <span asp-validation-for="@Model.Photo" class="text-danger"></span>
-    </div>
+    @Html.DisplayFor(model => model.Photo)
     <div class="form-group text-center">
         <button type="submit" class="btn btn-outline-light">Submit Report</button>
     </div>
