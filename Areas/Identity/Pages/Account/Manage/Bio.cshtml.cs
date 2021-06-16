@@ -34,9 +34,10 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [StringLength(255, ErrorMessage = "The {0} must be at max {1} characters long.")]
+            [MaxLength(255, ErrorMessage = "The {0} must be at max {1} characters long.")]
             [DataType(DataType.Text)]
             [Display(Name = "New bio")]
+            [UIHint("TextareaWithCounter")]
             public string NewBio { get; set; }
         }
 

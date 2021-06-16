@@ -1,4 +1,5 @@
 ﻿using Nemesys.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Nemesys.ViewModels
@@ -29,12 +30,14 @@ namespace Nemesys.ViewModels
                 IsCurrentUser = false;
             }
 
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
             Reports = new ReportListViewModel(user.Reports, currentUser);
             NumberOfStars = user.NumberOfStars;
             NumberOfReports = user.NumberOfReports;
             Email = user.Email;
-            LastActiveDate = user.LastActiveDate.ToString();
-            DateJoined = user.DateJoined.ToShortDateString();
+            LastActiveDate = TimeZoneInfo.ConvertTimeFromUtc(user.LastActiveDate, timeZone).ToString();
+            DateJoined = TimeZoneInfo.ConvertTimeFromUtc(user.DateJoined, timeZone).ToShortDateString();
             Photo = user.Photo;
             Username = user.Alias;
             UserId = user.Id;

@@ -59,7 +59,10 @@ namespace Nemesys.Controllers
                         break;
                 }
 
-                HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5).Select(u => new ProfileCardViewModel(u)));
+                HallOfFameViewModel hofViewModel = new HallOfFameViewModel(
+                    _nemesysRepository.GetTopUsers(5).Select(u => new ProfileCardViewModel(u))
+                );
+
                 ReportListViewModel reportsViewModel = new ReportListViewModel(
                     reports.ToList(),
                     _nemesysRepository.GetUserById(_userManager.GetUserId(User))

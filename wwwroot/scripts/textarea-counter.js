@@ -3,9 +3,9 @@
         let textarea = $(element).children('textarea');
         let maxLength = textarea.attr("data-val-maxlength-max");
         let textareaSpan = $(element).children('.textarea-counter');
-
+        
         textareaSpan.html(maxLength - $(textarea).val().length);
-
+        
         textarea.keyup(function () {
             textareaSpan.html(maxLength - $(textarea).val().length);
         });

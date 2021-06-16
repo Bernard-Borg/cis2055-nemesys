@@ -25,7 +25,7 @@ namespace Nemesys.ViewModels
             ReportDescription = investigation.Report.Description;
             ReportStatus = new ReportStatusViewModel(investigation.Report.Status);
             
-            Investigator = new ProfileCardViewModel(investigation.Investigator);  
+            Investigator = new ProfileCardViewModel(investigation.Investigator, "Investigator");  
         }
     }
 }

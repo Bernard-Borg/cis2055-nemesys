@@ -12,7 +12,7 @@ namespace Nemesys.ViewModels
         [Required(ErrorMessage = "Investigation description is required")]
         [MinLength(10, ErrorMessage = "Description must be at least 10 characters long")]
         [MaxLength(255, ErrorMessage = "Description cannot be longer than 255 characters")]
-        [UIHint("Description")]
+        [UIHint("TextareaWithCounter")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Date of action is required")]

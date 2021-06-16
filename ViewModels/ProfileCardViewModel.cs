@@ -4,6 +4,7 @@ namespace Nemesys.ViewModels
 {
     public class ProfileCardViewModel
     {
+        public string Role { get; set; }
         public string Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
@@ -11,8 +12,9 @@ namespace Nemesys.ViewModels
         public int StarsCount { get; set; }
         public int ReportCount { get; set; }
 
-        public ProfileCardViewModel(User user)
+        public ProfileCardViewModel(User user, string role = "N/A")
         {
+            Role = role;
             Id = user.Id;
             Username = user.Alias;
             Email = user.Email;

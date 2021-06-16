@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-center align-items-center">
         <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @Model.Description (Is starred: @Model.Starred)">
             <i class="icon-star clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
-            <p class="h3 d-flex justify-content-center" style="color: gold;">@Model.NumberOfStars</p>
+            <p class="star-counter h3 d-flex justify-content-center" style="color: gold;">@Model.NumberOfStars</p>
         </button>
     </div>
 </form>

@@ -41,7 +41,7 @@ namespace Nemesys.ViewModels
             Photo = report.Photo;
             NumberOfStars = report.NumberOfStars;
 
-            Reporter = new ProfileCardViewModel(report.Author);
+            Reporter = new ProfileCardViewModel(report.Author, "Reporter");
 
             if (report.InvestigationId != null)
             {

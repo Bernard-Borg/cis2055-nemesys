@@ -78,6 +78,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
             [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".webp" })]
             [MaxFileSize(10 * 1024 * 1024)]
             [Display(Name = "Profile picture")]
+            [UIHint("Image")]
             public IFormFile Photo { get; set; }
         }
 
