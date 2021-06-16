@@ -67,8 +67,8 @@
                             <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
                         </ul>
                     </div>
-                    <script>
-                        window.onload = function () { document.getElementById('dropdowndiv').style.display = 'block'; }
+                    <script async defer>
+                        window.addEventListener('load', function () { document.getElementById('dropdowndiv').style.display = 'block'; });
                     </script>
                 </div>
             }

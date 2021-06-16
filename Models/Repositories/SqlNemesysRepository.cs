@@ -10,7 +10,7 @@ namespace Nemesys.Models.Repositories
     public class SqlNemesysRepository : INemesysRepository
     {
         private readonly AppDbContext _appDbContext;
-        private readonly ILogger<SqlNemesysRepository> _logger;
+        private readonly ILogger _logger;
 
         public SqlNemesysRepository(AppDbContext appDbContext, ILogger<SqlNemesysRepository> logger)
         {
@@ -31,7 +31,7 @@ namespace Nemesys.Models.Repositories
             catch (DbUpdateException)
             {
                 _logger.LogError("Failed to create investigation by user " + investigation.UserId);
-                return null;
+                throw;
             }
         }
 
@@ -53,7 +53,7 @@ namespace Nemesys.Models.Repositories
             catch (DbUpdateException)
             {
                 _logger.LogError($"Failed to create report by user {0}", report.UserId);
-                return null;
+                throw;
             }
         }
 
@@ -105,7 +105,7 @@ namespace Nemesys.Models.Repositories
             catch (DbUpdateException)
             {
                 _logger.LogError($"Failed to star report (ID: {0}) by user {1}", reportId, userId);
-                return false;
+                throw;
             }
 
             return true;
@@ -229,7 +229,7 @@ namespace Nemesys.Models.Repositories
                 catch (DbUpdateException)
                 {
                     _logger.LogError($"Failed to update investigation (ID: {0})", updatedInvestigation.InvestigationId);
-                    return false;
+                    throw;
                 }
 
                 return true;
@@ -263,7 +263,7 @@ namespace Nemesys.Models.Repositories
                 catch (DbUpdateException)
                 {
                     _logger.LogError($"Failed to update report (ID: {0})", updatedReport.Id);
-                    return false;
+                    throw;
                 }
 
                 return true;

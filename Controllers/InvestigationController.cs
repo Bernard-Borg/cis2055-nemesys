@@ -6,6 +6,7 @@ using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Nemesys.Controllers
 {
@@ -13,24 +14,34 @@ namespace Nemesys.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly INemesysRepository _nemesysRepository;
+        private readonly ILogger<InvestigationController> _logger;
 
-        public InvestigationController(INemesysRepository nemesysRepository, UserManager<User> userManager)
+        public InvestigationController(INemesysRepository nemesysRepository, UserManager<User> userManager, ILogger<InvestigationController> logger)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;
+            _logger = logger;
         }
         
         public IActionResult Index(int id)
         {
-            var investigation = _nemesysRepository.GetInvestigationById(id);
+            try
+            {
+                var investigation = _nemesysRepository.GetInvestigationById(id);
 
-            if (investigation != null)
+                if (investigation != null)
+                {
+                    return View(new InvestigationViewModel(investigation));
+                }
+                else
+                {
+                    return Json("No such investigation");
+                }
+            }
+            catch (Exception ex)
             {
-                return View(new InvestigationViewModel(investigation));
-            } 
-            else
-            {
-                return Json("No such investigation");
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 
@@ -39,23 +50,31 @@ namespace Nemesys.Controllers
         [Authorize(Roles = "Investigator,Admin")]
         public IActionResult Create(int id)
         {
-            var report = _nemesysRepository.GetReportById(id);
-
-            if (report == null)
+            try
             {
-                return NotFound();
+                var report = _nemesysRepository.GetReportById(id);
+
+                if (report == null)
+                {
+                    return NotFound();
+                }
+
+                var model = new EditInvestigationViewModel
+                {
+                    StatusId = report.StatusId
+                };
+
+                model.ReportStatuses = _nemesysRepository.GetReportStatuses()
+                    .Select(h => new ReportStatusViewModel(h))
+                    .ToList();
+
+                return View(model);
             }
-
-            var model = new EditInvestigationViewModel
+            catch (Exception ex)
             {
-                StatusId = report.StatusId
-            };
-
-            model.ReportStatuses = _nemesysRepository.GetReportStatuses()
-                .Select(h => new ReportStatusViewModel(h))
-                .ToList();
-
-            return View(model);
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
+            }
         }
 
         [HttpPost]
@@ -63,38 +82,45 @@ namespace Nemesys.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([FromRoute] int id, [Bind("Description", "DateOfAction, StatusId")] EditInvestigationViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var investigationReport = _nemesysRepository.GetReportById(id);
-
-                if (investigationReport == null)
+                if (ModelState.IsValid)
                 {
-                    return NotFound();
-                }
+                    var investigationReport = _nemesysRepository.GetReportById(id);
 
-                if (investigationReport.InvestigationId != null)
-                {
-                    return Json("Report already has an investigation");
-                }
-
-                var investigation = new Investigation
-                {
-                    Description = model.Description,
-                    DateOfAction = model.DateOfAction ?? default(DateTime),
-                    UserId = _userManager.GetUserId(User),
-                    ReportId = id
-                };
-
-                var createdInvestigation = _nemesysRepository.CreateInvestigation(investigation);
-
-                if (createdInvestigation != null)
-                {
-                    investigationReport.StatusId = model.StatusId ?? default;
-                    investigationReport.InvestigationId = createdInvestigation.InvestigationId;
-
-                    if (_nemesysRepository.UpdateReport(investigationReport))
+                    if (investigationReport == null)
                     {
-                        return RedirectToAction("Index", new { id = createdInvestigation.InvestigationId });
+                        return NotFound();
+                    }
+
+                    if (investigationReport.InvestigationId != null)
+                    {
+                        return Json("Report already has an investigation");
+                    }
+
+                    var investigation = new Investigation
+                    {
+                        Description = model.Description,
+                        DateOfAction = model.DateOfAction ?? default(DateTime),
+                        UserId = _userManager.GetUserId(User),
+                        ReportId = id
+                    };
+
+                    var createdInvestigation = _nemesysRepository.CreateInvestigation(investigation);
+
+                    if (createdInvestigation != null)
+                    {
+                        investigationReport.StatusId = model.StatusId ?? default;
+                        investigationReport.InvestigationId = createdInvestigation.InvestigationId;
+
+                        if (_nemesysRepository.UpdateReport(investigationReport))
+                        {
+                            return RedirectToAction("Index", new { id = createdInvestigation.InvestigationId });
+                        }
+                        else
+                        {
+                            return StatusCode(500);
+                        }
                     }
                     else
                     {
@@ -103,16 +129,17 @@ namespace Nemesys.Controllers
                 }
                 else
                 {
-                    return StatusCode(500);
+                    model.ReportStatuses = _nemesysRepository.GetReportStatuses()
+                    .Select(h => new ReportStatusViewModel(h))
+                    .ToList();
+
+                    return View(model);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                model.ReportStatuses = _nemesysRepository.GetReportStatuses()
-                .Select(h => new ReportStatusViewModel(h))
-                .ToList();
-
-                return View(model);
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 
@@ -121,39 +148,47 @@ namespace Nemesys.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var existingInvestigation = _nemesysRepository.GetInvestigationById(id);
-
-            if (existingInvestigation != null)
+            try
             {
-                var investigationReport = _nemesysRepository.GetReportById(existingInvestigation.InvestigationId);
+                var existingInvestigation = _nemesysRepository.GetInvestigationById(id);
 
-                if (existingInvestigation.UserId == _userManager.GetUserId(User))
+                if (existingInvestigation != null)
                 {
-                    EditInvestigationViewModel model = new EditInvestigationViewModel
+                    var investigationReport = _nemesysRepository.GetReportById(existingInvestigation.InvestigationId);
+
+                    if (existingInvestigation.UserId == _userManager.GetUserId(User))
                     {
-                        InvestigationId = existingInvestigation.InvestigationId,
-                        Description = existingInvestigation.Description,
-                        DateOfAction = existingInvestigation.DateOfAction,
-                        //for some reason this doesn't work and always sets to "No Action Required"
-                        StatusId = investigationReport.StatusId
-                    };
+                        EditInvestigationViewModel model = new EditInvestigationViewModel
+                        {
+                            InvestigationId = existingInvestigation.InvestigationId,
+                            Description = existingInvestigation.Description,
+                            DateOfAction = existingInvestigation.DateOfAction,
+                            //for some reason this doesn't work and always sets to "No Action Required"
+                            StatusId = investigationReport.StatusId
+                        };
 
-                    //Allow all report statuses except Open (since investigations cannot be deleted)
-                    model.ReportStatuses = _nemesysRepository.GetReportStatuses()
-                        .Where(s => s.Id == 2 || s.Id == 3 || s.Id == 4)
-                        .Select(s => new ReportStatusViewModel(s))
-                        .ToList();
+                        //Allow all report statuses except Open (since investigations cannot be deleted)
+                        model.ReportStatuses = _nemesysRepository.GetReportStatuses()
+                            .Where(s => s.Id == 2 || s.Id == 3 || s.Id == 4)
+                            .Select(s => new ReportStatusViewModel(s))
+                            .ToList();
 
-                    return View(model);
+                        return View(model);
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
                 }
                 else
                 {
-                    return Unauthorized();
+                    return RedirectToAction("Index");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 
@@ -162,52 +197,60 @@ namespace Nemesys.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int id, [Bind("Description, DateOfAction, StatusId")] EditInvestigationViewModel updatedInvestigation)
         {
-            Investigation existingInvestigation = _nemesysRepository.GetInvestigationById(id);
-
-            //Check if the report being edited exists
-            if (existingInvestigation == null)
+            try
             {
-                return NotFound();
-            }
+                Investigation existingInvestigation = _nemesysRepository.GetInvestigationById(id);
 
-            Report investigationReport = _nemesysRepository.GetReportById(existingInvestigation.ReportId);
-
-            if (investigationReport == null)
-            {
-                return StatusCode(500);
-            }
-
-            //Checks whether the user is the owner of the investigation
-            if (existingInvestigation.UserId == _userManager.GetUserId(User))
-            {
-                if (ModelState.IsValid)
+                //Check if the report being edited exists
+                if (existingInvestigation == null)
                 {
-                    existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction ?? default(DateTime);
-                    existingInvestigation.Description = updatedInvestigation.Description;
-                    investigationReport.StatusId = updatedInvestigation.StatusId ?? default;
+                    return NotFound();
+                }
 
-                    if (_nemesysRepository.UpdateInvestigation(existingInvestigation))
-                    {
-                        if (_nemesysRepository.UpdateReport(investigationReport))
-                        {
-                            return RedirectToAction("Index", new { id = id });
-                        }
-                    }
+                Report investigationReport = _nemesysRepository.GetReportById(existingInvestigation.ReportId);
 
+                if (investigationReport == null)
+                {
                     return StatusCode(500);
+                }
+
+                //Checks whether the user is the owner of the investigation
+                if (existingInvestigation.UserId == _userManager.GetUserId(User))
+                {
+                    if (ModelState.IsValid)
+                    {
+                        existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction ?? default(DateTime);
+                        existingInvestigation.Description = updatedInvestigation.Description;
+                        investigationReport.StatusId = updatedInvestigation.StatusId ?? default;
+
+                        if (_nemesysRepository.UpdateInvestigation(existingInvestigation))
+                        {
+                            if (_nemesysRepository.UpdateReport(investigationReport))
+                            {
+                                return RedirectToAction("Index", new { id = id });
+                            }
+                        }
+
+                        return StatusCode(500);
+                    }
+                    else
+                    {
+                        updatedInvestigation.ReportStatuses = _nemesysRepository.GetReportStatuses()
+                            .Select(h => new ReportStatusViewModel(h))
+                            .ToList();
+
+                        return View(updatedInvestigation);
+                    }
                 }
                 else
                 {
-                    updatedInvestigation.ReportStatuses = _nemesysRepository.GetReportStatuses()
-                        .Select(h => new ReportStatusViewModel(h))
-                        .ToList();
-
-                    return View(updatedInvestigation);
+                    return Forbid();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return Forbid();
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
     }

@@ -6,6 +6,7 @@
 
 <h1 class="text-white text-center m-3">@ViewData["Title"]</h1>
 
+<h2 class="text-light m-3 text-center">Reports</h2>
 @if (Model.Reports.ReportViewModels.Count() > 0)
 {
     foreach (ReportViewModel report in Model.Reports.ReportViewModels)
@@ -31,6 +32,6 @@
 else
 {
     <div class="text-white m-3 pt-4">
-        <h2 class="text-center">No search results found.</h2>
+        <h2 class="text-center">No reports found.</h2>
     </div>
 }

@@ -39,6 +39,12 @@
                         </div>
                     </div>
                 }
+                @if (Model.HallOfFameUsers.Count() == 0)
+                {
+                    <div class="h4 m-5 text-light text-center">
+                        There are no users.
+                    </div>
+                }
             }
         </div>
     </div>

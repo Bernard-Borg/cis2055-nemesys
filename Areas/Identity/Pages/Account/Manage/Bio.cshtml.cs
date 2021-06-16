@@ -14,13 +14,14 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
     public class BioModel : PageModel
     {
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<BioModel> _logger;
 
         public BioModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager,
             ILogger<BioModel> logger)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
         public string Bio { get; set; }
@@ -41,47 +42,70 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var bio = user.Bio;
-            Bio = bio;
-            Input = new InputModel
+            try
             {
-                NewBio = bio
-            };
+                var user = await _userManager.GetUserAsync(User);
+                var bio = user.Bio;
+                Bio = bio;
+                Input = new InputModel
+                {
+                    NewBio = bio
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+                await LoadAsync();
+                return Page();
             }
-            await LoadAsync();
-            return Page();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
 
-            if (!ModelState.IsValid)
-            {
-                await LoadAsync();
-                return Page();
-            }
+                if (!ModelState.IsValid)
+                {
+                    await LoadAsync();
+                    return Page();
+                }
 
-            var bio = user.Bio;
-            if (Input.NewBio != bio)
-            {
-                user.Bio = Input.NewBio;
-                await _userManager.UpdateAsync(user);
+                var bio = user.Bio;
+                if (Input.NewBio != bio)
+                {
+                    user.Bio = Input.NewBio;
+                    await _userManager.UpdateAsync(user);
+                }
+                return RedirectToPage();
             }
-            return RedirectToPage();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
     }
 }

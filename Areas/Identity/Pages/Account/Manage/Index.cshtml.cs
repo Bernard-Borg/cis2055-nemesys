@@ -7,18 +7,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nemesys.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Nemesys.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<IndexModel> _logger;
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            ILogger<IndexModel> logger)
         {
             _userManager = userManager;
+            _logger = logger ;
         }
 
         public string Alias { get; set; }
@@ -40,48 +43,71 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var alias = user.Alias;
-            Alias = alias;
-            Input = new InputModel
+            try
             {
-                NewAlias = alias
-            };
+                var user = await _userManager.GetUserAsync(User);
+                var alias = user.Alias;
+                Alias = alias;
+                Input = new InputModel
+                {
+                    NewAlias = alias
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
 
-            await LoadAsync();
-            return Page();
+                await LoadAsync();
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
 
-            if (!ModelState.IsValid)
-            {
-                await LoadAsync();
-                return Page();
-            }
+                if (!ModelState.IsValid)
+                {
+                    await LoadAsync();
+                    return Page();
+                }
 
-            var alias = user.Alias;
-            if (Input.NewAlias != alias)
-            {
-                user.Alias = Input.NewAlias;
-                await _userManager.UpdateAsync(user);
+                var alias = user.Alias;
+                if (Input.NewAlias != alias)
+                {
+                    user.Alias = Input.NewAlias;
+                    await _userManager.UpdateAsync(user);
+                }
+                return RedirectToPage();
             }
-            return RedirectToPage();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
     }
 }
