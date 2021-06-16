@@ -140,27 +140,6 @@ p, h1
     cursor: pointer;
 }
 
-#parentimage
-{
-    position: relative;
-    top: 0;
-    left: 0;
-}
-
-#profileimage
-{
-    position: relative;
-    top: 0;
-    left: 0;
-}
-
-#changeimage
-{
-    position: absolute;
-    top: 80%;
-    left: 65%;
-}
-
 .sortitems .nav-pills li > a:hover {
     color: lightgray;
 }

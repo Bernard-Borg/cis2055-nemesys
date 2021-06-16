@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nemesys.Controllers
 {
@@ -257,13 +258,35 @@ namespace Nemesys.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            var report = _nemesysRepository.GetReportById(id);
+
+            if (report == null)
+            {
+                return NotFound();
+            }
+
+            if (report.UserId == _userManager.GetUserId(User))
+            {
+                return View("ConfirmDelete", new ReportViewModel(report, 
+                    _nemesysRepository.GetUserById( _userManager.GetUserId(User)))
+                );
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ConfirmDelete([Required] int reportid)
+        {
             try
             {
-                var reportToDelete = _nemesysRepository.GetReportById(id);
+                var reportToDelete = _nemesysRepository.GetReportById(reportid);
 
                 if (reportToDelete == null)
                 {
@@ -272,7 +295,7 @@ namespace Nemesys.Controllers
 
                 if (reportToDelete.UserId == _userManager.GetUserId(User))
                 {
-                    if (_nemesysRepository.DeleteReport(id))
+                    if (_nemesysRepository.DeleteReport(reportid))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -281,7 +304,7 @@ namespace Nemesys.Controllers
                 }
                 else
                 {
-                    return Unauthorized();
+                    return Forbid();
                 }
             }
             catch (Exception ex)

@@ -53,7 +53,6 @@ Investigation properties;
 
 Optional additional features;
 
-* Integration with Google or Bing maps for report location
 * Email notifications when a new report has been submitted (received by investigators - observer pattern?)
 * Watching of reports by other reporters (publisher-subscriber pattern?)
 * Contact reporter (for investigations)
@@ -61,7 +60,7 @@ Optional additional features;
 
 ---
 
-Speculated pages needed (in progress);
+Speculated pages needed;
 
 * Profile page (for each user)
 * Home page (page containing reports, small section of hall of fame with link to actual hall of fame - optional features are sorting by date of report/top upvoted, with tabs for opened, closed, etc reports)

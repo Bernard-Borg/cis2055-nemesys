@@ -17,9 +17,7 @@ else
     <div class="row mt-5">
         <div id="sideNav" class="col-xl-2 text-center">
             <div class="bgsidebar mb-4">
-                <div id="parentimage">
-                    <img id="profileimage" src="@Model.Photo?width=150&height=150&rmode=crop" width="150" height="150" class="rounded-circle mx-auto d-block" alt="Profile picture">
-                </div>
+                <img src="@Model.Photo?width=150&height=150&rmode=crop" width="150" height="150" class="rounded-circle mx-auto d-block" alt="Profile picture">
                 <span class="badge badge-pill bg-warning text-dark d-inline-flex mt-4 pe-5 ps-5 align-items-center">
                     <span class="fs-3">@Model.NumberOfStars</span>
                     <i style="font-size: 24px;" class="icon-star"></i>
@@ -37,7 +35,6 @@ else
                 </div>
             </div>
         </div>
-
         <div class="col-xl-10 ps-3 text-light">
             @{
                 var user = userManager.GetUserAsync(User).Result;
@@ -84,21 +81,23 @@ else
             </p>
 
             <h2 class="mt-5 mb-4 text-light">Reports Submitted</h2>
-            @{
-                if (Model.Reports != null && Model.Reports.ReportViewModels.Count() > 0)
-                {
-                    foreach (ReportViewModel report in Model.Reports.ReportViewModels.OrderByDescending(r => r.DateOfUpdate))
+            <div role="list">
+                @{
+                    if (Model.Reports != null && Model.Reports.ReportViewModels.Count() > 0)
                     {
-                        <partial name="/Views/Shared/_ReportCard.cshtml" model="@report" />
+                        foreach (ReportViewModel report in Model.Reports.ReportViewModels.OrderByDescending(r => r.DateOfUpdate))
+                        {
+                            <partial name="/Views/Shared/_ReportCard.cshtml" model="@report" />
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12 text-light fst-italic">
+                            User has not submitted any reports yet.
+                        </div>
                     }
                 }
-                else
-                {
-                    <div class="col-12 text-light fst-italic">
-                        User has not submitted any reports yet.
-                    </div>
-                }
-            }
+            </div>
         </div>
     </div>
 </div>

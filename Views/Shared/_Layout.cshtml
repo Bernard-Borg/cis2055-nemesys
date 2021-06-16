@@ -10,11 +10,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A website to report hazards around University campus">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/main.css" />
     <link href="~/css/bootstrap-icons.css" rel="stylesheet">
-    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" inline>
     <title>@ViewData["Title"] | Nemesys</title>
     @RenderSection("head", required: false)
 </head>
@@ -57,7 +57,7 @@
                     </noscript>
 
                     <div id="dropdowndiv" class="dropdown" style="display: none;">
-                        <a class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-label="Drop down menu" aria-expanded="false">
+                        <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-label="Drop down menu" aria-expanded="false">
                             <img src="@UserManager.GetUserAsync(User).Result.Photo?width=96&height=96" height="32" width="32" class="rounded-circle" alt="Your profile picture">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">

@@ -14,6 +14,7 @@ using SixLabors.ImageSharp.Web.DependencyInjection;
 using SixLabors.ImageSharp.Web.Processors;
 using Nemesys.Services;
 using System;
+using System.Linq;
 
 namespace Nemesys
 {
@@ -66,6 +67,11 @@ namespace Nemesys
                 .RemoveProcessor<BackgroundColorWebProcessor>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities            
+            services.AddWebOptimizer(pipeline =>
+            {
+                pipeline.MinifyCssFiles("css/main.css");
+                pipeline.MinifyJsFiles("scripts/map.js", "scripts/mapdisplay.js", "scripts/textarea-counter.js", "scripts/star.js");
+            });
 
             if (_env.IsDevelopment())
             {
@@ -82,6 +88,8 @@ namespace Nemesys
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseWebOptimizer();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
