@@ -109,6 +109,12 @@
                         </div>
                     </div>
                 }
+                @if (Model.Reports.ReportViewModels.Count() == 0)
+                {
+                    <div class="h4 m-5 text-light text-center">
+                        There are no reports.
+                    </div>
+                }
             </div>
         </div>
     </div>

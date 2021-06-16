@@ -19,13 +19,16 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly IWebHostEnvironment _environment;
+        private readonly ILogger<PhotoModel> _logger;
 
         public PhotoModel(
             UserManager<User> userManager,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            ILogger<PhotoModel> logger)
         {
             _userManager = userManager;
             _environment = environment;
+            _logger = logger;
         }
         public string ImageUrl { get; set; }
 
@@ -45,42 +48,65 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var photo = user.Photo;
-            ImageUrl = photo;
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var photo = user.Photo;
+                ImageUrl = photo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+                await LoadAsync();
+                return Page();
             }
-            await LoadAsync();
-            return Page();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
 
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
 
-            if (Input.NewPhoto != null)
-            {
-                user.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + Input.NewPhoto.FileName;
-                Input.NewPhoto.CopyTo(new FileStream(_environment.WebRootPath + user.Photo, FileMode.Create));
-                await _userManager.UpdateAsync(user);
+                if (Input.NewPhoto != null)
+                {
+                    user.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + Input.NewPhoto.FileName;
+                    Input.NewPhoto.CopyTo(new FileStream(_environment.WebRootPath + user.Photo, FileMode.Create));
+                    await _userManager.UpdateAsync(user);
+                }
+                return RedirectToPage();
             }
-            return RedirectToPage();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }   
         }
     }
 }

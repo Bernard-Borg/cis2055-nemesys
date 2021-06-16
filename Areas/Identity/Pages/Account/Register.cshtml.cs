@@ -89,71 +89,79 @@ namespace Nemesys.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            try
             {
-                //Stores the uploaded image in wwwroot/images
-                string ImagePath = "/images/profileimages/defaultprofile.png";
-
-                if (Input.Photo != null)
+                returnUrl ??= Url.Content("~/");
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                if (ModelState.IsValid)
                 {
-                    ImagePath = "/images/profileimages/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
-                }
+                    //Stores the uploaded image in wwwroot/images
+                    string ImagePath = "/images/profileimages/defaultprofile.png";
 
-                var user = new User
-                {
-                    Alias = Input.Alias,
-                    UserName = Input.Email,
-                    Email = Input.Email,
-                    Photo = ImagePath,
-                    DateJoined = DateTime.UtcNow,
-                    LastActiveDate = DateTime.UtcNow,
-                    NumberOfReports = 0,
-                    NumberOfStars = 0
-                };
-
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
                     if (Input.Photo != null)
                     {
-                        Input.Photo.CopyTo(new FileStream(_environment.WebRootPath + ImagePath, FileMode.Create));
+                        ImagePath = "/images/profileimages/" + Guid.NewGuid().ToString() + "_" + Input.Photo.FileName;
                     }
 
-                    await _userManager.AddToRoleAsync(user, "Reporter");
-
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    var user = new User
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        Alias = Input.Alias,
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        Photo = ImagePath,
+                        DateJoined = DateTime.UtcNow,
+                        LastActiveDate = DateTime.UtcNow,
+                        NumberOfReports = 0,
+                        NumberOfStars = 0
+                    };
+
+                    var result = await _userManager.CreateAsync(user, Input.Password);
+                    if (result.Succeeded)
+                    {
+                        if (Input.Photo != null)
+                        {
+                            Input.Photo.CopyTo(new FileStream(_environment.WebRootPath + ImagePath, FileMode.Create));
+                        }
+
+                        await _userManager.AddToRoleAsync(user, "Reporter");
+
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                    else
+                    foreach (var error in result.Errors)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                // If we got this far, something failed, redisplay form
+                return Page();
             }
-
-            // If we got this far, something failed, redisplay form
-            return Page();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
     }
 }

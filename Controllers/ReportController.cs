@@ -8,6 +8,7 @@ using Nemesys.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Nemesys.Controllers
 {
@@ -16,30 +17,40 @@ namespace Nemesys.Controllers
         private readonly INemesysRepository _nemesysRepository;
         private readonly UserManager<User> _userManager;
         private readonly IWebHostEnvironment _environment;
+        private readonly ILogger<ReportController> _logger;
 
-        public ReportController(INemesysRepository nemesysRepository, UserManager<User> userManager, IWebHostEnvironment environment)
+        public ReportController(INemesysRepository nemesysRepository, UserManager<User> userManager, IWebHostEnvironment environment, ILogger<ReportController> logger)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;
             _environment = environment;
+            _logger = logger;
         }
 
         public IActionResult Index(int id)
         {
-            var report = _nemesysRepository.GetReportById(id);
-
-            if (report != null)
+            try
             {
-                var model = new ReportViewModel(
-                   report,
-                   _nemesysRepository.GetUserById(_userManager.GetUserId(User))
-                );
+                var report = _nemesysRepository.GetReportById(id);
 
-                return View(model);
+                if (report != null)
+                {
+                    var model = new ReportViewModel(
+                       report,
+                       _nemesysRepository.GetUserById(_userManager.GetUserId(User))
+                    );
+
+                    return View(model);
+                }
+                else
+                {
+                    return Json("No such report");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json("No such report");
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 
@@ -48,16 +59,24 @@ namespace Nemesys.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var hazardTypes = _nemesysRepository.GetHazardTypes()
+            try
+            {
+                var hazardTypes = _nemesysRepository.GetHazardTypes()
                 .Select(h => new HazardTypeViewModel(h))
                 .ToList();
 
-            var model = new EditReportViewModel()
-            {
-                HazardTypes = hazardTypes
-            };
+                var model = new EditReportViewModel()
+                {
+                    HazardTypes = hazardTypes
+                };
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
+            }
         }
 
         [Authorize]
@@ -65,133 +84,40 @@ namespace Nemesys.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("DateTimeOfHazard", "Latitude", "Longitude", "HazardTypeId", "Description", "Photo")] EditReportViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-
-                var report = new Report
-                {
-                    DateOfReport = DateTime.UtcNow,
-                    DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(model.DateTimeOfHazard ?? default, timeZone),
-                    DateOfUpdate = DateTime.UtcNow,
-                    Latitude = model.Latitude ?? default,
-                    Longitude = model.Longitude ?? default,
-                    HazardTypeId = model.HazardTypeId ?? default,
-                    StatusId = 1,
-                    InvestigationId = null,
-                    Description = model.Description,
-                    NumberOfStars = 0,
-                    UserId = _userManager.GetUserId(User)
-                };
-
-                if (model.Photo != null)
-                    report.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-
-                var createdReport = _nemesysRepository.CreateReport(report);
-
-                if (createdReport != null)
-                {
-                    if (model.Photo != null)
-                    {
-                        model.Photo.CopyTo(new FileStream(_environment.WebRootPath + report.Photo, FileMode.Create));
-                    }
-
-                    return RedirectToAction("Index", new { id = createdReport.Id });
-                }
-                else
-                {
-                    return StatusCode(500);
-                }
-            }
-            else
-            {
-                var hazardTypes = _nemesysRepository.GetHazardTypes()
-                    .Select(h => new HazardTypeViewModel(h))
-                    .ToList();
-
-                model.HazardTypes = hazardTypes;
-                return View(model);
-            }
-        }
-
-        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
-        [Authorize]
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var existingReport = _nemesysRepository.GetReportById(id);
-
-            if (existingReport != null)
-            {
-                if (existingReport.UserId == _userManager.GetUserId(User))
-                {
-                    EditReportViewModel model = new EditReportViewModel
-                    {
-                        Id = existingReport.Id,
-                        DateTimeOfHazard = existingReport.DateTimeOfHazard,
-                        Latitude = existingReport.Latitude,
-                        Longitude = existingReport.Longitude,
-                        HazardTypeId = existingReport.HazardTypeId,
-                        Description = existingReport.Description,
-                        ImageUrl = existingReport.Photo,
-                    };
-
-                    model.HazardTypes = _nemesysRepository.GetHazardTypes()
-                        .Select(h => new HazardTypeViewModel(h))
-                        .ToList();
-
-                    return View(model);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, [Bind("DateTimeOfHazard", "Latitude", "Longitude", "HazardTypeId", "Description", "Photo")] EditReportViewModel updatedReport)
-        {
-            Report existingReport = _nemesysRepository.GetReportById(id);
-
-            //Check if the report being edited exists
-            if (existingReport == null) {
-                return NotFound();
-            }
-
-            //Checks whether the user is the owner of the report
-            if (existingReport.UserId == _userManager.GetUserId(User))
+            try
             {
                 if (ModelState.IsValid)
                 {
                     TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
-                    existingReport.DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(updatedReport.DateTimeOfHazard ?? default, timeZone);
-                    existingReport.Latitude = updatedReport.Latitude ?? default;
-                    existingReport.Longitude = updatedReport.Longitude ?? default;
-                    existingReport.HazardTypeId = updatedReport.HazardTypeId ?? default;
-                    existingReport.Description = updatedReport.Description;
-
-                    if (updatedReport.Photo != null)
+                    var report = new Report
                     {
-                        existingReport.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + updatedReport.Photo.FileName;
-                    }
+                        DateOfReport = DateTime.UtcNow,
+                        DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(model.DateTimeOfHazard ?? default, timeZone),
+                        DateOfUpdate = DateTime.UtcNow,
+                        Latitude = model.Latitude ?? default,
+                        Longitude = model.Longitude ?? default,
+                        HazardTypeId = model.HazardTypeId ?? default,
+                        StatusId = 1,
+                        InvestigationId = null,
+                        Description = model.Description,
+                        NumberOfStars = 0,
+                        UserId = _userManager.GetUserId(User)
+                    };
 
-                    if (_nemesysRepository.UpdateReport(existingReport))
+                    if (model.Photo != null)
+                        report.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+
+                    var createdReport = _nemesysRepository.CreateReport(report);
+
+                    if (createdReport != null)
                     {
-                        //After the report has successfully been updated, the image file is created
-                        if (updatedReport.Photo != null)
+                        if (model.Photo != null)
                         {
-                            updatedReport.Photo.CopyTo(new FileStream(_environment.WebRootPath + existingReport.Photo, FileMode.Create));
+                            model.Photo.CopyTo(new FileStream(_environment.WebRootPath + report.Photo, FileMode.Create));
                         }
 
-                        return RedirectToAction("Index", new { id });
+                        return RedirectToAction("Index", new { id = createdReport.Id });
                     }
                     else
                     {
@@ -200,16 +126,134 @@ namespace Nemesys.Controllers
                 }
                 else
                 {
-                    updatedReport.HazardTypes = _nemesysRepository.GetHazardTypes()
+                    var hazardTypes = _nemesysRepository.GetHazardTypes()
                         .Select(h => new HazardTypeViewModel(h))
                         .ToList();
 
-                    return View(updatedReport);
+                    model.HazardTypes = hazardTypes;
+                    return View(model);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return Unauthorized();
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
+            }
+        }
+
+        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
+        [Authorize]
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            try
+            {
+                var existingReport = _nemesysRepository.GetReportById(id);
+
+                if (existingReport != null)
+                {
+                    if (existingReport.UserId == _userManager.GetUserId(User))
+                    {
+                        EditReportViewModel model = new EditReportViewModel
+                        {
+                            Id = existingReport.Id,
+                            DateTimeOfHazard = existingReport.DateTimeOfHazard,
+                            Latitude = existingReport.Latitude,
+                            Longitude = existingReport.Longitude,
+                            HazardTypeId = existingReport.HazardTypeId,
+                            Description = existingReport.Description,
+                            ImageUrl = existingReport.Photo,
+                        };
+
+                        model.HazardTypes = _nemesysRepository.GetHazardTypes()
+                            .Select(h => new HazardTypeViewModel(h))
+                            .ToList();
+
+                        return View(model);
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit([FromRoute] int id, [Bind("DateTimeOfHazard", "Latitude", "Longitude", "HazardTypeId", "Description", "Photo")] EditReportViewModel updatedReport)
+        {
+            try
+            {
+                Report existingReport = _nemesysRepository.GetReportById(id);
+
+                //Check if the report being edited exists
+                if (existingReport == null)
+                {
+                    return NotFound();
+                }
+
+                //Checks whether the user is the owner of the report
+                if (existingReport.UserId == _userManager.GetUserId(User))
+                {
+                    if (ModelState.IsValid)
+                    {
+                         TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+                        existingReport.DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(updatedReport.DateTimeOfHazard ?? default, timeZone);
+                        existingReport.Latitude = updatedReport.Latitude ?? default;
+                        existingReport.Longitude = updatedReport.Longitude ?? default;
+                        existingReport.HazardTypeId = updatedReport.HazardTypeId ?? default;
+                        existingReport.Description = updatedReport.Description;
+
+                        if (updatedReport.Photo != null)
+                        {
+                            existingReport.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + updatedReport.Photo.FileName;
+                        }
+
+                        if (_nemesysRepository.UpdateReport(existingReport))
+                        {
+                            //After the report has successfully been updated, the image file is created
+                            if (updatedReport.Photo != null)
+                            {
+                                updatedReport.Photo.CopyTo(new FileStream(_environment.WebRootPath + existingReport.Photo, FileMode.Create));
+                            }
+
+                            return RedirectToAction("Index", new { id });
+                        }
+                        else
+                        {
+                            return StatusCode(500);
+                        }
+                    }
+                    else
+                    {
+                        updatedReport.HazardTypes = _nemesysRepository.GetHazardTypes()
+                            .Select(h => new HazardTypeViewModel(h))
+                            .ToList();
+
+                        return View(updatedReport);
+                    }
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 
@@ -217,25 +261,33 @@ namespace Nemesys.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var reportToDelete = _nemesysRepository.GetReportById(id);
-
-            if (reportToDelete == null)
+            try
             {
-                return NotFound();
-            }
+                var reportToDelete = _nemesysRepository.GetReportById(id);
 
-            if (reportToDelete.UserId == _userManager.GetUserId(User))
-            {
-                if (_nemesysRepository.DeleteReport(id))
+                if (reportToDelete == null)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return NotFound();
                 }
 
-                return StatusCode(500);
+                if (reportToDelete.UserId == _userManager.GetUserId(User))
+                {
+                    if (_nemesysRepository.DeleteReport(id))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    return StatusCode(500);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Unauthorized();
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
     }

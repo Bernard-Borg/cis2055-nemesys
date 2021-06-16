@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nemesys.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Nemesys.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +15,16 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<SetPasswordModel> _logger;
 
         public SetPasswordModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ILogger<SetPasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -45,49 +49,65 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+
+                var hasPassword = await _userManager.HasPasswordAsync(user);
+
+                if (hasPassword)
+                {
+                    return RedirectToPage("./ChangePassword");
+                }
+
+                return Page();
             }
-
-            var hasPassword = await _userManager.HasPasswordAsync(user);
-
-            if (hasPassword)
+            catch (Exception ex)
             {
-                return RedirectToPage("./ChangePassword");
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
             }
-
-            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
-            if (!addPasswordResult.Succeeded)
-            {
-                foreach (var error in addPasswordResult.Errors)
+                if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    return Page();
                 }
-                return Page();
+
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
+                if (!addPasswordResult.Succeeded)
+                {
+                    foreach (var error in addPasswordResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return Page();
+                }
+
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = "Your password has been set.";
+
+                return RedirectToPage();
             }
-
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
-
-            return RedirectToPage();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return Redirect("/Error/500");
+            }
         }
     }
 }
