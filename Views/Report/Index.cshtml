@@ -18,22 +18,22 @@
         <div class="col-xl-2 text-light mb-3">
             <div class="bgsidebar mb-4">
                 <div class="h2 text-center">Reporter</div>
-                <img src="@Model.AuthorPhoto?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of report author">
+                <img src="@Model.Reporter.Photo?width=128&height=128&rmode=crop" width="128" height="128" class="rounded-circle mx-auto d-block mt-5" alt="Photo of report author">
                 <div class="fs-4 pt-3 lh-sm text-center">
                     <span class="badge badge-pill bg-warning text-dark mb-2 mt-3">
                         @Model.NumberOfStars
                         <i class="icon-star" aria-hidden="true"></i>
                     </span>
-                    <p>@Model.AuthorUserName</p>
+                    <p>@Model.Reporter.Username</p>
                 </div>
                 <div class="d-grid">
-                    <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.AuthorId">Profile</a>
+                    <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@Model.Reporter.Id">Profile</a>
                 </div>
             </div>
             @{
                 var user = userManager.GetUserAsync(User).Result;
             }
-            @if (user != null && user.Id == Model.AuthorId)
+            @if (user != null && user.Id == Model.Reporter.Id)
             {
                 <div class="bgsidebar mb-4">
                     <div class="h4 pb-3 text-center">Report Options</div>

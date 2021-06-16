@@ -7,9 +7,9 @@ namespace Nemesys.ViewModels
     {
         public HallOfFameViewModel HallOfFame { get; set; }
         public ReportListViewModel Reports { get; set; }
-        public IEnumerable<ReportStatus> Statuses { get; set; }
+        public IEnumerable<ReportStatusViewModel> Statuses { get; set; }
 
-        public HomePageViewModel(HallOfFameViewModel hallOfFame, ReportListViewModel reports, IEnumerable<ReportStatus> statuses)
+        public HomePageViewModel(HallOfFameViewModel hallOfFame, ReportListViewModel reports, IEnumerable<ReportStatusViewModel> statuses)
         {
             HallOfFame = hallOfFame;
             Reports = reports;

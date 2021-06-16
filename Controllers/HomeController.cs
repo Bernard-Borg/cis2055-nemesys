@@ -54,13 +54,17 @@ namespace Nemesys.Controllers
                     break;
             }
 
-            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5));
+            HallOfFameViewModel hofViewModel = new HallOfFameViewModel(_nemesysRepository.GetTopUsers(5).Select(u => new ProfileCardViewModel(u)));
             ReportListViewModel reportsViewModel = new ReportListViewModel(
                 reports.ToList(),
                 _nemesysRepository.GetUserById(_userManager.GetUserId(User))
             );
 
-            var model = new HomePageViewModel(hofViewModel, reportsViewModel, _nemesysRepository.GetReportStatuses());
+            var model = new HomePageViewModel(hofViewModel, reportsViewModel, 
+                _nemesysRepository.GetReportStatuses()
+                    .Select(s => new ReportStatusViewModel(s))
+            );
+
             return View(model);
         }
 
@@ -82,7 +86,7 @@ namespace Nemesys.Controllers
                     break;
             }
 
-            var model = new HallOfFameViewModel(users);
+            var model = new HallOfFameViewModel(users.Select(u => new ProfileCardViewModel(u)));
             return View(model);
         }
 
@@ -108,12 +112,9 @@ namespace Nemesys.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Star(int reportId, HomeSortQueryParameter sort, string returnUrl = null)
+        public IActionResult Star(int reportId, string returnUrl = null)
         {
-            Console.WriteLine(returnUrl);
-
             var report = _nemesysRepository.GetReportById(reportId);
-            Console.WriteLine(HttpContext.Request.Headers["Referer"].ToString());
 
             if (report == null)
             {
@@ -128,7 +129,6 @@ namespace Nemesys.Controllers
             {
                 if (_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId))
                 {
-                    Console.WriteLine(Url.IsLocalUrl(returnUrl));
                     if (Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     else

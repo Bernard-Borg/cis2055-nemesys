@@ -19,23 +19,23 @@
         </div>
         <div class="col-12 col-md-9 col-lg-10">
             @{
-                foreach (User user in Model.HallOfFameUsers)
+                foreach (ProfileCardViewModel user in Model.HallOfFameUsers)
                 {
                     <div class="row pt-4 justify-content-center">
                         <div class="col-0 d-none col-md-2 col-lg-1 d-md-flex justify-content-center align-self-stretch">
                             <span class="badge badge-pill bg-warning text-dark fs-3 d-flex align-items-center custom-rounded">
-                                @user.NumberOfStars
+                                @user.StarsCount
                                 <i class="icon-star" aria-hidden="true"></i>
                             </span>
                         </div>
                         <a class="col-10 col-lg-9" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
                             <div class="text-light border border-light custom-rounded p-3 overflow-hidden">
-                                <h2>@user.Alias</h2>
-                                <h4>@user.NumberOfReports Reports <span class="d-inline d-md-none">(@user.NumberOfStars stars)</span></h4>
+                                <h2>@user.Username</h2>
+                                <h4>@user.ReportCount Reports <span class="d-inline d-md-none">(@user.StarsCount stars)</span></h4>
                             </div>
                         </a>
                         <div class="col-0 col-lg-1 d-none d-lg-flex justify-content-start p-2">
-                            <img class="custom-rounded" src="@user.Photo?width=96&height=96&rmode=crop" onerror="style.opacity='0'" width="96" height="96" alt="@user.Alias's profile picture">
+                            <img class="custom-rounded" src="@user.Photo?width=96&height=96&rmode=crop" onerror="style.opacity='0'" width="96" height="96" alt="@user.Username's profile picture">
                         </div>
                     </div>
                 }

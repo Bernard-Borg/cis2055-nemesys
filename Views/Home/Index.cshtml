@@ -25,16 +25,16 @@
                 <p class="h4 fw-normal text-light mb-3">Hall of Fame</p>
                 <div class="mb-3">
                     @{int counter = 0; }
-                    @foreach (User user in Model.HallOfFame.HallOfFameUsers)
+                    @foreach (ProfileCardViewModel user in Model.HallOfFame.HallOfFameUsers)
                     {
                         counter++;
                         
                         <a class="btn btn-outline-light text-left p-1 p-lg-3 d-flex" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
-                            <img class="d-md-none d-lg-inline-block rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=96&height=96&rmode=crop" width="48" height="48" alt="@user.Alias's profile picture">
+                            <img class="d-md-none d-lg-inline-block rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=96&height=96&rmode=crop" width="48" height="48" alt="@user.Username's profile picture">
                             <div class="pl-3 lh-sm text-md-center text-lg-start w-100">
-                                <p class="mb-1">@user.Alias</p>
+                                <p class="mb-1">@user.Username</p>
                                 <span class="badge badge-pill bg-warning text-dark">
-                                    @user.NumberOfStars
+                                    @user.StarsCount
                                     <i class="icon-star" aria-hidden="true"></i>
                                 </span>
                             </div>
@@ -64,9 +64,9 @@
                 <button type="button" class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">Filter Reports</button>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-SortString="@Context.Request.Query["SortString"]">All</a></li>
-                    @foreach (ReportStatus status in Model.Statuses)
+                    @foreach (ReportStatusViewModel status in Model.Statuses)
                     {
-                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.Id">@status.StatusName</a></li>
+                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.StatusId">@status.StatusName</a></li>
                     }
                 </ul>
             </div>
@@ -75,14 +75,14 @@
                 <li class="nav-item fs-5">
                     <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-SortString="@Context.Request.Query["SortString"]">All</a>
                 </li>
-                @foreach (ReportStatus status in Model.Statuses)
+                @foreach (ReportStatusViewModel status in Model.Statuses)
                 {
                     <li class="nav-item fs-5">
-                        <a class="nav-link" style="color: @status.HexColour" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.Id">@status.StatusName</a>
+                        <a class="nav-link" style="color: @status.StatusColour" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.StatusId">@status.StatusName</a>
                     </li>
                 }
             </ul>
-
+            
             <div role="list">
                 @foreach (ReportViewModel report in Model.Reports.ReportViewModels)
                 {

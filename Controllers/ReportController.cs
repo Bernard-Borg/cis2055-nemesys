@@ -67,10 +67,12 @@ namespace Nemesys.Controllers
         {
             if (ModelState.IsValid)
             {
+                TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
                 var report = new Report
                 {
                     DateOfReport = DateTime.UtcNow,
-                    DateTimeOfHazard = model.DateTimeOfHazard ?? default,
+                    DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(model.DateTimeOfHazard ?? default, timeZone),
                     DateOfUpdate = DateTime.UtcNow,
                     Latitude = model.Latitude ?? default,
                     Longitude = model.Longitude ?? default,
@@ -168,7 +170,9 @@ namespace Nemesys.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    existingReport.DateTimeOfHazard = updatedReport.DateTimeOfHazard ?? default;
+                    TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+                    existingReport.DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(updatedReport.DateTimeOfHazard ?? default, timeZone);
                     existingReport.Latitude = updatedReport.Latitude ?? default;
                     existingReport.Longitude = updatedReport.Longitude ?? default;
                     existingReport.HazardTypeId = updatedReport.HazardTypeId ?? default;

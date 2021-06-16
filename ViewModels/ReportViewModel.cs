@@ -1,4 +1,5 @@
 ﻿using Nemesys.Models;
+using System;
 using System.Linq;
 
 namespace Nemesys.ViewModels
@@ -20,20 +21,19 @@ namespace Nemesys.ViewModels
 
         public ReportStatusViewModel ReportStatus { get; set; }
 
-        public string AuthorUserName { get; set; }
-        public string AuthorId { get; set; }
-        public string AuthorPhoto { get; set; }
-        public int AuthorStarsNumber { get; set; }
+        public ProfileCardViewModel Reporter { get; set; }
 
         public int InvestigationId { get; set; }
         public bool HasInvestigation { get; set; }
 
         public ReportViewModel(Report report, User currentUser)
         {
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
             ReportId = report.Id;
-            DateOfReport = report.DateOfReport.ToString("d MMMM yyyy 'at' HH:mm");
-            DateOfHazard = report.DateTimeOfHazard.ToString("d MMMM yyyy 'at' HH:mm");
-            DateOfUpdate = report.DateOfUpdate.ToString("d MMMM yyyy 'at' HH:mm");
+            DateOfReport = TimeZoneInfo.ConvertTimeFromUtc(report.DateOfReport, timeZone).ToString("d MMMM yyyy 'at' HH:mm");
+            DateOfHazard = TimeZoneInfo.ConvertTimeFromUtc(report.DateTimeOfHazard, timeZone).ToString("d MMMM yyyy 'at' HH:mm");
+            DateOfUpdate = TimeZoneInfo.ConvertTimeFromUtc(report.DateOfUpdate, timeZone).ToString("d MMMM yyyy 'at' HH:mm");
             Latitude = report.Latitude;
             Longitude = report.Longitude;
             HazardName = report.HazardType.HazardName;
@@ -41,10 +41,7 @@ namespace Nemesys.ViewModels
             Photo = report.Photo;
             NumberOfStars = report.NumberOfStars;
 
-            AuthorUserName = report.Author.Alias;
-            AuthorId = report.Author.Id;
-            AuthorStarsNumber = report.Author.NumberOfStars;
-            AuthorPhoto = report.Author.Photo;
+            Reporter = new ProfileCardViewModel(report.Author);
 
             if (report.InvestigationId != null)
             {

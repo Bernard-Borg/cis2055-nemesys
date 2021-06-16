@@ -1,7 +1,12 @@
 ﻿@model DateTime?
 
+@{ 
+    TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+    DateTime dateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zone);
+}
+
 <div class="form-group">
     <label asp-for="@Model"></label>
-    <input asp-for="@Model" class="form-control" max="@DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm")" min="@DateTime.UtcNow.AddYears(-1).ToString("yyyy-MM-ddThh:mm")" />
+    <input asp-for="@Model" class="form-control" type="datetime-local" min="@dateTime.AddYears(-1).ToString("yyyy-MM-ddTHH:mm")" max="@dateTime.ToString("yyyy-MM-ddTHH:mm")"/>
     <span asp-validation-for="@Model" class="text-danger"></span>
 </div>

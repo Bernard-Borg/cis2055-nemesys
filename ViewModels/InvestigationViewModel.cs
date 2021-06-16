@@ -1,4 +1,5 @@
 ﻿using Nemesys.Models;
+using System;
 
 namespace Nemesys.ViewModels
 {
@@ -12,25 +13,19 @@ namespace Nemesys.ViewModels
         public string ReportDescription { get; set; }
         public ReportStatusViewModel ReportStatus { get; set; }
 
-        public string InvestigatorId { get; set; }
-        public string InvestigatorUserName { get; set; }
-        public string InvestigatorEmail { get; set; }
-        public string InvestigatorPhoto { get; set; }
-        public int InvestigatorStarsNumber { get; set; }
+        public ProfileCardViewModel Investigator { get; set; }
 
         public InvestigationViewModel(Investigation investigation) {
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+            InvestigationId = investigation.InvestigationId;
             Description = investigation.Description;
-            DateOfAction = investigation.DateOfAction.ToString("d MMMM yyyy 'at' HH:mm");
+            DateOfAction = TimeZoneInfo.ConvertTimeFromUtc(investigation.DateOfAction, timeZone).ToString("d MMMM yyyy 'at' HH:mm");
             ReportId = investigation.ReportId;
             ReportDescription = investigation.Report.Description;
             ReportStatus = new ReportStatusViewModel(investigation.Report.Status);
-
-            InvestigationId = investigation.InvestigationId;
-            InvestigatorId = investigation.Investigator.Id;
-            InvestigatorUserName = investigation.Investigator.Alias;
-            InvestigatorEmail = investigation.Investigator.Email;
-            InvestigatorPhoto = investigation.Investigator.Photo;
-            InvestigatorStarsNumber = investigation.Investigator.NumberOfStars;     
+            
+            Investigator = new ProfileCardViewModel(investigation.Investigator);  
         }
     }
 }

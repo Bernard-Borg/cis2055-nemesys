@@ -77,10 +77,12 @@ namespace Nemesys.Controllers
                     return Json("Report already has an investigation");
                 }
 
+                TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
                 var investigation = new Investigation
                 {
                     Description = model.Description,
-                    DateOfAction = model.DateOfAction ?? default(DateTime),
+                    DateOfAction = TimeZoneInfo.ConvertTimeToUtc(model.DateOfAction ?? default, timeZone),
                     UserId = _userManager.GetUserId(User),
                     ReportId = id
                 };
@@ -134,7 +136,6 @@ namespace Nemesys.Controllers
                         InvestigationId = existingInvestigation.InvestigationId,
                         Description = existingInvestigation.Description,
                         DateOfAction = existingInvestigation.DateOfAction,
-                        //for some reason this doesn't work and always sets to "No Action Required"
                         StatusId = investigationReport.StatusId
                     };
 
@@ -182,7 +183,9 @@ namespace Nemesys.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction ?? default(DateTime);
+                    TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+                    existingInvestigation.DateOfAction = TimeZoneInfo.ConvertTimeToUtc(updatedInvestigation.DateOfAction ?? default, timeZone);
                     existingInvestigation.Description = updatedInvestigation.Description;
                     investigationReport.StatusId = updatedInvestigation.StatusId ?? default;
 
@@ -190,7 +193,7 @@ namespace Nemesys.Controllers
                     {
                         if (_nemesysRepository.UpdateReport(investigationReport))
                         {
-                            return RedirectToAction("Index", new { id = id });
+                            return RedirectToAction("Index", new { id });
                         }
                     }
 
