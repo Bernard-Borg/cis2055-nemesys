@@ -38,7 +38,17 @@ namespace Nemesys
             );
 
             //Sets up Identity core
-            services.AddDefaultIdentity<User>()
+            services.AddDefaultIdentity<User>(options =>
+            {
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
@@ -75,12 +85,9 @@ namespace Nemesys
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            } 
-            else
-            {
-                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseImageSharp();
 
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones

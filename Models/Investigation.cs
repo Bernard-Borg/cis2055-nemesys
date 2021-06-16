@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nemesys.Models
 {
     public class Investigation
     {
         public int InvestigationId { get; set; }
+
+        [MaxLength(255)]
         public string Description { get; set; }
         public DateTime DateOfAction { get; set; }
 

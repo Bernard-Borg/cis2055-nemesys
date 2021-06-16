@@ -43,6 +43,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [Authorize]
         [HttpGet]
         public IActionResult Create()
@@ -111,6 +112,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [Authorize]
         [HttpGet]
         public IActionResult Edit(int id)

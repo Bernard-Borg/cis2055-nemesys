@@ -6,20 +6,8 @@
 }
 
 <form asp-area="" asp-controller="Investigation" asp-action="Create" method="post">
-
-    <div class="form-group pt-3">
-        <label asp-for="@Model.Description"></label>
-        <div class="textarea-with-counter">
-            <textarea asp-for="@Model.Description" class="form-control" rows="4"></textarea>
-            <span class="textarea-counter"></span>
-        </div>
-        <span asp-validation-for="@Model.Description" class="text-danger"></span>
-    </div>
-    <div class="form-group pt-3">
-        <label asp-for="@Model.DateOfAction"></label>
-        <input asp-for="@Model.DateOfAction" class="form-control" max="@DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm")" min="@DateTime.UtcNow.AddYears(-1).ToString("yyyy-MM-ddThh:mm")" />
-        <span asp-validation-for="@Model.DateOfAction" class="text-danger"></span>
-    </div>
+    @Html.DisplayFor(model => model.Description)
+    @Html.DisplayFor(model => model.DateOfAction)
     <div class="form-group">
         <label asp-for="@Model.StatusId"></label>
         <select class="form-select" asp-for="@Model.StatusId"
@@ -35,5 +23,4 @@
 
 @section scripts {
     <script src="~/scripts/textarea-counter.js" async defer></script>
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

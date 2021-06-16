@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
@@ -38,18 +39,32 @@ namespace Nemesys.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Promote(string id)
         {
             var user = _nemesysRepository.GetUserById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result).Wait();
             _userManager.AddToRoleAsync(user, "Investigator").Wait();
             return RedirectToAction("Index", "Profile", new { id });
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Demote(string id)
         {
             var user = _nemesysRepository.GetUserById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result).Wait();
             _userManager.AddToRoleAsync(user, "Reporter").Wait();
             return RedirectToAction("Index", "Profile", new { id });

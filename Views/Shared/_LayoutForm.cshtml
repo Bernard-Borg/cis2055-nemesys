@@ -17,5 +17,6 @@
 
 @section scripts
 {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     @RenderSection("scripts", required: false)
 }

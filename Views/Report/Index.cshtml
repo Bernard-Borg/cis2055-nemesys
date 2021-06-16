@@ -45,7 +45,7 @@
             }
 
             <div class="bgsidebar mb-4" style="border-color: @Model.ReportStatus.StatusColour;">
-                <div class="h4 text-center">Current Status: @Model.ReportStatus.StatusName</div>
+                <p class="h4 text-center">Current Status: @Model.ReportStatus.StatusName</p>
                 <div class="d-grid">
                     @if ((User.IsInRole("Investigator") || User.IsInRole("Admin")) && !Model.HasInvestigation)
                     {
@@ -60,28 +60,22 @@
         </div>
         <div class="col-xl-7 text-light ps-5 pe-4">
             <div class="row">
-                <form class="input-group" method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div class="col-md-1 mt-2">
-                            <input type="hidden" name="reportId" value="@Model.ReportId">
-                            <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @Model.Description">
-                                <i class="icon-star clickable d-flex justify-content-center @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
-                                <p class="h3 d-flex justify-content-center" style="color: gold;">@Model.NumberOfStars</p>
-                            </button>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="col-md-1 d-flex justify-content-center align-items-center" style="color: gold;">
-                            <p class="h2">@Model.NumberOfStars</p>
-                            <i class="icon-star fs-4" aria-hidden="true"></i>
-                        </div>
-                    }
-                    <div class="col-md-11 ps-3 h5">
-                        <h1>@Model.Description</h1>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-md-1 mt-2">
+                        <partial name="/Views/Shared/_Star.cshtml" model="@Model" />
                     </div>
-                </form>
+                }
+                else
+                {
+                    <div class="col-md-1 d-flex justify-content-center align-items-center" style="color: gold;">
+                        <p class="h2">@Model.NumberOfStars</p>
+                        <i class="icon-star fs-4" aria-hidden="true"></i>
+                    </div>
+                }
+                <div class="col-md-11 ps-3 h5">
+                    <h1>@Model.Description</h1>
+                </div>
             </div>
             <div class="row pt-5">
                 <div class="col-md-8">
