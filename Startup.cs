@@ -53,7 +53,7 @@ namespace Nemesys
             //Image sharp used for loading images correctly
             services.AddImageSharp()
                 .RemoveProcessor<FormatWebProcessor>()
-                .RemoveProcessor<BackgroundColorWebProcessor>(); ;
+                .RemoveProcessor<BackgroundColorWebProcessor>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities            
 
@@ -78,13 +78,12 @@ namespace Nemesys
             } 
             else
             {
-                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseImageSharp();
 
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones
-            app.UseStatusCodePages(); //Returns simple messages for errors (can customise later)
 
             //Allows access to static resources in the wwwroot folder
             app.UseStaticFiles(new StaticFileOptions

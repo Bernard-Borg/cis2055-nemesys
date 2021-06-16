@@ -25,13 +25,14 @@ else
                     <i style="font-size: 24px;" class="icon-star"></i>
                 </span>
                 <div class="mt-5 text-light fs-5">
-                    <p>Member since @Model.DateJoined</p>
-                    <p>Last Active on @Model.LastActiveDate</p>
+                    <p>Member since<br />@Model.DateJoined</p>
+                    <p>Last Active on<br/>@Model.LastActiveDate</p>
                 </div>
                 <div>
                     @if (Model.IsCurrentUser)
                     {
-                        <a type="button" class="w-100 btn btn-outline-light btn-lg mb-2 custom-rounded" asp-area="Identity" asp-page="/Account/Manage">Edit Details</a>
+                        <a type="button" class="w-100 btn btn-outline-light btn-lg custom-rounded" asp-area="Identity" asp-page="/Account/Manage/Index">Edit Details</a>
+                        <noscript><a type="button" class="w-100 btn btn-outline-light btn-lg mt-3 custom-rounded" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign Out</a></noscript>
                     }
                 </div>
             </div>

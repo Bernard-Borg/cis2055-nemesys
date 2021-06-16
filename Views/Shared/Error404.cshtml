@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Error 404";
 }
 
 <div class="container pt-5 text-light">
@@ -8,8 +8,7 @@
             <i class="icon-bug fs-1"></i>
         </div>
         <div class="col-11">
-            <h1>404</h1>
-            <p class="h4">Catastophic (or minor) Error</p>
+            <p class="h2 mt-2">@ViewBag.Message</p>
         </div>
     </div>
 
@@ -23,12 +22,12 @@
         </div>
         <h2><strong>How did I get here?</strong></h2>
         <p class="errorpage-paragraph my-4">
-            I don't know, you tell us. Something must have badly messed up I guess. Who knows, we sure don't. Maybe we forgot to patch something off before submitting, maybe it's a link we changed and never fixed, maybe it was pure unluckiness. Or maybe you were intentionally trying to find this page, in which case, congratulations! You've done it!
+            Something must have badly messed up I guess. Who knows, we sure don't. Maybe we forgot to patch something off before submitting, maybe it's a link we changed and never fixed, maybe it was pure unluckiness. Or maybe you were intentionally trying to find this page, in which case, congratulations! You've done it!
         </p>
         <p class="errorpage-paragraph my-4">
             Unfortunately we didn't really have time to add any rewards for your success, what with GAPT and way too many assignments to deal with in one tiny semester.
         </p>
         <h2><strong>How do you leave this page?</strong></h2>
-        <a asp-controller="Home" asp-action="Index" class="text-danger">Just click here<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-danger">, or here!</a></a>
+        <a asp-controller="Home" asp-action="Index" class="text-danger">Just click here</a><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="text-danger">, or here!</a>
     </div> 
 </div>

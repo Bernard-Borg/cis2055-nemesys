@@ -1,0 +1,30 @@
+﻿@page
+@model BioModel
+@{
+    ViewData["Title"] = "Manage Bio";
+    ViewData["ActivePage"] = ManageNavPages.Bio;
+}
+
+<h3 class="text-light">@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row text-light form-group d-flex">
+    <div class="col-md-6">
+        <form id="change-bio-form" method="post">
+            <div class="form-group">
+                <label asp-for="Bio"></label>
+                <div class="input-group">
+                    <textarea asp-for="Bio" class="form-control" disabled></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.NewBio"></label>
+                <textarea asp-for="Input.NewBio" class="form-control"></textarea>
+                <span asp-validation-for="Input.NewBio" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <button type="submit" class="mt-2 mb-3 btn btn-lg btn-outline-light">Update Bio</button>
+            </div>
+        </form>
+    </div>
+</div>

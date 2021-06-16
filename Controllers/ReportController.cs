@@ -172,7 +172,6 @@ namespace Nemesys.Controllers
                     existingReport.HazardTypeId = updatedReport.HazardTypeId ?? default;
                     existingReport.Description = updatedReport.Description;
 
-                    Console.WriteLine("PHOTO" + updatedReport.Photo);
                     if (updatedReport.Photo != null)
                     {
                         existingReport.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + updatedReport.Photo.FileName;

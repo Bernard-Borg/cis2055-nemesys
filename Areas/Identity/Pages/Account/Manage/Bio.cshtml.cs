@@ -6,46 +6,47 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using Nemesys.Models;
 
 namespace Nemesys.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    public class BioModel : PageModel
     {
         private readonly UserManager<User> _userManager;
 
-        public IndexModel(
+        public BioModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ILogger<BioModel> logger)
         {
             _userManager = userManager;
         }
 
-        public string Alias { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
+        public string Bio { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public class InputModel
         {
-            [Required]
-            [MaxLength(20, ErrorMessage = "Cannot have a username with more than 20 characters")]
-            [MinLength(3, ErrorMessage = "Cannot have a username with less than 3 characters")]
-            [Display(Name = "New username")]
-            public string NewAlias { get; set; }
+            [StringLength(255, ErrorMessage = "The {0} must be at max {1} characters long.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "New bio")]
+            public string NewBio { get; set; }
         }
 
         private async Task LoadAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            var alias = user.Alias;
-            Alias = alias;
+            var bio = user.Bio;
+            Bio = bio;
             Input = new InputModel
             {
-                NewAlias = alias
+                NewBio = bio
             };
         }
 
@@ -56,7 +57,6 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             await LoadAsync();
             return Page();
         }
@@ -75,10 +75,10 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var alias = user.Alias;
-            if (Input.NewAlias != alias)
+            var bio = user.Bio;
+            if (Input.NewBio != bio)
             {
-                user.Alias = Input.NewAlias;
+                user.Bio = Input.NewBio;
                 await _userManager.UpdateAsync(user);
             }
             return RedirectToPage();

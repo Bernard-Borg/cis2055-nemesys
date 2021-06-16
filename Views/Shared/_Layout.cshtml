@@ -51,16 +51,25 @@
                 </div>
 
                 <!--Drop down profile menu-->
-                <div class="dropdown d-flex justify-content-center">
-                    <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-label="Drop down menu" aria-expanded="false">
-                        <img src="@UserManager.GetUserAsync(User).Result.Photo?width=32&height=32" height="32" width="32" class="rounded-circle" alt="Your profile picture">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
-                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
-                        <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
-                    </ul>
+                <div class="d-flex justify-content-center">
+                    <noscript>
+                        <a class="btn btn-outline-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">Profile</a>
+                    </noscript>
+
+                    <div id="dropdowndiv" class="dropdown" style="display: none;">
+                        <a class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-label="Drop down menu" aria-expanded="false">
+                            <img src="@UserManager.GetUserAsync(User).Result.Photo?width=32&height=32" height="32" width="32" class="rounded-circle" alt="Your profile picture">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
+                            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
+                        </ul>
+                    </div>
+                    <script>
+                        window.onload = function () { document.getElementById('dropdowndiv').style.display = 'block'; }
+                    </script>
                 </div>
             }
             else

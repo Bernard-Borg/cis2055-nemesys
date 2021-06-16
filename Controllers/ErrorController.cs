@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Nemesys.Controllers
 {
@@ -7,13 +8,15 @@ namespace Nemesys.Controllers
         [Route("/Error/{statusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode)
         {
+            ViewBag.Message = statusCode + ": " + ReasonPhrases.GetReasonPhrase(statusCode);
+
             switch(statusCode)
             {
                 case 404:
-                    //ViewBag.ErrorMessage("Resource could not be found.");
-                    break;
+                    return View("Error404");
+                default:
+                    return View("Error");
             }
-            return View("Error");
         }
     }
 }

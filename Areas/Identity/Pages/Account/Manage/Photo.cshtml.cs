@@ -1,52 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using Nemesys.CustomAttributes;
 using Nemesys.Models;
 
 namespace Nemesys.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    public class PhotoModel : PageModel
     {
         private readonly UserManager<User> _userManager;
+        private readonly IWebHostEnvironment _environment;
 
-        public IndexModel(
+        public PhotoModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
+            _environment = environment;
         }
-
-        public string Alias { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
+        public string ImageUrl { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public class InputModel
         {
-            [Required]
-            [MaxLength(20, ErrorMessage = "Cannot have a username with more than 20 characters")]
-            [MinLength(3, ErrorMessage = "Cannot have a username with less than 3 characters")]
-            [Display(Name = "New username")]
-            public string NewAlias { get; set; }
+            [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".webp" })]
+            [MaxFileSize(10 * 1024 * 1024)]
+            [Display(Name = "New photo")]
+            public IFormFile NewPhoto { get; set; }
         }
 
         private async Task LoadAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            var alias = user.Alias;
-            Alias = alias;
-            Input = new InputModel
-            {
-                NewAlias = alias
-            };
+            var photo = user.Photo;
+            ImageUrl = photo;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -56,7 +57,6 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             await LoadAsync();
             return Page();
         }
@@ -71,14 +71,13 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync();
                 return Page();
             }
 
-            var alias = user.Alias;
-            if (Input.NewAlias != alias)
+            if (Input.NewPhoto != null)
             {
-                user.Alias = Input.NewAlias;
+                user.Photo = "/images/reportimages/" + Guid.NewGuid().ToString() + "_" + Input.NewPhoto.FileName;
+                Input.NewPhoto.CopyTo(new FileStream(_environment.WebRootPath + user.Photo, FileMode.Create));
                 await _userManager.UpdateAsync(user);
             }
             return RedirectToPage();

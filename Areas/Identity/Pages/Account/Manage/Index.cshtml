@@ -10,15 +10,19 @@
 <div class="row text-light form-group d-flex">
     <div class="col-md-6">
         <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Alias"></label>
+                <input asp-for="Alias" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.NewAlias"></label>
+                <input asp-for="Input.NewAlias" class="form-control" />
+                <span asp-validation-for="Input.NewAlias" class="text-danger"></span>
             </div>
             <div class="form-group d-flex">
                 <button id="update-profile-button" type="submit" class="mt-2 mb-3 btn btn-lg btn-outline-light">Save</button>
             </div>
-            
+
         </form>
     </div>
 </div>
