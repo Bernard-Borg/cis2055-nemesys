@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nemesys.Models
 {
@@ -21,6 +22,7 @@ namespace Nemesys.Models
         public int? InvestigationId { get; set; }
         public Investigation Investigation { get; set; }
 
+        [MaxLength(255)]
         public string Description { get; set; }
 
         public string Photo { get; set; }

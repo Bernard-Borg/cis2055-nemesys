@@ -1,0 +1,10 @@
+﻿@model String
+
+<div class="form-group">
+    <label asp-for="@Model"></label>
+    <div class="textarea-with-counter">
+        <textarea asp-for="@Model" class="form-control" rows="4"></textarea>
+        <span class="textarea-counter"></span>
+    </div>
+    <span asp-validation-for="@Model" class="text-danger"></span>
+</div>

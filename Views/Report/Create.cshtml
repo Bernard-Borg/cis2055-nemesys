@@ -26,14 +26,7 @@
         </div>
         <div class="rounded-3" id="map"></div>
     </div>
-    <div class="form-group">
-        <label asp-for="@Model.Description"></label>
-        <div class="textarea-with-counter">
-            <textarea asp-for="@Model.Description" class="form-control" rows="4"></textarea>
-            <span class="textarea-counter"></span>
-        </div>
-        <span asp-validation-for="@Model.Description" class="text-danger"></span>
-    </div>
+    @Html.DisplayFor(model => model.Description)
     <div class="form-group">
         <label asp-for="@Model.HazardTypeId"></label>
         <select class="form-select" asp-for="@Model.HazardTypeId"
@@ -42,11 +35,7 @@
         </select>
         <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="@Model.DateTimeOfHazard"></label>
-        <input asp-for="@Model.DateTimeOfHazard" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" min="@DateTime.Now.AddYears(-1).ToString("yyyy-MM-ddThh:mm")" />
-        <span asp-validation-for="@Model.DateTimeOfHazard" class="text-danger"></span>
-    </div>
+    @Html.DisplayFor(model => model.DateTimeOfHazard)
     <div class="form-group pt-3">
         <label asp-for="@Model.Photo"></label>
         <input asp-for="@Model.Photo" class="form-control" accept=".jpg, .jpeg, .png, .webp" />
@@ -63,5 +52,4 @@
             crossorigin=""></script>
     <script type="text/javascript" src="~/scripts/map.js" async defer></script>
     <script type="text/javascript" src="~/scripts/textarea-counter.js" async defer></script>
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

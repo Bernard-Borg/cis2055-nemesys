@@ -64,6 +64,7 @@ namespace Nemesys.Controllers
             return View(model);
         }
 
+        [ResponseCache(Duration = 3)]
         public IActionResult Hall(string sort)
         {
             var users = _nemesysRepository.GetUsers();
@@ -107,8 +108,10 @@ namespace Nemesys.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Star(int reportId, HomeSortQueryParameter sort)
+        public IActionResult Star(int reportId, HomeSortQueryParameter sort, string returnUrl = null)
         {
+            Console.WriteLine(returnUrl);
+
             var report = _nemesysRepository.GetReportById(reportId);
             Console.WriteLine(HttpContext.Request.Headers["Referer"].ToString());
 
@@ -125,7 +128,11 @@ namespace Nemesys.Controllers
             {
                 if (_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId))
                 {
-                    return RedirectToAction("Index", sort);
+                    Console.WriteLine(Url.IsLocalUrl(returnUrl));
+                    if (Url.IsLocalUrl(returnUrl))
+                        return Redirect(returnUrl);
+                    else
+                        return RedirectToAction("Index", "Home");
                 }
                 else
                 {

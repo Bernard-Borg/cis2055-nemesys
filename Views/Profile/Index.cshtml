@@ -9,7 +9,7 @@
 }
 else
 {
-    ViewData["Title"] = @Model.Username;
+    ViewData["Title"] = @Model.Username + "'s Profile";
 }
 
 
@@ -37,7 +37,7 @@ else
             </div>
         </div>
 
-        <div class="col-xl-10 ps-5 text-light">
+        <div class="col-xl-10 ps-3 text-light">
             @{
                 var user = userManager.GetUserAsync(User).Result;
             }
@@ -88,28 +88,22 @@ else
                 {
                     foreach (ReportViewModel report in Model.Reports.ReportViewModels.OrderByDescending(r => r.DateOfUpdate))
                     {
-                        <form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star">
-                            <div class="row my-3">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <div class="col-2 col-lg-1 d-flex align-items-center justify-content-center">
-                                        <input type="hidden" name="reportId" value="@report.ReportId">
-                                        <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @report.Description">
-                                            <i class="icon-star clickable d-flex justify-content-center @(report.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@report.ReportId"></i>
-                                            <p class="h3 d-flex justify-content-center" style="color: gold;">@report.NumberOfStars</p>
-                                        </button>
-                                    </div>
-                                }
-                                <a class="col-10 text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
-                                    <div class="text-light border custom-rounded border-light p-3">
-                                        <p class="h2">@report.Description</p>
-                                        <p class="h4">Date Submitted: @report.DateOfReport</p>
-                                        <span>Status: </span>
-                                        <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </form>
+                        <div class="row my-3 d-flex align-items-center">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="col-2 col-lg-1">
+                                    <partial name="/Views/Shared/_Star.cshtml" model="@report" />
+                                </div>
+                            }
+                            <a class="@(User.Identity.IsAuthenticated ? "col-10" : "col-12") text-light" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@report.ReportId">
+                                <div class="text-light border custom-rounded border-light p-3">
+                                    <p class="h2">@report.Description</p>
+                                    <p class="h4">Date Submitted: @report.DateOfReport</p>
+                                    <span>Status: </span>
+                                    <span style="color: @report.ReportStatus.StatusColour">@report.ReportStatus.StatusName</span>
+                                </div>
+                            </a>
+                        </div>
                     }
                 }
                 else

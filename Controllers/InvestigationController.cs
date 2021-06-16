@@ -35,6 +35,7 @@ namespace Nemesys.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [Authorize(Roles = "Investigator,Admin")]
         public IActionResult Create(int id)
         {
@@ -116,6 +117,7 @@ namespace Nemesys.Controllers
         }
 
         [Authorize(Roles = "Investigator,Admin")]
+        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -205,7 +207,7 @@ namespace Nemesys.Controllers
             }
             else
             {
-                return Unauthorized();
+                return Forbid();
             }
         }
     }

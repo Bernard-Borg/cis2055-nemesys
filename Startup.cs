@@ -38,7 +38,17 @@ namespace Nemesys
             );
 
             //Sets up Identity core
-            services.AddDefaultIdentity<User>()
+            services.AddDefaultIdentity<User>(options =>
+            {
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
@@ -53,7 +63,7 @@ namespace Nemesys
             //Image sharp used for loading images correctly
             services.AddImageSharp()
                 .RemoveProcessor<FormatWebProcessor>()
-                .RemoveProcessor<BackgroundColorWebProcessor>(); ;
+                .RemoveProcessor<BackgroundColorWebProcessor>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities            
 
@@ -75,16 +85,12 @@ namespace Nemesys
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            } 
-            else
-            {
-                app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
 
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseImageSharp();
 
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones
-            app.UseStatusCodePages(); //Returns simple messages for errors (can customise later)
 
             //Allows access to static resources in the wwwroot folder
             app.UseStaticFiles(new StaticFileOptions
