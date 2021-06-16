@@ -126,10 +126,14 @@ namespace Nemesys.Controllers
                     _nemesysRepository.GetAllReports()
                         .Where(report => report.Description.Contains(search, StringComparison.CurrentCultureIgnoreCase))
                         .ToList(),
-                    _userManager.GetUserAsync(User).Result
+                    _nemesysRepository.GetUserById(_userManager.GetUserId(User))
                 );
 
-                var model = new SearchResultViewModel(reportListViewModel, search);
+                var userViewModel = _nemesysRepository.GetUsers()
+                    .Where(user => user.Alias.Contains(search, StringComparison.CurrentCultureIgnoreCase))
+                    .Select(u => new ProfileCardViewModel(u));
+
+                var model = new SearchResultViewModel(reportListViewModel, userViewModel, search);
 
                 return View("SearchResult", model);
             }
