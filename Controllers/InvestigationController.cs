@@ -48,7 +48,6 @@ namespace Nemesys.Controllers
 
         //Returns the page containing the investigation create form
         [HttpGet]
-        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [Authorize(Roles = "Investigator,Admin")]
         public IActionResult Create(int id)
         {
@@ -115,23 +114,12 @@ namespace Nemesys.Controllers
                         ReportId = id
                     };
 
-                    var createdInvestigation = _nemesysRepository.CreateInvestigation(investigation);
+                    var createdInvestigation = _nemesysRepository.CreateInvestigation(investigation, model.StatusId ?? default);
 
                     if (createdInvestigation != null)
                     {
-                        //If investigation creation was successful, update report with new status and invesigation id
-                        investigationReport.StatusId = model.StatusId ?? default;
-                        investigationReport.InvestigationId = createdInvestigation.InvestigationId;
-
-                        if (_nemesysRepository.UpdateReport(investigationReport))
-                        {
-                            _logger.LogError("Updating report of investigation failed");
-                            return RedirectToAction("Index", new { id = createdInvestigation.InvestigationId });
-                        }
-                        else
-                        {
-                            return StatusCode(500);
-                        }
+                        _logger.LogInformation("Report " + id + " is now being investigated by " + investigation.UserId);
+                        return RedirectToAction("Index", new { id = createdInvestigation.InvestigationId });
                     }
                     else
                     {
@@ -162,7 +150,6 @@ namespace Nemesys.Controllers
 
         //Returns the page containing the investigation edit form
         [Authorize(Roles = "Investigator,Admin")]
-        [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -244,19 +231,16 @@ namespace Nemesys.Controllers
                         //Converts time from Malta time to UTC
                         existingInvestigation.DateOfAction = TimeZoneInfo.ConvertTimeToUtc(updatedInvestigation.DateOfAction ?? default, timeZone);
                         existingInvestigation.Description = updatedInvestigation.Description;
-                        investigationReport.StatusId = updatedInvestigation.StatusId ?? default;
 
-                        if (_nemesysRepository.UpdateInvestigation(existingInvestigation))
+                        if (_nemesysRepository.UpdateInvestigation(existingInvestigation, updatedInvestigation.StatusId ?? default))
                         {
-                            //If updating the investigation is successful, then the report is updated as well
-                            if (_nemesysRepository.UpdateReport(investigationReport))
-                            {
-                                return RedirectToAction("Index", new { id });
-                            }
+                            return RedirectToAction("Index", new { id });
                         }
-
-                        _logger.LogError("Updating investigation failed");
-                        return StatusCode(500);
+                        else
+                        {
+                            _logger.LogError("Updating investigation failed");
+                            return StatusCode(500);
+                        }
                     }
                     else
                     {

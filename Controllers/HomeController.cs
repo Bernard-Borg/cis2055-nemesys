@@ -26,7 +26,6 @@ namespace Nemesys.Controllers
         }
 
         //Home page action
-        [ResponseCache(Duration = 3)]
         public IActionResult Index(HomeSortQueryParameter sort, int? page)
         {
             try

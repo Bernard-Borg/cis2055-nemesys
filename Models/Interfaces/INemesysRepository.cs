@@ -19,9 +19,9 @@ namespace Nemesys.Models.Interfaces
         IEnumerable<User> GetTopUsers(int amount);
         User GetUserById(string userId);
 
-        Investigation CreateInvestigation(Investigation investigation);
+        Investigation CreateInvestigation(Investigation investigation, int statusId);
         Investigation GetInvestigationById(int investigationId);
-        bool UpdateInvestigation(Investigation updatedInvestigation);
+        bool UpdateInvestigation(Investigation updatedInvestigation, int statusId);
 
         IEnumerable<HazardType> GetHazardTypes();
         HazardType GetHazardTypeById(int hazardId);

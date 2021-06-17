@@ -31,6 +31,9 @@
                                 $(starCounter).html(parseInt($(starCounter).html()) + 1);
                             }
                         }
+                    },
+                    error: function () {
+                        alert("An error has occurred");
                     }
                 });
             } else {

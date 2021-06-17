@@ -15,6 +15,7 @@ using SixLabors.ImageSharp.Web.Processors;
 using Nemesys.Services;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Nemesys
 {
@@ -34,9 +35,10 @@ namespace Nemesys
         public void ConfigureServices(IServiceCollection services)
         {
             //Sets up EF core
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection"))
-            );
+            services.AddDbContext<AppDbContext>(options => {
+                options.UseSqlServer(_configuration.GetConnectionString("NemesysContextConnection"));
+                options.ConfigureWarnings(w => w.Ignore(SqlServerEventId.SavepointsDisabledBecauseOfMARS));
+            });
 
             //Sets up Identity core
             services.AddDefaultIdentity<User>(options =>

@@ -268,7 +268,7 @@ namespace Nemesys.Models.Repositories
             return reports.Where(report => report.StatusId == statusId);
         }
 
-        public Investigation CreateInvestigation(Investigation investigation)
+        public Investigation CreateInvestigation(Investigation investigation, int statusId)
         {
             investigations.Add(investigation);
             return investigation;
@@ -320,23 +320,7 @@ namespace Nemesys.Models.Repositories
             return true;
         }
 
-        /*public bool UpdateUser(User updatedUser)
-        {
-            var existingUser = users.FirstOrDefault(p => p.Id == updatedUser.Id);
-
-            if (existingUser != null)
-            {
-                existingUser.UserName = updatedUser.UserName;
-                existingUser.Email = updatedUser.Email;
-                existingUser.PasswordHash = updatedUser.PasswordHash;
-                existingUser.Photo = updatedUser.Photo;
-                existingUser.PhoneNumber = updatedUser.PhoneNumber;
-            }
-
-            return true;
-        }*/
-
-        public bool UpdateInvestigation(Investigation updatedInvestigation)
+        public bool UpdateInvestigation(Investigation updatedInvestigation, int statusId)
         {
             var existingInvestigation = investigations.FirstOrDefault(p => p.InvestigationId == updatedInvestigation.InvestigationId);
 

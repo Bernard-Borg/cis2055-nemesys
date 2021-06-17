@@ -19,12 +19,23 @@ namespace Nemesys.Models.Repositories
         }
 
         //Creates investigation from instance
-        public Investigation CreateInvestigation(Investigation investigation)
+        public Investigation CreateInvestigation(Investigation investigation, int statusId)
         {
+            var transaction = _appDbContext.Database.BeginTransaction();
+
             try
             {
                 _appDbContext.Investigations.Add(investigation);
                 _appDbContext.SaveChanges();
+                
+                Report report = _appDbContext.Reports.Find(investigation.ReportId);
+                report.InvestigationId = investigation.InvestigationId;
+                report.StatusId = statusId;
+
+                _appDbContext.Entry(report).State = EntityState.Modified;
+                _appDbContext.SaveChanges();
+
+                transaction.Commit();
 
                 return investigation;
             } 
@@ -40,15 +51,19 @@ namespace Nemesys.Models.Repositories
         {
             try
             {
+                var transaction = _appDbContext.Database.BeginTransaction();
+
                 _appDbContext.Reports.Add(report);
                 _appDbContext.SaveChanges();
-
+                
                 //When creating report, user NumberOfReports counter needs to be updated
                 User user = _appDbContext.Users.Find(report.UserId);
                 user.NumberOfReports++;
 
                 _appDbContext.Entry(user).State = EntityState.Modified;
                 _appDbContext.SaveChanges();
+                
+                transaction.Commit();
 
                 return report;
             } 
@@ -73,7 +88,8 @@ namespace Nemesys.Models.Repositories
                     var record = _appDbContext.StarRecords
                         .SingleOrDefault(record => record.UserId == userId && record.ReportId == reportId);
 
-                    
+                    var transaction = _appDbContext.Database.BeginTransaction();
+
                     if (record == null)
                     {
                         //If the record is unstarred, create a new database entry
@@ -83,8 +99,6 @@ namespace Nemesys.Models.Repositories
                             ReportId = reportId,
                         });
 
-                        _appDbContext.SaveChanges();
-
                         report.NumberOfStars++;
                         author.NumberOfStars++;
                     }
@@ -92,16 +106,17 @@ namespace Nemesys.Models.Repositories
                     {
                         //If the record is starred, remove the entry from the database
                         _appDbContext.StarRecords.Remove(record);
-                        _appDbContext.SaveChanges();
 
                         report.NumberOfStars--;
                         author.NumberOfStars--;
                     }
-
+                    
                     //Author and report counters are updated accordingly
                     _appDbContext.Entry(report).State = EntityState.Modified;
                     _appDbContext.Entry(author).State = EntityState.Modified;
                     _appDbContext.SaveChanges();
+
+                    transaction.Commit();
                 }
                 else
                 {
@@ -321,7 +336,7 @@ namespace Nemesys.Models.Repositories
             }
         }
 
-        public bool UpdateInvestigation(Investigation updatedInvestigation)
+        public bool UpdateInvestigation(Investigation updatedInvestigation, int statusId)
         {
             var existingInvestigation = _appDbContext.Investigations.Find(updatedInvestigation.InvestigationId);
 
@@ -333,15 +348,20 @@ namespace Nemesys.Models.Repositories
                     existingInvestigation.DateOfAction = updatedInvestigation.DateOfAction;
                     
                     _appDbContext.Entry(existingInvestigation).State = EntityState.Modified;
+
+                    Report report = _appDbContext.Reports.Find(updatedInvestigation.ReportId);
+                    report.StatusId = statusId;
+
+                    _appDbContext.Entry(report).State = EntityState.Modified;
                     _appDbContext.SaveChanges();
+
+                    return true;
                 } 
                 catch (DbUpdateException)
                 {
                     _logger.LogError($"Failed to update investigation (ID: {0})", updatedInvestigation.InvestigationId);
                     throw;
                 }
-
-                return true;
             }
             else
             {
@@ -388,11 +408,21 @@ namespace Nemesys.Models.Repositories
             try
             {
                 var report = _appDbContext.Reports.Find(reportId);
+                var author = _appDbContext.Users.Find(report.UserId);
 
                 if (report != null)
                 {
+                    var transaction = _appDbContext.Database.BeginTransaction();
+
                     _appDbContext.Reports.Remove(report);
+
+                    author.NumberOfReports--;
+                    author.NumberOfStars -= report.NumberOfStars;
+
+                    _appDbContext.Entry(author).State = EntityState.Modified;
                     _appDbContext.SaveChanges();
+
+                    transaction.Commit();
                 }
                 else
                 {
