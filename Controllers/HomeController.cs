@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using X.PagedList;
 
 namespace Nemesys.Controllers
 {
@@ -25,7 +26,7 @@ namespace Nemesys.Controllers
         }
 
         [ResponseCache(Duration = 3)]
-        public IActionResult Index(HomeSortQueryParameter sort)
+        public IActionResult Index(HomeSortQueryParameter sort, int? page)
         {
             try
             {
@@ -63,12 +64,19 @@ namespace Nemesys.Controllers
                     _nemesysRepository.GetTopUsers(5).Select(u => new ProfileCardViewModel(u))
                 );
 
-                ReportListViewModel reportsViewModel = new ReportListViewModel(
+                int pageNumber = page ?? 1;
+
+                PagedReportListViewModel pagedReportListViewModel = new PagedReportListViewModel(
+                    reports.Select(r => new ReportViewModel(r, _nemesysRepository.GetUserById(_userManager.GetUserId(User))))
+                        .ToPagedList(pageNumber, 10)
+                );
+
+                /*ReportListViewModel reportsViewModel = new ReportListViewModel(
                     reports.ToList(),
                     _nemesysRepository.GetUserById(_userManager.GetUserId(User))
-                );
+                );*/
                 
-                var model = new HomePageViewModel(hofViewModel, reportsViewModel, 
+                var model = new HomePageViewModel(hofViewModel, pagedReportListViewModel, 
                     _nemesysRepository.GetReportStatuses()
                         .Select(s => new ReportStatusViewModel(s))
                 );

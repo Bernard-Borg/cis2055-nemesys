@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Nemesys.Areas.Identity.Pages.Account.Manage
@@ -33,6 +30,7 @@ namespace Nemesys.Areas.Identity.Pages.Account.Manage
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 
         public static string BioNavClass(ViewContext viewContext) => PageNavClass(viewContext, Bio);
+
         public static string PhotoNavClass(ViewContext viewContext) => PageNavClass(viewContext, Photo);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);

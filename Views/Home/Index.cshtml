@@ -1,4 +1,5 @@
-@using Nemesys.Models;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
 @model HomePageViewModel
 
 @{
@@ -28,7 +29,7 @@
                     @foreach (ProfileCardViewModel user in Model.HallOfFame.HallOfFameUsers)
                     {
                         counter++;
-                        
+
                         <a class="btn btn-outline-light text-left p-1 p-lg-3 d-flex" style="border: none;" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id">
                             <img class="d-md-none d-lg-inline-block rounded-circle" onerror="style.opacity='0'" style="margin-right: 10px;" src="@user.Photo?width=96&height=96&rmode=crop" width="48" height="48" alt="@user.Username's profile picture">
                             <div class="pl-3 lh-sm text-md-center text-lg-start w-100">
@@ -42,7 +43,7 @@
                         </a>
                         if (!(counter >= Model.HallOfFame.HallOfFameUsers.Count()))
                         {
-                            <hr style="border: 1px solid white; margin: 0;"/>
+                            <hr style="border: 1px solid white; margin: 0;" />
                         }
                     }
                 </div>
@@ -82,19 +83,21 @@
                     </li>
                 }
             </ul>
-            
+
             <div role="list">
-                @foreach (ReportViewModel report in Model.Reports.ReportViewModels)
+                @foreach (ReportViewModel report in Model.Reports.Reports)
                 {
                     <partial name="/Views/Shared/_ReportCard.cshtml" model="@report" />
                 }
-                @if (Model.Reports.ReportViewModels.Count() == 0)
+
+                @if (Model.Reports.Reports.Count() == 0)
                 {
                     <div class="h4 m-5 text-light text-center">
                         There are no reports.
                     </div>
                 }
             </div>
+            @Html.PagedListPager((IPagedList)Model.Reports.Reports, page => Url.Action("Index", new { page }))
         </div>
     </div>
 </div>

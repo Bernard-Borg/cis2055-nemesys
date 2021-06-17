@@ -12,15 +12,15 @@
     <p><b>Date of hazard: </b>@Model.DateOfHazard</p>
     <p><b>Hazard type: </b>@Model.HazardName</p>
     <p><b>Photo: </b></p>
-        @if (Model.Photo == null)
-        {
-            <span>Report has no image</span>
-        }
-        else
-        {
-            <img class="custom-rounded" src="@Model.Photo?width=250" width="250" />
-        }
-    </div>
+    @if (Model.Photo == null)
+    {
+        <span>Report has no image</span>
+    }
+    else
+    {
+        <img class="custom-rounded" style="max-width: 60%;" src="@Model.Photo?height=600&width=600&rmode=max" width="250" alt="Report image"/>
+    }
+</div>
 <div class="d-flex justify-content-center mt-5">
     <form method="POST" asp-area="" asp-controller="Report" asp-action="ConfirmDelete">
         <input type="hidden" name="reportid" value="@Model.ReportId" />
