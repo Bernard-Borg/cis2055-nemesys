@@ -25,6 +25,7 @@ namespace Nemesys.ViewModels
         [Display(Name = "Type of hazard")]
         public int? HazardTypeId { get; set; }
 
+        //This is used to show current image when editing report
         public string ImageUrl { get; set; }
 
         [Required(ErrorMessage = "Report description is required")]

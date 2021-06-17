@@ -30,9 +30,11 @@ namespace Nemesys.ViewModels
                 IsCurrentUser = false;
             }
 
+            //DateTimes are converted to Malta time
             TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
             Reports = new ReportListViewModel(user.Reports, currentUser);
+
             NumberOfStars = user.NumberOfStars;
             NumberOfReports = user.NumberOfReports;
             Email = user.Email;

@@ -61,16 +61,21 @@ namespace Nemesys
                 options.SlidingExpiration = true;
             });
 
-            //Image sharp used for loading images correctly
+            //Image sharp used for caching and sizing images correctly
             services.AddImageSharp();
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities            
+            services.AddControllersWithViews() //Adds MVC capabilities
+                .AddRazorRuntimeCompilation(); 
+            //Razor runtime compilation used to avoid having to restart server when making changes to Views
+
+            //WebOptimiser minifies Css and Javascript files to improve site performance
             services.AddWebOptimizer(pipeline =>
             {
                 pipeline.MinifyCssFiles("css/main.css");
                 pipeline.MinifyJsFiles("scripts/map.js", "scripts/mapdisplay.js", "scripts/textarea-counter.js", "scripts/star.js");
             });
 
+            //Adds database repository service
             if (_env.IsDevelopment())
             {
                 services.AddSingleton<INemesysRepository, MockNemesysRepository>();
@@ -80,6 +85,7 @@ namespace Nemesys
                 services.AddTransient<INemesysRepository, SqlNemesysRepository>();
             }
 
+            //Adds email service
             services.AddTransient<IEmailSender, EmailSender>();
         }
 
@@ -93,12 +99,13 @@ namespace Nemesys
                 app.UseDeveloperExceptionPage();
             }
 
+            //Redirects status codes (like 400, 500, etc to ErrorController)
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseImageSharp();
 
             app.UseHttpsRedirection(); //redirects HTTP:// urls to HTTPS:// ones
 
-            //Allows access to static resources in the wwwroot folder
+            //Allows access to static resources in the wwwroot folder and caches static files (JS, CSS)
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = ctx =>
@@ -110,7 +117,7 @@ namespace Nemesys
             }); 
 
             app.UseRouting(); //Allows routing URLs to specific endpoints (such as a controller)
-
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

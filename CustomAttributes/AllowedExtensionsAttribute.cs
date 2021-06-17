@@ -7,7 +7,8 @@ using System.Linq;
 
 namespace Nemesys.CustomAttributes
 {
-    //https://stackoverflow.com/questions/56588900/how-to-validate-uploaded-file-in-asp-net-core
+    //Adapted from https://stackoverflow.com/questions/56588900/how-to-validate-uploaded-file-in-asp-net-core
+    //Attribute for allowed image extensions
     public class AllowedExtensionsAttribute : ValidationAttribute
     {
         private readonly string[] _extensions;

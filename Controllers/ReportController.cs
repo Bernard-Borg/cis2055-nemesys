@@ -28,6 +28,7 @@ namespace Nemesys.Controllers
             _logger = logger;
         }
 
+        //Returns report details page
         public IActionResult Index(int id)
         {
             try
@@ -45,7 +46,7 @@ namespace Nemesys.Controllers
                 }
                 else
                 {
-                    return Json("No such report");
+                    return NotFound();
                 }
             }
             catch (Exception ex)
@@ -55,6 +56,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Returns page containing report create form
         [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [Authorize]
         [HttpGet]
@@ -80,6 +82,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Handles report create form submissions
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -133,6 +136,7 @@ namespace Nemesys.Controllers
                     }
                     else
                     {
+                        _logger.LogError("Report creation failed");
                         return StatusCode(500);
                     }
                 }
@@ -153,6 +157,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Returns page containing report edit form
         [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         [Authorize]
         [HttpGet]
@@ -200,6 +205,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Handles report edit form submissions
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -220,7 +226,7 @@ namespace Nemesys.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                         TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+                        TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
                         existingReport.DateTimeOfHazard = TimeZoneInfo.ConvertTimeToUtc(updatedReport.DateTimeOfHazard ?? default, timeZone);
                         existingReport.Latitude = updatedReport.Latitude ?? default;
@@ -248,7 +254,7 @@ namespace Nemesys.Controllers
                                 }
                                 else
                                 {
-                                    _logger.LogDebug("User tried to upload file of length 0");
+                                    _logger.LogWarning("User tried to upload file of length 0");
                                 }   
                             }
 
@@ -256,6 +262,7 @@ namespace Nemesys.Controllers
                         }
                         else
                         {
+                            _logger.LogError("Updating report failed");
                             return StatusCode(500);
                         }
                     }
@@ -280,6 +287,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Handles request for report deletion (returns ConfirmDelete view as part of "read-first" approach)
         [HttpGet]
         [Authorize]
         public IActionResult Delete(int id)
@@ -323,6 +331,7 @@ namespace Nemesys.Controllers
                     return NotFound();
                 }
 
+                //Only reporter his own report
                 if (reportToDelete.UserId == _userManager.GetUserId(User))
                 {
                     if (_nemesysRepository.DeleteReport(reportid))
@@ -330,6 +339,7 @@ namespace Nemesys.Controllers
                         return RedirectToAction("Index", "Home");
                     }
 
+                    _logger.LogError("Report deletion failed");
                     return StatusCode(500);
                 }
                 else

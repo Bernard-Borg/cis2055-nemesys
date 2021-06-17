@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Nemesys.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    //Attribute to prevent dates which are not in a valid range from being submitted (investigation/reports)
     public class DateRangeAttribute : ValidationAttribute
     {
         private static readonly TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");

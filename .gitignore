@@ -4,7 +4,7 @@
 wwwroot/images/reportimages
 wwwroot/images/profileimages
 
-# ImageSharp cache
+# SixLabors.ImageSharp cache
 wwwroot/is-cache/
 
 # User-specific files

@@ -28,6 +28,7 @@ namespace Nemesys.ViewModels
 
         public ReportViewModel(Report report, User currentUser)
         {
+            //DateTimes are converted to Malta time
             TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
             ReportId = report.Id;

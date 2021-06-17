@@ -6,6 +6,7 @@ using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace Nemesys.Controllers
 {
@@ -24,6 +25,7 @@ namespace Nemesys.Controllers
             _logger = logger;
         }
 
+        //Returns the profile details view
         public IActionResult Index(string id)
         {
             try
@@ -35,11 +37,13 @@ namespace Nemesys.Controllers
                     return NotFound();
                 }
 
+                //Construction of user view model
                 UserViewModel model = new UserViewModel(
                     user,
                     _userManager.GetUserAsync(User).Result,
                     _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result
                 );
+
                 return View(model);
             }
             catch (Exception ex)
@@ -49,9 +53,10 @@ namespace Nemesys.Controllers
             } 
         }
 
+        //Handles promotion of Reporters to Investigators
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Promote(string id)
+        public async Task<IActionResult> Promote(string id)
         {
             try
             {
@@ -62,8 +67,12 @@ namespace Nemesys.Controllers
                     return NotFound();
                 }
 
-                _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result).Wait();
-                _userManager.AddToRoleAsync(user, "Investigator").Wait();
+                //Removes current roles and adds investigator
+                await _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result);
+                await _userManager.AddToRoleAsync(user, "Investigator");
+
+                _logger.LogInformation("User with id " + id + " has been demoted to Investigator");
+
                 return RedirectToAction("Index", "Profile", new { id });
             }
             catch (Exception ex)
@@ -73,9 +82,10 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Handles demotion of Investigators to Reporters
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Demote(string id)
+        public async Task<IActionResult> Demote(string id)
         {
             try
             {
@@ -86,8 +96,12 @@ namespace Nemesys.Controllers
                     return NotFound();
                 }
 
-                _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result).Wait();
-                _userManager.AddToRoleAsync(user, "Reporter").Wait();
+                //Removes current roles and adds reporter
+                await _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(_nemesysRepository.GetUserById(id)).Result);
+                await _userManager.AddToRoleAsync(user, "Reporter");
+
+                _logger.LogInformation("User with id " + id + " has been demoted to Reporter");
+
                 return RedirectToAction("Index", "Profile", new { id });
             }
             catch (Exception ex)
@@ -97,6 +111,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Action to sign out user (instead of default identity Identity/Account/Logout)
         public IActionResult SignOut(string returnUrl = null)
         {
             try

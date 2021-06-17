@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Nemesys.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    //Attribute to validate longitude and latitude (must be added to longitude property)
     public class LatLngAttribute : ValidationAttribute
     {
         private readonly double _latitudeMin;

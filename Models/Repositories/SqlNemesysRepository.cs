@@ -35,6 +35,7 @@ namespace Nemesys.Models.Repositories
             }
         }
 
+        //Creates report from instance
         public Report CreateReport(Report report)
         {
             try
@@ -42,6 +43,7 @@ namespace Nemesys.Models.Repositories
                 _appDbContext.Reports.Add(report);
                 _appDbContext.SaveChanges();
 
+                //When creating report, user NumberOfReports counter needs to be updated
                 User user = _appDbContext.Users.Find(report.UserId);
                 user.NumberOfReports++;
 
@@ -71,8 +73,10 @@ namespace Nemesys.Models.Repositories
                     var record = _appDbContext.StarRecords
                         .SingleOrDefault(record => record.UserId == userId && record.ReportId == reportId);
 
+                    
                     if (record == null)
                     {
+                        //If the record is unstarred, create a new database entry
                         _appDbContext.StarRecords.Add(new StarRecord
                         {
                             UserId = userId,
@@ -86,6 +90,7 @@ namespace Nemesys.Models.Repositories
                     }
                     else
                     {
+                        //If the record is starred, remove the entry from the database
                         _appDbContext.StarRecords.Remove(record);
                         _appDbContext.SaveChanges();
 
@@ -93,6 +98,7 @@ namespace Nemesys.Models.Repositories
                         author.NumberOfStars--;
                     }
 
+                    //Author and report counters are updated accordingly
                     _appDbContext.Entry(report).State = EntityState.Modified;
                     _appDbContext.Entry(author).State = EntityState.Modified;
                     _appDbContext.SaveChanges();
@@ -113,103 +119,206 @@ namespace Nemesys.Models.Repositories
         
         public HazardType GetHazardTypeById(int hazardId)
         {
-            return _appDbContext.HazardTypes
-                .Include(h => h.Reports)
-                .SingleOrDefault(hazardType => hazardType.Id == hazardId);
+            try
+            {
+                return _appDbContext.HazardTypes
+                    .Include(h => h.Reports)
+                    .SingleOrDefault(hazardType => hazardType.Id == hazardId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<HazardType> GetHazardTypes()
         {
-            return _appDbContext.HazardTypes.Include(h => h.Reports);
+            try
+            {
+                return _appDbContext.HazardTypes.Include(h => h.Reports);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public Investigation GetInvestigationById(int investigationId)
         {
-            return _appDbContext.Investigations
-                .Include(i => i.Investigator)
-                .Include(i => i.Report)
-                    .ThenInclude(r => r.Status)
-                .SingleOrDefault(i => i.InvestigationId == investigationId);
+            try
+            {
+                return _appDbContext.Investigations
+                    .Include(i => i.Investigator)
+                    .Include(i => i.Report)
+                        .ThenInclude(r => r.Status)
+                    .SingleOrDefault(i => i.InvestigationId == investigationId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public Report GetReportById(int reportId)
         {
-            return _appDbContext.Reports
-                .Include(r => r.Author)
-                .Include(r => r.HazardType)
-                .Include(r => r.Status)
-                .SingleOrDefault(r => r.Id == reportId);
+            try
+            {
+                return _appDbContext.Reports
+                    .Include(r => r.Author)
+                    .Include(r => r.HazardType)
+                    .Include(r => r.Status)
+                    .SingleOrDefault(r => r.Id == reportId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<Report> GetAllReports()
         {
-            return _appDbContext.Reports
-                .Include(r => r.Author)
-                .Include(r => r.HazardType)
-                .Include(r => r.Status);
+            try
+            {
+                return _appDbContext.Reports
+                    .Include(r => r.Author)
+                    .Include(r => r.HazardType)
+                    .Include(r => r.Status);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<Report> GetAllReportsWithStatus(int id)
         {
-            var statusId = GetReportStatusById(id);
-            if (statusId == null)
-                return null;
-            return statusId.Reports;
+            try
+            {
+                var statusId = GetReportStatusById(id);
+                if (statusId == null)
+                    return null;
+                return statusId.Reports;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public ReportStatus GetReportStatusById(int id)
         {
-            return _appDbContext.ReportStatuses
-                .Include(s => s.Reports)
-                .SingleOrDefault(status => status.Id == id);
+            try
+            {
+                return _appDbContext.ReportStatuses
+                    .Include(s => s.Reports)
+                    .SingleOrDefault(status => status.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<ReportStatus> GetReportStatuses()
         {
-            return _appDbContext.ReportStatuses
-                .Include(s => s.Reports);
+            try
+            {
+                return _appDbContext.ReportStatuses
+                    .Include(s => s.Reports);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<Report> GetStarredUserReports(string userId)
         {
-            return _appDbContext.StarRecords
-                .Include(r => r.User)
-                .Include(r => r.Report)
-                .Where(record => record.UserId == userId)
-                .Select(record => record.Report);
+            try
+            {
+                return _appDbContext.StarRecords
+                    .Include(r => r.User)
+                    .Include(r => r.Report)
+                    .Where(record => record.UserId == userId)
+                    .Select(record => record.Report);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<User> GetUsersWhoStarredReport(int reportId)
         {
-            return _appDbContext.StarRecords
-                .Include(r => r.Report)
-                .Include(r => r.User)
-                .Where(record => record.ReportId == reportId)
-                .Select(record => record.User);
+            try
+            {
+                return _appDbContext.StarRecords
+                    .Include(r => r.Report)
+                    .Include(r => r.User)
+                    .Where(record => record.ReportId == reportId)
+                    .Select(record => record.User);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public User GetUserById(string userId)
         {
-            return GetUsers()
-                .SingleOrDefault(u => u.Id == userId);
+            try
+            {
+                return GetUsers()
+                    .SingleOrDefault(u => u.Id == userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<User> GetUsers()
         {
-            return _appDbContext.Users
-                .AsSplitQuery()
-                .Include(u => u.Reports)
-                    .ThenInclude(r => r.HazardType)
-                .Include(u => u.Reports)
-                    .ThenInclude(r => r.Status)
-                .Include(u => u.StarredReports);
+            try {
+                return _appDbContext.Users
+                    .AsSplitQuery()
+                    .Include(u => u.Reports)
+                        .ThenInclude(r => r.HazardType)
+                    .Include(u => u.Reports)
+                        .ThenInclude(r => r.Status)
+                    .Include(u => u.StarredReports);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public IEnumerable<User> GetTopUsers(int amount)
         {
-            return GetUsers().OrderByDescending(user => user.NumberOfStars)
-                .ThenBy(user => user.Alias)
-                .Take(amount);
+            try
+            {
+                return GetUsers().OrderByDescending(user => user.NumberOfStars)
+                    .ThenBy(user => user.Alias)
+                    .Take(amount);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public bool UpdateInvestigation(Investigation updatedInvestigation)
@@ -276,21 +385,28 @@ namespace Nemesys.Models.Repositories
 
         public bool DeleteReport(int reportId)
         {
-            var report = _appDbContext.Reports.Find(reportId);
-
-            if (report != null)
+            try
             {
-                _appDbContext.Reports.Remove(report);
-                _appDbContext.SaveChanges();
-            }
-            else
-            {
-                _logger.LogError($"Failed to delete report (ID: {0})", reportId);
-                return false;
-            }
+                var report = _appDbContext.Reports.Find(reportId);
 
-            return true;
+                if (report != null)
+                {
+                    _appDbContext.Reports.Remove(report);
+                    _appDbContext.SaveChanges();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to delete report (ID: {0})", reportId);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
-
     }
 }

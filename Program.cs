@@ -19,6 +19,7 @@ namespace Nemesys
                 var services = scope.ServiceProvider;
                 try
                 {
+                    //Fills databsae with initial data (adapted from lecture Bloggy code)
                     var context = services.GetRequiredService<AppDbContext>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var userManager = services.GetRequiredService<UserManager<User>>();

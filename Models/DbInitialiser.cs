@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nemesys.Models
 {
+    //Adapted from what was shown during lectures
     public class DbInitialiser
     {
         public static void SeedRoles(RoleManager<IdentityRole> roleManager)
@@ -149,6 +150,11 @@ namespace Nemesys.Models
                 );
                 context.SaveChanges();
             }
+
+            /* 
+             * Note that report statuses need to be added in reverse
+             * order so that they appear in order in home page
+             */
 
             if (!context.ReportStatuses.Any())
             {

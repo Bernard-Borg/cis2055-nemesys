@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Nemesys.Models.Repositories
 {
+    //Mock repository was only used at the start while learning about EF Core
     public class MockNemesysRepository : INemesysRepository
     {
         private List<Report> reports;

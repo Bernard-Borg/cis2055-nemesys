@@ -25,26 +25,31 @@ namespace Nemesys.Controllers
             _logger = logger;
         }
 
+        //Home page action
         [ResponseCache(Duration = 3)]
         public IActionResult Index(HomeSortQueryParameter sort, int? page)
         {
             try
             {
                 IEnumerable<Report> reports;
-
+                
                 if (sort.StatusId != null)
                 {
+                    //Used when user presses on "Open/Under Investigation/No Action Required/Closed"
                     reports = _nemesysRepository.GetAllReportsWithStatus(sort.StatusId ?? default) ?? _nemesysRepository.GetAllReports();
                 }
                 else
                 {
+                    //Returns all reports
                     reports = _nemesysRepository.GetAllReports();
                 }
 
+                //Used when user sorts the reports
                 switch (sort.SortString)
                 {
                     case "Award":
-                        reports = reports.OrderByDescending(r => r.NumberOfStars).ThenBy(r => r.Description);
+                        reports = reports.OrderByDescending(r => r.NumberOfStars)
+                            .ThenBy(r => r.Description);
                         break;
                     case "Update":
                         reports = reports.OrderByDescending(r => r.DateOfUpdate);
@@ -60,17 +65,20 @@ namespace Nemesys.Controllers
                         break;
                 }
 
+                //Fills hall of fame "summary" with the top 5 users
                 HallOfFameViewModel hofViewModel = new HallOfFameViewModel(
                     _nemesysRepository.GetTopUsers(5).Select(u => new ProfileCardViewModel(u))
                 );
 
                 int pageNumber = page ?? 1;
 
+                //Paging is used to limit the number of reports displayed to make the site more usable
                 PagedReportListViewModel pagedReportListViewModel = new PagedReportListViewModel(
                     reports.Select(r => new ReportViewModel(r, _nemesysRepository.GetUserById(_userManager.GetUserId(User))))
                         .ToPagedList(pageNumber, 7)
                 );
                 
+                //ViewModel is constructed
                 var model = new HomePageViewModel(hofViewModel, pagedReportListViewModel, 
                     _nemesysRepository.GetReportStatuses()
                         .Select(s => new ReportStatusViewModel(s))
@@ -85,6 +93,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Hall of fame action
         [ResponseCache(Duration = 3)]
         public IActionResult Hall(string sort)
         {
@@ -92,6 +101,7 @@ namespace Nemesys.Controllers
             {
                 var users = _nemesysRepository.GetUsers();
 
+                //Used when user sorts the hall of fame users
                 switch (sort)
                 {
                     case "Award":
@@ -115,6 +125,7 @@ namespace Nemesys.Controllers
             }
         }
 
+        //Search action
         [HttpGet]
         public IActionResult Search(string search)
         {
@@ -125,6 +136,7 @@ namespace Nemesys.Controllers
                     return RedirectToAction("Index");
                 }
 
+                //Gets reports who's description contains the search term and constructs view model for list of reports
                 var reportListViewModel = new ReportListViewModel(
                     _nemesysRepository.GetAllReports()
                         .Where(report => report.Description.Contains(search, StringComparison.CurrentCultureIgnoreCase))
@@ -132,11 +144,13 @@ namespace Nemesys.Controllers
                     _nemesysRepository.GetUserById(_userManager.GetUserId(User))
                 );
 
-                var userViewModel = _nemesysRepository.GetUsers()
+                //Gets users who's username contains the search term and creates list of view models
+                var listOfUsers = _nemesysRepository.GetUsers()
                     .Where(user => user.Alias.Contains(search, StringComparison.CurrentCultureIgnoreCase))
                     .Select(u => new ProfileCardViewModel(u));
 
-                var model = new SearchResultViewModel(reportListViewModel, userViewModel, search);
+                //Constructs the view model for the search result
+                var model = new SearchResultViewModel(reportListViewModel, listOfUsers, search);
 
                 return View("SearchResult", model);
             }
@@ -147,6 +161,7 @@ namespace Nemesys.Controllers
             }  
         }
 
+        //Starring action (upvotes)
         [HttpPost]
         [Authorize]
         public IActionResult Star(int reportId, string returnUrl = null)
@@ -162,10 +177,16 @@ namespace Nemesys.Controllers
                 
                 if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
+                    //If the request was done through AJAX, then return "true/false" to signal whether or not operation succeeded
                     return Json(_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId));
                 }
                 else
                 {
+                    /*
+                     * If the user has Javascript disabled, the report is starred and the user is returned to the page 
+                     * where the star was located (which can either be in the home page, report index, or profile index)
+                     */
+
                     if (_nemesysRepository.StarReport(_userManager.GetUserId(User), reportId))
                     {
                         if (Url.IsLocalUrl(returnUrl))
@@ -184,11 +205,6 @@ namespace Nemesys.Controllers
                 _logger.LogError(ex, ex.Message, ex.Data);
                 return View("Error");
             }
-        }
-
-        public IActionResult Error()
-        {
-            return View();
         }
     }
 }

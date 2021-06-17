@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Nemesys.CustomAttributes
 {
-    //https://stackoverflow.com/questions/56588900/how-to-validate-uploaded-file-in-asp-net-core
+    //Adapted from https://stackoverflow.com/questions/56588900/how-to-validate-uploaded-file-in-asp-net-core
+    //Attribute to validate maximum size of files being uploaded
     public class MaxFileSizeAttribute : ValidationAttribute
     {
         private readonly int _maxFileSize;
