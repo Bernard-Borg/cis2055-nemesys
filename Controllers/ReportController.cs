@@ -115,7 +115,18 @@ namespace Nemesys.Controllers
                     {
                         if (model.Photo != null)
                         {
-                            model.Photo.CopyTo(new FileStream(_environment.WebRootPath + report.Photo, FileMode.Create));
+                            if (model.Photo.Length > 0)
+                            {
+                                using (FileStream stream = new FileStream(_environment.WebRootPath + report.Photo, FileMode.Create))
+                                {
+                                    model.Photo.CopyTo(stream);
+                                    stream.Flush();
+                                }
+                            }
+                            else
+                            {
+                                _logger.LogDebug("User tried to upload file of length 0");
+                            }
                         }
 
                         return RedirectToAction("Index", new { id = createdReport.Id });
@@ -227,7 +238,18 @@ namespace Nemesys.Controllers
                             //After the report has successfully been updated, the image file is created
                             if (updatedReport.Photo != null)
                             {
-                                updatedReport.Photo.CopyTo(new FileStream(_environment.WebRootPath + existingReport.Photo, FileMode.Create));
+                                if (updatedReport.Photo.Length > 0)
+                                {
+                                    using (FileStream stream = new FileStream(_environment.WebRootPath + existingReport.Photo, FileMode.Create))
+                                    {
+                                        updatedReport.Photo.CopyTo(stream);
+                                        stream.Flush();
+                                    }
+                                }
+                                else
+                                {
+                                    _logger.LogDebug("User tried to upload file of length 0");
+                                }   
                             }
 
                             return RedirectToAction("Index", new { id });
@@ -259,24 +281,32 @@ namespace Nemesys.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Delete(int id)
         {
-            var report = _nemesysRepository.GetReportById(id);
+            try
+            {
+                var report = _nemesysRepository.GetReportById(id);
 
-            if (report == null)
-            {
-                return NotFound();
-            }
+                if (report == null)
+                {
+                    return NotFound();
+                }
 
-            if (report.UserId == _userManager.GetUserId(User))
+                if (report.UserId == _userManager.GetUserId(User))
+                {
+                    return View("ConfirmDelete", new ReportViewModel(report,
+                        _nemesysRepository.GetUserById(_userManager.GetUserId(User)))
+                    );
+                }
+                else
+                {
+                    return Forbid();
+                }
+            } catch (Exception ex)
             {
-                return View("ConfirmDelete", new ReportViewModel(report, 
-                    _nemesysRepository.GetUserById( _userManager.GetUserId(User)))
-                );
-            }
-            else
-            {
-                return Forbid();
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 

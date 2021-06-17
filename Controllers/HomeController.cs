@@ -68,13 +68,8 @@ namespace Nemesys.Controllers
 
                 PagedReportListViewModel pagedReportListViewModel = new PagedReportListViewModel(
                     reports.Select(r => new ReportViewModel(r, _nemesysRepository.GetUserById(_userManager.GetUserId(User))))
-                        .ToPagedList(pageNumber, 10)
+                        .ToPagedList(pageNumber, 7)
                 );
-
-                /*ReportListViewModel reportsViewModel = new ReportListViewModel(
-                    reports.ToList(),
-                    _nemesysRepository.GetUserById(_userManager.GetUserId(User))
-                );*/
                 
                 var model = new HomePageViewModel(hofViewModel, pagedReportListViewModel, 
                     _nemesysRepository.GetReportStatuses()

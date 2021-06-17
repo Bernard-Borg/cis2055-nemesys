@@ -14,10 +14,10 @@
                 <p class="h4 fw-normal text-light mb-3">Sort by</p>
                 <div class="sortitems">
                     <ul class="nav nav-pills flex-column" role="list" aria-label="Sort by">
-                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Award" asp-route-StatusId="@Context.Request.Query["StatusId"]">Highest Awarded</a></li>
-                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Update" asp-route-StatusId="@Context.Request.Query["StatusId"]">Last Updated</a></li>
-                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Newest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Newest)</a></li>
-                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="Oldest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Oldest)</a></li>
+                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-sortstring="Award" asp-route-StatusId="@Context.Request.Query["StatusId"]">Highest Awarded</a></li>
+                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-sortstring="Update" asp-route-StatusId="@Context.Request.Query["StatusId"]">Last Updated</a></li>
+                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-sortstring="Newest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Newest)</a></li>
+                        <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-sortstring="Oldest" asp-route-StatusId="@Context.Request.Query["StatusId"]">Date Added (Oldest)</a></li>
                     </ul>
                 </div>
             </div>
@@ -65,22 +65,22 @@
             <div class="btn-group mt-3 mb-3 d-block d-md-none dropend">
                 <button type="button" class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">Filter Reports</button>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-SortString="@Context.Request.Query["SortString"]">All</a></li>
+                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-sortstring="@Context.Request.Query["SortString"]">All</a></li>
                     @foreach (ReportStatusViewModel status in Model.Statuses)
                     {
-                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.StatusId">@status.StatusName</a></li>
+                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-sortstring="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.StatusId">@status.StatusName</a></li>
                     }
                 </ul>
             </div>
 
             <ul class="nav nav-tabs nav-justified text-center mt-2 d-none d-md-flex">
                 <li class="nav-item fs-5">
-                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-SortString="@Context.Request.Query["SortString"]">All</a>
+                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="" asp-route-sortstring="@Context.Request.Query["SortString"]">All</a>
                 </li>
                 @foreach (ReportStatusViewModel status in Model.Statuses)
                 {
                     <li class="nav-item fs-5">
-                        <a class="nav-link" style="color: @status.StatusColour" asp-area="" asp-controller="Home" asp-action="Index" asp-route-SortString="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.StatusId">@status.StatusName</a>
+                        <a class="nav-link" style="color: @status.StatusColour" asp-area="" asp-controller="Home" asp-action="Index" asp-route-sortstring="@Context.Request.Query["SortString"]" asp-route-StatusId="@status.StatusId">@status.StatusName</a>
                     </li>
                 }
             </ul>
@@ -99,14 +99,14 @@
                 }
             </div>
             @Html.PagedListPager((IPagedList)Model.Reports.Reports, page =>
-                Url.Action("Index", new { page }),
+                Url.Action("Index", new { page, sortstring = @Context.Request.Query["SortString"], statusid = @Context.Request.Query["StatusId"] }),
                 new PagedListRenderOptions
                 {
                     UlElementClasses = new string[] { "d-flex justify-content-center mt-4" },
                     LiElementClasses = new string[] { "btn" },
                     PageClasses = new string[] { "text-white fs-5" },
                     ActiveLiElementClass = "btn-primary"
-                });
+                })
         </div>
     </div>
 </div>

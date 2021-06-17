@@ -62,9 +62,7 @@ namespace Nemesys
             });
 
             //Image sharp used for loading images correctly
-            services.AddImageSharp()
-                .RemoveProcessor<FormatWebProcessor>()
-                .RemoveProcessor<BackgroundColorWebProcessor>();
+            services.AddImageSharp();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Adds MVC capabilities            
             services.AddWebOptimizer(pipeline =>

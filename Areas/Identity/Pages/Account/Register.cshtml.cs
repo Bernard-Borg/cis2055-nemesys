@@ -121,7 +121,18 @@ namespace Nemesys.Areas.Identity.Pages.Account
                     {
                         if (Input.Photo != null)
                         {
-                            Input.Photo.CopyTo(new FileStream(_environment.WebRootPath + ImagePath, FileMode.Create));
+                            if (Input.Photo.Length > 0)
+                            {
+                                using (FileStream stream = new FileStream(_environment.WebRootPath + ImagePath, FileMode.Create))
+                                {
+                                    Input.Photo.CopyTo(stream);
+                                    stream.Flush();
+                                }
+                            }
+                            else
+                            {
+                                _logger.LogDebug("User tried to upload file of length 0");
+                            }
                         }
 
                         await _userManager.AddToRoleAsync(user, "Reporter");
