@@ -1,0 +1,50 @@
+@using Nemesys.Models;
+@using Microsoft.AspNetCore.Identity;
+@model InvestigationViewModel
+@inject UserManager<User> userManager
+@{
+    ViewData["Title"] = "Investigation | " + Model.ReportDescription;
+}
+
+<div class="container-fluid">
+    <div class="row mt-5 text-light">
+        <div class="col-xl-2 text-light mb-3">
+            <partial name="/Views/Shared/_ProfileCard.cshtml" model="@Model.Investigator" />
+            <div class="bgsidebar mb-4">
+                <div class="d-grid">
+                    <a class="btn btn-light fs-5 custom-rounded" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">View Original Report</a>
+                </div>
+            </div>
+            @{
+                var user = userManager.GetUserAsync(User).Result;
+            }
+            @if (user != null && user.Id == Model.Investigator.Id)
+            {
+            <div class="bgsidebar mb-4">
+                <div class="h4 text-center">Investigation Options</div>
+                <div class="d-grid">
+                    <a class="btn btn-light fs-5 custom-rounded mt-3" asp-area="" asp-controller="Investigation" asp-action="Edit" asp-route-id="@Model.InvestigationId">Edit Investigation</a>
+                </div>
+            </div>
+            }
+        </div>
+        <div class="col-md-8 text-light ps-5 pe-4">
+            <div class="row">
+                <div class="col-md-11 h5">
+                    <h1 class="mb-5">@Model.Description</h1>
+                    <h2>In relation to: @Model.ReportDescription</h2>
+                    <span>Current Status:</span>
+                    <span style="color: @Model.ReportStatus.StatusColour">@Model.ReportStatus.StatusName</span>
+                </div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-md-8">
+                    <div class="h5">
+                        Date of Action: @Model.DateOfAction
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

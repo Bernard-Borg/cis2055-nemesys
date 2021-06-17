@@ -1,0 +1,47 @@
+﻿@model SearchResultViewModel
+
+@{
+    ViewData["Title"] = "Search Results for \"" + Model.SearchString + "\"";
+}
+
+<h1 class="text-white text-center m-3">@ViewData["Title"]</h1>
+
+<h3 class="text-light ms-4">Reports</h3>
+<hr style="color: white; opacity: 1;" />
+@if (Model.Reports.ReportViewModels.Count() > 0)
+{
+    <div class="ms-md-5">
+        @foreach (ReportViewModel report in Model.Reports.ReportViewModels)
+        {
+            <partial name="/Views/Shared/_ReportCard.cshtml" model="@report" />
+        }
+    </div>  
+}
+else
+{
+    <div class="text-white m-3 pt-4">
+        <h4 class="text-center" style="color: lightgray">No reports found.</h4>
+    </div>
+}
+
+<h3 class="text-light ms-4" style="margin-top: 100px;">Users</h3>
+<hr style="color: white; opacity: 1;" />
+@foreach (ProfileCardViewModel user in Model.Users)
+{
+    <div class="me-md-5">
+        <partial name="/Views/Shared/_UserCard.cshtml" model="@user" />
+    </div>  
+}
+@if (Model.Users.Count() == 0)
+{
+    <div class="h4 m-5 text-center" style="color: lightgray">
+        There are no users.
+    </div>
+}
+
+@section scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/scripts/star.js" async defer></script>
+    }
+}

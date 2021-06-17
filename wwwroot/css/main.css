@@ -1,0 +1,158 @@
+/* Sets font of everything on the website to Work Sans */
+* {
+    font-family: 'Work Sans', sans-serif;
+}
+
+/* Sets style of textareas (Create/Edit pages) */
+textarea {
+    resize: none !important;
+    position: relative;
+}
+
+/* Sets style of textarea counter */
+.textarea-counter {
+    position: relative;
+    color: black;
+    margin-top: -23px;
+    margin-right: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    float: right;
+}
+
+.custom-rounded {
+    border-radius: 25px !important;
+}
+
+.half-rounded-top {
+    border-top-left-radius: 25px !important;
+    border-top-right-radius: 25px !important;
+}
+
+.half-rounded-bottom {
+    border-bottom-left-radius: 25px !important;
+    border-bottom-right-radius: 25px !important;
+}
+
+/* Sets small top margin for validation errors */
+.field-validation-error {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Aligns stars within line */
+.icon-star {
+    vertical-align: middle;
+}
+
+/* Sets style of clickable stars */
+.icon-star.clickable {
+    cursor: pointer;
+    text-shadow: 0 0 3px #000;
+    -webkit-text-stroke-color: white;
+    -webkit-text-stroke-width: 2px;
+    font-size: 40px;
+}
+
+/* Sets colour of starred stars */
+.icon-star.clickable.starred {
+    color: gold;
+    -webkit-text-stroke-color: gold;
+}
+
+/*Sets color when hovering over an unstarred star*/
+.icon-star.clickable.unstarred:hover {
+    -webkit-text-stroke: 2px gold;
+}
+
+/* Sets colour of unstarred stars */
+.icon-star.clickable.unstarred {
+    color: transparent;
+}
+
+/* Aligns "Way over here" 404 image on smaller devices */
+@media (max-width: 768px) {
+    #wayoverhere {
+        margin-top: 100px;
+    }
+}
+
+/* Sets style for 404 paragraph */
+.errorpage-paragraph {
+    line-height: 30px; 
+    text-align: justify;
+}
+
+/* Sets background colour of the website to black */
+.bodycolour {
+    background-color: #000000;
+}
+
+/* Removes text decoration from all links */
+a{
+    text-decoration: none !important;
+}
+
+/* Sets margin for all form elements (inputs/selects/textareas) */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Aligns badge to the left in home page hall of fame section */
+.text-left {
+    text-align: left !important;
+}
+
+/* These three rules make the ReportStatus tabs look better */
+.nav-tabs {
+    display: flex;
+}
+
+.nav-tabs li {
+    display: flex;
+    flex: 1;
+}
+
+.nav-tabs li a {
+    flex: 1;
+}
+
+/* Hides default file input for image edit icon in profile page */
+input[type="file"].profile {
+    display: none;
+}
+
+/*Used to ensure contents in div do not break div area*/
+p, h1
+{
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+/* Sets style for image edit icon in profile page */
+.profileupload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.sortitems .nav-pills li > a:hover {
+    color: lightgray;
+}
+
+.h2 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.bgsidebar {
+    background: #191919;
+    border-radius: 25px;
+    padding: 20px;
+    border: 1px solid white;
+}

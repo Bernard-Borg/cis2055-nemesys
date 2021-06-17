@@ -25,11 +25,11 @@ User information (_italic_ = optional);
 Report properties;
 
 * Date of report (date)
-* Location (?)
+* Location (double: longitude, latitude)
 * Date and time when hazard was spotted (datetime)
-* Hazard type (string)
+* Hazard type (database table)
 * Description
-* Status (enum) - only modifyable by investigators
+* Status (database table) - only modifyable by investigators
 	* Open
 	* No action required
 	* Being investigated
@@ -53,14 +53,14 @@ Investigation properties;
 
 Optional additional features;
 
-* Integration with Google or Bing maps for report location
 * Email notifications when a new report has been submitted (received by investigators - observer pattern?)
 * Watching of reports by other reporters (publisher-subscriber pattern?)
 * Contact reporter (for investigations)
+* Google SSO
 
 ---
 
-Speculated pages needed (in progress);
+Speculated pages needed;
 
 * Profile page (for each user)
 * Home page (page containing reports, small section of hall of fame with link to actual hall of fame - optional features are sorting by date of report/top upvoted, with tabs for opened, closed, etc reports)

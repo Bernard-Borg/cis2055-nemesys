@@ -1,0 +1,35 @@
+@using Nemesys.Models;
+@model HallOfFameViewModel
+
+@{
+    ViewData["Title"] = "Hall of Fame";
+}
+
+<div class="container-fluid px-sm-1 px-md-3 pt-1">
+    <h1 class="text-light text-center py-3">@ViewData["Title"]</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-3 col-lg-2">
+            <div class="bgsidebar sortitems mx-3 mx-md-0">
+                <p class="h4 fw-normal text-light">Sort by</p>
+                <ul class="nav nav-pills flex-column">
+                    <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Award">Highest Awarded</a></li>
+                    <li><a class="nav-link link-light" asp-area="" asp-controller="Home" asp-action="Hall" asp-route-sort="Report">Highest Number of Reports</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 col-lg-10">
+            @{
+                foreach (ProfileCardViewModel user in Model.HallOfFameUsers)
+                {
+                    <partial name="/Views/Shared/_UserCard.cshtml" model="@user" />
+                }
+                @if (Model.HallOfFameUsers.Count() == 0)
+                {
+                    <div class="h4 m-5 text-light text-center">
+                        There are no users.
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

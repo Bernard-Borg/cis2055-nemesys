@@ -1,0 +1,15 @@
+﻿@model ReportViewModel
+
+@{
+    var currentUrl = @Context.Request.Path + "" + @Context.Request.QueryString;
+}
+
+<form method="POST" onsubmit="return false;" asp-area="" asp-controller="Home" asp-action="Star" asp-route-returnurl="@currentUrl">
+    <input type="hidden" name="reportId" value="@Model.ReportId" />
+    <div class="d-flex justify-content-center align-items-center">
+        <button type="submit" style="background-color: transparent; border: none; font-size: 0px;" aria-label="Star report @Model.Description (Is starred: @Model.Starred)">
+            <i class="icon-star clickable @(Model.Starred ? "starred" : "unstarred")" aria-hidden="true" reportId="@Model.ReportId"></i>
+            <p class="star-counter h3 d-flex justify-content-center" style="color: gold;">@Model.NumberOfStars</p>
+        </button>
+    </div>
+</form>

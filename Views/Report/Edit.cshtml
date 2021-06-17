@@ -1,0 +1,62 @@
+﻿@model EditReportViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+    ViewData["Title"] = "Edit Report";
+}
+
+@section head {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+}
+
+<form asp-area="" asp-controller="Report" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <noscript>Enabling JavaScript is recommended for a better user experience. Click <a href="https://www.enable-javascript.com/">here</a> to learn how</noscript>
+    <div class="form-group">
+        <div class="form-group">
+            <label id="latitude-label" asp-for="@Model.Latitude"></label>
+            <input type="number" min="35.9009070634084" max="35.90377946948467" id="latitude" asp-for="@Model.Latitude" class="form-control" placeholder="35.902470" />
+            <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label id="longitude-label" asp-for="@Model.Longitude"></label>
+            <input type="number" min="14.480948443757697" max="14.485854021054182" id="longitude" asp-for="@Model.Longitude" class="form-control" placeholder="14.483849" />
+            <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
+        </div>
+        <div class="rounded-3" id="map"></div>
+    </div>
+    @Html.DisplayFor(model => model.Description)
+    <div class="form-group col">
+        <label asp-for="@Model.HazardTypeId"></label>
+        <select class="form-select" asp-for="@Model.HazardTypeId"
+                asp-items="@(new SelectList(Model.HazardTypes, "HazardId", "HazardName"))">
+            <option value="">Select a category</option>
+        </select>
+        <span asp-validation-for="@Model.HazardTypeId" class="text-danger"></span>
+    </div>
+    @Html.DisplayFor(model => model.DateTimeOfHazard)
+    @if (Model.ImageUrl != null)
+    {
+        <p>Current Report Image</p>
+        <img onerror="style.opacity='0'" width="200" src="@Model.ImageUrl" alt="Current report image" />
+    }
+    else
+    {
+        <div class="m-3">
+            <p>This report has no image</p>
+        </div>
+    }
+    @Html.DisplayFor(model => model.Photo)
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-outline-light">Submit Report</button>
+    </div>
+</form>
+
+@section scripts {
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    <script type="text/javascript" src="~/scripts/map.js" async defer></script>
+    <script type="text/javascript" src="~/scripts/textarea-counter.js" async defer></script>
+}

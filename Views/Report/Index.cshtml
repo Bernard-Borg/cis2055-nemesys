@@ -1,0 +1,109 @@
+@using Nemesys.Models;
+@using Microsoft.AspNetCore.Identity;
+@model ReportViewModel
+@inject UserManager<User> userManager
+
+@{
+    ViewData["Title"] = Model.Description;
+}
+
+@section head {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+}
+
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col-xl-2 text-light mb-3">
+            <partial name="/Views/Shared/_ProfileCard.cshtml" model="@Model.Reporter" />
+            @{
+                var user = userManager.GetUserAsync(User).Result;
+            }
+            @if (user != null && user.Id == Model.Reporter.Id)
+            {
+                <div class="bgsidebar mb-4">
+                    <div class="h4 pb-3 text-center">Report Options</div>
+                    <div class="d-grid">
+                        <a class="btn btn-outline-light fs-5 custom-rounded mb-3" asp-area="" asp-controller="Report" asp-action="Edit" asp-route-id="@Model.ReportId">Edit Report</a>
+                        <a class="btn btn-outline-light fs-5 custom-rounded" asp-area="" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.ReportId">Delete Report</a>
+                    </div>
+                </div>
+            }
+
+            <div class="bgsidebar mb-4" style="border-color: @Model.ReportStatus.StatusColour;">
+                <p class="h4 text-center">Current Status: @Model.ReportStatus.StatusName</p>
+                <div class="d-grid">
+                    @if ((User.IsInRole("Investigator") || User.IsInRole("Admin")) && !Model.HasInvestigation)
+                    {
+                        <a class="btn btn-light fs-5 custom-rounded mt-3" asp-area="" asp-controller="Investigation" asp-action="Create" asp-route-id="@Model.ReportId">Add Investigation</a>
+                    }
+                    @if (Model.HasInvestigation)
+                    {
+                        <a class="btn btn-light fs-5 custom-rounded mt-3" asp-area="" asp-controller="Investigation" asp-action="Index" asp-route-id="@Model.InvestigationId">View Investigation</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-7 text-light ps-5 pe-4">
+            <div class="row">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-md-1 mt-2">
+                        <partial name="/Views/Shared/_Star.cshtml" model="@Model" />
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-1 d-flex justify-content-center align-items-center" style="color: gold;">
+                        <p class="h2">@Model.NumberOfStars</p>
+                        <i class="icon-star fs-4" aria-hidden="true"></i>
+                    </div>
+                }
+                <div class="col-md-11 ps-3 h5">
+                    <h1>@Model.Description</h1>
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col-md-8">
+                    @if (Model.Photo != null)
+                    {
+                        <div class="d-flex">
+                            <img class="mb-5 custom-rounded" style="max-width: 60%;" src="@Model.Photo?height=600&width=600&rmode=max" alt="Image of hazard" />
+                        </div>
+                    }
+                    <p class="h4 mb-4">Date of incident occurence: @Model.DateOfHazard</p>
+                    <p class="h5">Reported on: @Model.DateOfReport</p>
+                    <p class="p pb-4 fst-italic">Last Update: @Model.DateOfUpdate</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 text-light mb-3">
+            <div class="bgsidebar">
+                <h2 class="text-center mb-4">Location of Hazard</h2>
+                <noscript>JavaScript must be enabled to view the map. Click <a href="https://www.enable-javascript.com/">here</a> to learn how to enable JavaScript.</noscript>
+                <div class="custom-rounded" id="map" style="height: 400px;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/scripts/star.js" async defer></script>
+    }
+
+    <!--Setting latitude and longtitude to be set on map-->
+    <script>
+        var lat = '@Model.Latitude';
+        var long = '@Model.Longitude';
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="">
+    </script>
+    <script type="text/javascript" src="~/scripts/mapdisplay.js"></script>
+} 

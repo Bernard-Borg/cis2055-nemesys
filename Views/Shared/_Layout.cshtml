@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Nemesys.Models;
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A website to report hazards around University campus">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link href="~/css/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" inline>
+    <title>@ViewData["Title"] | Nemesys</title>
+    @RenderSection("head", required: false)
+</head>
+<body class="bodycolour">
+    <header>
+        <div class="container-fluid d-grid gap-4 align-items-center p-3" style="grid-template-columns: 1fr 2fr 0.75fr 0.25fr;">
+            <!--NEMESYS "logo"-->
+            <h2 class="m-0 d-flex align-items-center" style="height: 100%;"><a class="text-white" asp-controller="Home" asp-action="Index">NEMESYS</a></h2>
+
+            <!--Search bar and button-->
+            <div>
+                <div class="d-flex justify-content-end">
+                    <button class="navbar-toggler btn-outline-light d-lg-none border-light p-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="icon-search"></i>
+                    </button>
+                </div>
+
+                <!--Search bar-->
+                <div class="d-none d-lg-block">
+                    <form method="GET" class="w-100 d-flex" asp-area="" asp-controller="Home" asp-action="Search">
+                        <input id="search" name="search" class="form-control m-0" type="search" placeholder="Search">
+                    </form>
+                </div>
+            </div>
+            
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <!--Add Report button-->
+                <div class="d-flex justify-content-md-around justify-content-lg-end">
+                    <a class="btn btn-outline-light" asp-area="" asp-controller="Report" asp-action="Create" aria-label="Add Report">
+                        <span class="d-block d-sm-none">+</span>
+                        <span class="d-none d-sm-block">Add Report</span>
+                    </a>
+                </div>
+
+                <!--Drop down profile menu-->
+                <div class="d-flex justify-content-center">
+                    <noscript>
+                        <a class="btn btn-outline-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">Profile</a>
+                    </noscript>
+
+                    <div id="dropdowndiv" class="dropdown" style="display: none;">
+                        <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-label="Drop down menu" aria-expanded="false">
+                            <img src="@UserManager.GetUserAsync(User).Result.Photo?width=96&height=96" height="32" width="32" class="rounded-circle" alt="Your profile picture">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id="@UserManager.GetUserAsync(User).Result.Id">My Profile</a></li>
+                            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a></li>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="SignOut">Sign out</a></li>
+                        </ul>
+                    </div>
+                    <script async defer>
+                        window.addEventListener('load', function () { document.getElementById('dropdowndiv').style.display = 'block'; });
+                    </script>
+                </div>
+            }
+            else
+            {
+                <div class="d-none d-sm-flex justify-content-md-around justify-content-lg-end">
+                    <a class="btn btn-outline-light" style="width: 125px;" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </div>
+                <div class="d-none d-sm-block justify-content-md-around justify-content-lg-end">
+                    <a class="btn btn-outline-dark btn-light" style="width: 125px;" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </div>
+                <div class="dropdown d-block d-sm-none justify-content-end">
+                    <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/images/profileimages/defaultprofile.png" height="32" width="32" class="rounded-circle" alt="Your profile picture">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </ul>
+                </div>
+            }
+        </div>
+
+        <!--Drop down search bar-->
+        <div class="collapse navbar-collapse d-lg-none" id="navbarCollapse">
+            <form method="GET" class="d-flex p-3" style="background-color: black;" asp-area="" asp-controller="Home" asp-action="Search">
+                <input name="search" class="form-control" type="search" placeholder="Search">
+            </form>
+        </div>
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js" async defer></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

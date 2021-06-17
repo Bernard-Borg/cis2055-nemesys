@@ -1,0 +1,24 @@
+﻿@model ReportViewModel
+
+<div class="row mt-3 mb-3 d-flex align-items-center" role="listitem">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="col-2 col-lg-1">
+            <partial name="/Views/Shared/_Star.cshtml" model="@Model" />
+        </div>
+    }
+    <a class="@(User.Identity.IsAuthenticated ? "col-10 col-lg-9" : "col-12 col-lg-10")" asp-area="" asp-controller="Report" asp-action="Index" asp-route-id="@Model.ReportId">
+        <div class="text-light border custom-rounded border-light p-3">
+            <p class="h2">@Model.Description</p>
+            <p class="h4">Type of Hazard: @Model.HazardName</p>
+            <span>Status: </span>
+            <span style="color: @Model.ReportStatus.StatusColour">@Model.ReportStatus.StatusName</span>
+        </div>
+    </a>
+    <div class="col-2 d-none d-lg-inline-block justify-content-center align-content-center p-0">
+        @if (Model.Photo != null)
+        {
+            <img class="custom-rounded align-content-center" onerror="style.opacity='0'" src="@Model.Photo?width=128&height=128&rmode=crop" width="128" height="128" alt="Photo of hazard">
+        }
+    </div>
+</div>

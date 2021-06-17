@@ -1,0 +1,30 @@
+﻿@model ReportViewModel
+
+@{ 
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Confirm Delete";
+}
+
+<h1 class="text-center text-white mt-5">Are you sure you want to delete this report?</h1>
+<div class="text-white d-flex justify-content-center flex-column mt-5 bgsidebar mx-5">
+    <p><b>Description: </b>@Model.Description</p>
+    <p><b>Date of report: </b>@Model.DateOfReport</p>
+    <p><b>Date of hazard: </b>@Model.DateOfHazard</p>
+    <p><b>Hazard type: </b>@Model.HazardName</p>
+    <p><b>Photo: </b></p>
+    @if (Model.Photo == null)
+    {
+        <span>Report has no image</span>
+    }
+    else
+    {
+        <img class="custom-rounded" style="max-width: 60%;" src="@Model.Photo?height=600&width=600&rmode=max" width="250" alt="Report image"/>
+    }
+</div>
+<div class="d-flex justify-content-center mt-5">
+    <form method="POST" asp-area="" asp-controller="Report" asp-action="ConfirmDelete">
+        <input type="hidden" name="reportid" value="@Model.ReportId" />
+        <input class="btn btn-danger" type="submit" name="submit" value="Yes" style="width: 140px;"/>
+        <a class="btn btn-outline-light" href="javascript: history.go(-1)" style="width: 140px;">No, Go Back</a>
+    </form>
+</div>

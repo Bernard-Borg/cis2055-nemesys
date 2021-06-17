@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = ViewBag.Message;
+}
+
+<div class="container pt-5 text-light">
+    <p class="h2 mt-2">@ViewBag.Message</p>
+    <div class="pt-5 fs-4">
+        <a asp-controller="Home" asp-action="Index" class="text-danger">Click here to return to main page.</a>
+    </div>
+</div>
