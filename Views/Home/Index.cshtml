@@ -1,5 +1,6 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
 @model HomePageViewModel
 
 @{
@@ -97,7 +98,15 @@
                     </div>
                 }
             </div>
-            @Html.PagedListPager((IPagedList)Model.Reports.Reports, page => Url.Action("Index", new { page }))
+            @Html.PagedListPager((IPagedList)Model.Reports.Reports, page =>
+                Url.Action("Index", new { page }),
+                new PagedListRenderOptions
+                {
+                    UlElementClasses = new string[] { "d-flex justify-content-center mt-4" },
+                    LiElementClasses = new string[] { "btn" },
+                    PageClasses = new string[] { "text-white fs-5" },
+                    ActiveLiElementClass = "btn-primary"
+                });
         </div>
     </div>
 </div>
