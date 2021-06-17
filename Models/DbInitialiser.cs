@@ -29,12 +29,9 @@ namespace Nemesys.Models
                     NormalizedEmail = "BERNARD@NEMESYS.COM",
                     UserName = "bernard@nemesys.com",
                     NormalizedUserName = "BERNARD@NEMESYS.COM",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     Alias = "Bernard Borg",
                     Photo = "/images/profileimages/defaultprofile.png",
-                    PhoneNumber = "+35679297880",
                     NumberOfReports = 0,
                     NumberOfStars = 0,
                     Bio = "I like to go out for hikes",
@@ -54,15 +51,11 @@ namespace Nemesys.Models
                     NormalizedEmail = "NATHAN@NEMESYS.COM",
                     UserName = "nathan@nemesys.com",
                     NormalizedUserName = "NATHAN@NEMESYS.COM",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     Alias = "Nathan Portelli",
                     Photo = "/images/profileimages/defaultprofile.png",
-                    PhoneNumber = "+35679333333",
                     NumberOfReports = 0,
                     NumberOfStars = 0,
-                    Bio = "I am slowly dying because of some illness",
                     DateJoined = DateTime.UtcNow,
                     LastActiveDate = DateTime.UtcNow
                 };
@@ -79,12 +72,9 @@ namespace Nemesys.Models
                     NormalizedEmail = "ANDREW@NEMESYS.COM",
                     UserName = "andrew@nemesys.com",
                     NormalizedUserName = "ANDREW@NEMESYS.COM",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     Alias = "Andrew Caruana",
                     Photo = "/images/profileimages/defaultprofile.png",
-                    PhoneNumber = "+35679297079",
                     NumberOfReports = 0,
                     NumberOfStars = 0,
                     Bio = "I like to watch anime and play CSGO",
@@ -104,13 +94,10 @@ namespace Nemesys.Models
                     NormalizedEmail = "BERNARDCASSAR@NEMESYS.COM",
                     UserName = "bernardcassar@nemesys.com",
                     NormalizedUserName = "BERNARDCASSAR@NEMESYS.COM",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     Alias = "Bernard Cassar",
                     Photo = "/images/profileimages/defaultprofile.png",
-                    PhoneNumber = "+35631415926",
-                    NumberOfReports = 0,
+                    NumberOfReports = 3,
                     NumberOfStars = 0,
                     Bio = "I like to play Rocket League",
                     DateJoined = DateTime.UtcNow,
@@ -195,8 +182,10 @@ namespace Nemesys.Models
                         DateOfReport = new DateTime(2021, 03, 30),
                         DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
+                        Latitude = 35.90346499856232,
+                        Longitude = 14.482756912206577,
                         HazardTypeId = 3,
-                        Description = "A Nathan is terrorising the Faculty of ICT",
+                        Description = "A Nathan is terrorising the Faculty of Education",
                         StatusId = 1,
                         UserId = user.Id,
                         NumberOfStars = 0
@@ -206,6 +195,8 @@ namespace Nemesys.Models
                         DateOfReport = new DateTime(2021, 03, 30),
                         DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
+                        Latitude = 35.901813789901055,
+                        Longitude = 14.485273637516181,
                         HazardTypeId = 1,
                         Description = "Dr. Porter is haunting the hall of the Faculty of ICT",
                         StatusId = 1,
@@ -217,31 +208,14 @@ namespace Nemesys.Models
                         DateOfReport = new DateTime(2021, 03, 30),
                         DateOfUpdate = new DateTime(2021, 03, 30),
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
+                        Latitude = 35.90342954264499,
+                        Longitude = 14.482753809200721,
                         HazardTypeId = 1,
                         Description = "A massive sinkhole has appeared around the Faculty of Law",
-                        StatusId = 2,
+                        StatusId = 1,
                         UserId = user.Id,
                         Photo = "/images/123.png",
-                        NumberOfStars = 0,
-                        InvestigationId = 1
-                    }
-                );
-
-                context.SaveChanges();
-            }
-
-            if (!context.Investigations.Any())
-            {
-                var user = userManager.GetUsersInRoleAsync("Investigator").Result.FirstOrDefault();
-
-                context.AddRange
-                (
-                    new Investigation()
-                    {
-                        Description = "Nathan is being investigated for embezzlement and money laundering by MFSA, and is therefore currently suspended from the Faculty. His reign of terror is, for now, over.",
-                        ReportId = 1,
-                        UserId = user.Id,
-                        DateOfAction = DateTime.UtcNow
+                        NumberOfStars = 0
                     }
                 );
 

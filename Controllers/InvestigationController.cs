@@ -172,7 +172,7 @@ namespace Nemesys.Controllers
 
                 if (existingInvestigation != null)
                 {
-                    var investigationReport = _nemesysRepository.GetReportById(existingInvestigation.InvestigationId);
+                    var investigationReport = _nemesysRepository.GetReportById(existingInvestigation.ReportId);
 
                     //Only allow the investigator to edit the investigation
                     if (existingInvestigation.UserId == _userManager.GetUserId(User))

@@ -57,7 +57,7 @@ namespace Nemesys
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.SlidingExpiration = true;
             });
 
