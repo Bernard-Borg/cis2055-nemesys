@@ -320,6 +320,7 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ConfirmDelete([Required] int reportid)
         {
             try
