@@ -11,10 +11,8 @@ using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.Models.Repositories;
 using SixLabors.ImageSharp.Web.DependencyInjection;
-using SixLabors.ImageSharp.Web.Processors;
 using Nemesys.Services;
 using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Nemesys
