@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Nemesys.Models
 {
@@ -99,7 +97,7 @@ namespace Nemesys.Models
                     Photo = "/images/profileimages/defaultprofile.png",
                     NumberOfReports = 3,
                     NumberOfStars = 0,
-                    Bio = "I like to play Rocket League",
+                    Bio = "I'm a student studying Computing and Business at the University of Malta. I like to play Rocket League",
                     DateJoined = DateTime.UtcNow,
                     LastActiveDate = DateTime.UtcNow
                 };
@@ -184,8 +182,8 @@ namespace Nemesys.Models
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         Latitude = 35.90346499856232,
                         Longitude = 14.482756912206577,
-                        HazardTypeId = 3,
-                        Description = "A Nathan is terrorising the Faculty of Education",
+                        HazardTypeId = 4,
+                        Description = "A pothole has appeared inside the Faculty of Education",
                         StatusId = 1,
                         UserId = user.Id,
                         NumberOfStars = 0
@@ -197,8 +195,8 @@ namespace Nemesys.Models
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         Latitude = 35.901813789901055,
                         Longitude = 14.485273637516181,
-                        HazardTypeId = 1,
-                        Description = "Dr. Porter is haunting the hall of the Faculty of ICT",
+                        HazardTypeId = 3,
+                        Description = "The front door has broken in half",
                         StatusId = 1,
                         UserId = user.Id,
                         NumberOfStars = 0
@@ -210,11 +208,25 @@ namespace Nemesys.Models
                         DateTimeOfHazard = new DateTime(2021, 03, 30),
                         Latitude = 35.90342954264499,
                         Longitude = 14.482753809200721,
-                        HazardTypeId = 1,
-                        Description = "A massive sinkhole has appeared around the Faculty of Law",
+                        HazardTypeId = 2,
+                        Description = "There is a massive puddle",
                         StatusId = 1,
                         UserId = user.Id,
-                        Photo = "/images/123.png",
+                        Photo = "/images/reportimages/puddle.jpg",
+                        NumberOfStars = 0
+                    },
+                    new Report()
+                    {
+                        DateOfReport = new DateTime(2021, 03, 30),
+                        DateOfUpdate = new DateTime(2021, 03, 30),
+                        DateTimeOfHazard = new DateTime(2021, 03, 30),
+                        Latitude = 35.80342954264499,
+                        Longitude = 14.482753809200721,
+                        HazardTypeId = 1,
+                        Description = "Someone is driving around in an electric scooter",
+                        StatusId = 2,
+                        UserId = user.Id,
+                        Photo = "/images/reportimages/electric_scooter.jpg",
                         NumberOfStars = 0
                     }
                 );

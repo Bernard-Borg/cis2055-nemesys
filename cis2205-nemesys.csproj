@@ -38,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\reportimages\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\font\bootstrap-icons.svg" />
     <None Include="wwwroot\font\bootstrap-icons.woff2" />
   </ItemGroup>
